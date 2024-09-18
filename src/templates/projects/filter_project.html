@@ -1,0 +1,74 @@
+<div class="card mt-1 filterDiv">
+    <form id="filterProjectForm" enctype="multipart/form-data" onsubmit="filterProjectForm(event)">
+        <table class="table table-borderless mt-2">
+            <tbody>
+                <tr>
+                    <td class="text-center pt-3">ადგილმდებარეობა:</td>
+                    <td>
+                        <label class="form-label" for="filterProjLocation">
+                            <input type="text" id="filterProjLocation" class="form-control form-control-sm" name="proj_location" placeholder="Location"/>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center pt-3">ხელშეკრულების ნომერი:</td>
+                    <td>
+                        <label class="form-label" for="filterContractNumber">
+                            <input type="text" id="filterContractNumber" class="form-control form-control-sm" name="contract_number" placeholder="Number"/>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center pt-3">VS30 Range:</td>
+                    <td>
+                        <label class="form-label" for="filterVS30">
+                            <input type="text" id="vs30Min" class="form-control form-control-sm col" name="vs30_min" placeholder="Min Value" />
+                            <input type="text" id="vs30Max" class="form-control form-control-sm col" name="vs30_max" placeholder="Max Value" />
+                        </label>
+                    </td>
+                </tr>
+                <tr class="text-center">
+                    <td>Select PGA:</td>
+                    <td class="text-start fs-6">
+                        <label class="form-check-label me-1" for="checkPGA2">
+                            <input class="form-check-input" type="checkbox" value="2" id="checkPGA2" name="pga"/>
+                            2%
+                        </label>
+                        <label class="form-check-label me-1" for="checkPGA5">
+                            <input class="form-check-input" type="checkbox" value="5" id="checkPGA5" name="pga"/>
+                            5%
+                        </label>
+                        <label class="form-check-label me-1" for="checkPGA10">
+                            <input class="form-check-input" type="checkbox" value="10" id="checkPGA10" name="pga"/>
+                            10%
+                        </label>
+                        <label class="form-check-label me-1" for="checkPGA20">
+                            <input class="form-check-input" type="checkbox" value="20" id="checkPGA20" name="pga"/>
+                            20%
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center pt-3">თარიღი (დან):</td>
+                    <td>
+                        <label class="form-label" for="filterStartTime">
+                            <input type="date" class="form-control form-control-sm" id="filterStartTime" name="start_time">
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center pt-3">თარიღი (მდე):</td>
+                    <td>
+                        <label class="form-label" for="filterEndTime">
+                            <input type="date" class="form-control form-control-sm" id="filterEndTime" name="end_time">
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-end"><button type="submit" class="btn btn-sm btn-primary">გაფილტვრა</button></td>
+                    <td><button type="reset" class="btn btn-sm btn-secondary">გასუფთავება</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>

@@ -1,0 +1,13 @@
+services:
+  frontend_app:
+    build: .
+    container_name: frontend_app
+    ports:
+      - "8080:8080"
+    restart: always
+
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    ports:
+      - "80:80"
