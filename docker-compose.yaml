@@ -2,10 +2,17 @@ version: '3.8'
 
 services:
   frontend_app:
-    build: .
+    build: ./frontend_app
     container_name: frontend_app
     ports:
       - "5001:5001"
+    restart: always
+
+  backend_app:
+    build: ./backend_app
+    container_name: backend_app
+    ports:
+      - "5000:5000"
     restart: always
 
   nginx:

@@ -1,0 +1,22 @@
+#1
+python3 -m venv env
+
+#2
+source env/bin/activate
+
+#3
+pip3 install -r requirements.txt
+
+#4
+for server start
+python3 app.py
+
+# for sqlite
+flask init_db
+flask populate_db
+
+swagger.py -ს აქვს პრობლემა სურათის ატვირთვის დროს 
+venv/lib/python3.10/site-packages/flask_restx/swagger.py -ში
+469 -ე ახზზე :  if any(p["type"] == "file" for p in all_params):  უნდა ჩანაცვლდეს:
+if any(p["type"] == "file" or (p["type"] == "array" and p["items"]["type"]=="file") for p in all_params):
+
