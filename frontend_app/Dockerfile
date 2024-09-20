@@ -8,6 +8,6 @@ RUN pip install --upgrade pip
 RUN apt-get update && apt-get -y install python3-dev gcc build-essential
 RUN pip install -r requirements.txt
 
-EXPOSE 5001
+EXPOSE 8080
 
 CMD ["uwsgi", "uwsgi.ini"]
