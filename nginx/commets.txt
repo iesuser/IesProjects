@@ -1,0 +1,5 @@
+# for nginx configuration
+
+sudo nano /etc/nginx/sites-available/frontend_app
+sudo ln -s /etc/nginx/sites-available/frontend_app /etc/nginx/sites-enabled/
+sudo systemctl restart nginx

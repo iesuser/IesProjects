@@ -1,0 +1,14 @@
+[Unit]
+Description=uWSGI instance to serve backend_app
+After=network.target
+
+[Service]
+User=iesflask
+Group=www-data
+WorkingDirectory=/var/www/backend_app
+Environment="PATH=/var/www/backend_app/venv/bin"
+ExecStart=/var/www/backend_app/venv/bin/uwsgi --ini /var/www/backend_app/uwsgi.ini
+
+
+[Install]
+WantedBy=multi-user.target
