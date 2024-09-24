@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+
+{% block title %}
+    IesData - View Project
+{% endblock %}
+
+{% block body %}
+    <script type="text/javascript" src="{{ url_for('static', filename='js/geophysical/geophysicSeismic.js') }}" defer></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/geophysical/geophysicLogging.js') }}" defer></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/geophysical/geophysicElectrical.js') }}" defer></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/geophysical/geophysicGeoradar.js') }}" defer></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/geophysical/geophysicMap.js') }}" defer></script>
+    <div id="geophysicalId" data-geophysical-id="{{ geophysical_id }}"></div>
+    <div id="projectId" data-project-id="{{ project_id }}"></div>
+    <div class="filterMapDiv">
+        {% include "filter_geophysical.html" %}
+
+        <div id="geophysic_mapDiv" class="card mt-2">
+            <div id="map" 
+                style="width: 100%; height:100%; border: 1px solid #CCC; border-radius: 5px; margin-top:0px;">
+            </div>
+        </div>
+    </div>
+
+    <!-- The Create GeophysicSeismicModal -->
+    {% include "geophysicSeismic.html" %}
+
+    <!-- The Create GeophysicLoggingModal -->
+    {% include "geophysicLogging.html" %}
+
+    <!-- The Create GeophysicElectricalModal -->
+    {% include "geophysicElectrical.html" %}
+
+    <!-- The Create GeophysicElectricalModal -->
+    {% include "geophysicGeoradar.html" %}
+
+    <div class="table-responsive-xxl table-bordered text-center mt-2" style="font-size: small;">
+        <table class="table align-middle rounded-2 border-muted mb-0 bg-white">
+            <td>
+                <a class="btn btn-sm btn-warning" style="font-size: x-small;" onclick="openGeophysicSeismicModal()">სეისმური პროფილის დამატება</a>
+            </td>
+            <td>
+                <a class="btn btn-sm btn-success" style="font-size: x-small;" onclick="openGeophysicLoggingModal()">გეოფიზიკური კაროტაჟის დამატება</a>
+            </td>
+            <td>
+                <a class="btn btn-sm btn-primary" style="font-size: x-small;" onclick="openGeophysicElectricalModal()">ელექტრული პროფილის დამატება</a>
+            </td>
+            <td>
+                <a class="btn btn-sm btn-secondary" style="font-size: x-small;" onclick="openGeophysicGeoradarModal()">გეორადარის დამატება</a>
+            </td>
+        </table>
+    </div>
+
+    <!-- for Seismic profile -->
+    <div id="geophysicSeismicTableContainer" class="table-responsive-xxl text-center mt-1 mb-2" style="font-size: x-small;">
+        <table class="table align-middle table-bordered rounded-2 border-muted mb-0 bg-white table-striped">
+            <thead class="table-warning">
+                <tr>
+                    <th>განედი (x)</th>
+                    <th>გრძედი (y)</th>
+                    <th>პროფილის სიგრძე</th>
+                    <th>VS30</th>
+                    <th>გრუნტის კატეგორია (Geo):</th>
+                    <th>გრუნტის კატეგორია (Euro):</th>
+                    <th>საარქივო Image</th>
+                    <th>საარქივო Excel</th>
+                    <th>მოწოდებული მასალები(PDF)</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="geophysicSeismicTable">
+                <!-- Data will be populated dynamically here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- for Geophysical logging -->
+    <div id="geophysicLoggingTableContainer" class="table-responsive-xxl text-center mt-1 mb-2" style="font-size: x-small;">
+        <table class="table align-middle table-bordered rounded-2 border-muted mb-0 bg-white table-striped">
+            <thead class="table-success">
+                <tr>
+                    <th>განედი (x)</th>
+                    <th>გრძედი (y)</th>
+                    <th>პროფილის სიგრძე</th>
+                    <th>საარქივო Image</th>
+                    <th>საარქივო Excel</th>
+                    <th>საარქივო PDF</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="geophysicLoggingTable">
+                <!-- Data will be populated dynamically here -->
+            </tbody>
+        </table>
+    </div>
+
+
+    <!-- for Geophysical electrical -->
+    <div id="geophysicElectricTableContainer" class="table-responsive-xxl text-center mt-1 mb-2" style="font-size: x-small;">
+        <table class="table align-middle table-bordered rounded-2 border-muted mb-0 bg-white table-striped">
+            <thead class="table-primary">
+                <tr>
+                    <th>განედი (x)</th>
+                    <th>გრძედი (y)</th>
+                    <th>პროფილის სიგრძე</th>
+                    <th>საარქივო Image</th>
+                    <th>საარქივო Excel</th>
+                    <th>საარქივო PDF</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="geophysicElectricTable">
+                <!-- Data will be populated dynamically here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- for Geophysical georadar -->
+    <div id="geophysicGeoradarTableContainer" class="table-responsive-xxl text-center mt-1 mb-2" style="font-size: x-small;">
+        <table class="table align-middle table-bordered rounded-2 border-muted mb-0 bg-white table-striped">
+            <thead class="table-secondary">
+                <tr>
+                    <th>განედი (x)</th>
+                    <th>გრძედი (y)</th>
+                    <th>პროფილის სიგრძე</th>
+                    <th>საარქივო Image</th>
+                    <th>საარქივო Excel</th>
+                    <th>საარქივო PDF</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="geophysicGeoradarTable">
+                <!-- Data will be populated dynamically here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- for Project Data -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const projectIdElement = document.getElementById("projectId");
+            const projectId = projectIdElement.getAttribute("data-project-id");
+
+            fetch(`/api/project/${projectId}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("projectName").textContent = data.projects_name;
+                    document.getElementById("contractNumber").textContent = data.contract_number;
+                    document.getElementById("startTime").textContent = data.start_time;
+                    document.getElementById("endTime").textContent = data.end_time;
+                    document.getElementById("projLocation").textContent = data.proj_location;
+                    document.getElementById("projLatitude").textContent = data.proj_latitude;
+                    document.getElementById("projLongitude").textContent = data.proj_longitude;
+                })
+                .catch(error => console.error('Error fetching project data:', error));
+        });
+    </script>
+{% endblock %}

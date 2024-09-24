@@ -1,0 +1,231 @@
+{% extends "base.html" %}
+
+{% block title %}
+    IesProjects - View Project
+{% endblock %}
+
+{% block body %}
+    <script type="text/javascript" src="{{ url_for('static', filename='js/projects/geological.js') }}" defer></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/projects/geophysical.js') }}" defer></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/projects/project_img.js') }}" defer></script>
+    <div id="projectId" data-project-id="{{ project_id }}"></div>
+    <div class="projectImageDiv">
+        <div class="card mt-2 projectDiv">
+            <table class="table table-striped">
+                <tbody>
+                    <tr>
+                        <th>პროექტის სახელი:</th>
+                        <td id="projectName"></td>
+                    </tr>
+                    <tr>
+                        <th>ხელშეკრულების ნომერი:</th>
+                        <td id="contractNumber"></td>
+                    </tr>
+                    <tr>
+                        <th>დაწყების დღე:</th>
+                        <td id="startTime"></td>
+                    </tr>
+                    <tr>
+                        <th>დასრულების დღე:</th>
+                        <td id="endTime"></td>
+                    </tr>
+                    <tr>
+                        <th>დამკვეთი:</th>
+                        <td id="contractor"></td>
+                    </tr>
+                    <tr>
+                        <th>პროექტის მდებარეობა:</th>
+                        <td id="projLocation"></td>
+                    </tr>
+                    <tr>
+                        <th>განედი:</th>
+                        <td id="projLatitude"></td>
+                    </tr>
+                    <tr>
+                        <th>გრძედი:</th>
+                        <td id="projLongitude"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-start">
+                <div class="m-3">
+                    <label for="images" class="form-label">პროექტის სურათები:</label>
+                    <input type="file" class="form-control form-control-sm" id="images" name="images" accept="image/jpeg, image/png, image/jpg" multiple>
+                    <a class="btn btn-sm btn-primary mt-2" id="uploadButton" onclick="uploadImages()">ატვირთვა</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Carousel from Bootstrap5 -->
+        <div id="carouselExampleIndicators" class="carousel slide card mt-2" style="width: 100%;" data-bs-ride="true">
+            <div class="carousel-indicators" id="carouselIndicators"></div>
+            <div class="carousel-inner" id="carouselInner" style="position: relative;">
+                <!-- Carousel items will be inserted here dynamically -->
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>          
+    </div>
+    <!-- Spinner HTML -->
+    <div id="uploadingSpinner" class="spinner-container" style="display: none;">
+        <div class="row fs-5 spinner-border text-light" role="status">
+            <span class="visually-hidden">Uploading ...</span>
+        </div>
+        <span class="row fs-6 text-light m-3">Uploading ...</span>
+    </div>
+
+    <div class="table-responsive-xxl table-bordered text-center mt-2" style="font-size: small;">
+        <table class="table align-middle rounded-2 border-muted mb-0 bg-white">
+            <td>
+                <a class="btn btn-sm btn-warning" style="font-size: x-small;" href="#">გეოლოგიური კვლევის დამატება</a>
+            </td>
+
+            <!-- Button to trigger CreateGeophysicalModal -->
+            <td>
+                <a type="button" class="btn btn-sm btn-success" style="font-size: x-small;" onclick="openGeophysicalModal()">
+                    გეოფიზიკური კვლევის დამატება
+                </a>
+            </td>
+
+            <td>
+                <a class="btn btn-sm btn-primary" style="font-size: x-small;" href="#">სეისმური საშიშროების შეფასების დამატება</a>
+            </td>
+            <td>
+                <a class="btn btn-sm btn-secondary" style="font-size: x-small;" href="#">გეოდეზიური კვლევის დამატება</a>
+            </td>
+            <td>
+                <a class="btn btn-sm btn-info" style="font-size: x-small;" href="#">სხვა ტიპის კვლევის დამატება</a>
+            </td>
+        </table>
+    </div>
+
+    <!-- The GeophysicalModal -->
+    {% include "geophysical.html" %}
+
+    <!-- for Geological -->
+    <div id="geologicalTableContainer" class="table-responsive-xxl text-center mt-1 mb-2" style="font-size: x-small;">
+        <table class="table align-middle table-bordered rounded-2 border-muted mb-0 bg-white table-striped">
+            <thead class="table-warning">
+                <tr>
+                    <th>გეოლოგიური აგეგმვა</th>
+                    <th>ობიექტების რაოდენობა</th>
+                    <th>ჭაბურღილები</th>
+                    <th>ჭაბურღილების რაოდენობა</th>
+                    <th>შურფები</th>
+                    <th>შურფების რაოდენობა</th>
+                    <th>ლაბორატორიული ტესტი</th>
+                    <th>წერტილების რაოდენობა</th>
+                    <th>საარქივო ფაილი</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="geologicalTableBody">
+                <!-- Data will be populated dynamically here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- for Geophysical -->
+    <div id="geophysicalTableContainer" class="table-responsive-xxl text-center mt-1 mb-2" style="font-size: x-small;">
+        <table class="table align-middle table-bordered rounded-2 border-muted mb-0 bg-white table-striped">
+            <thead class="table-success">
+                <tr>
+                    <th>სეისმური პროფილები</th>
+                    <th>სეისმური პროფილების რაოდენობა</th>
+                    <th>გასაშუალებული VS30</th>
+                    <th>გრუნტის კატეგორია ქართული ნორმებით</th>
+                    <th>გრუნტის კატეგორია საერთაშორისო ნორმებით</th>
+                    <th>გეოფიზიკური კაროტაჟი</th>
+                    <th>კაროტაჟის წერტილების რაოდენობა</th>
+                    <th>ელექტრული პროფილები</th>
+                    <th>ელექტრული წერტილების რაოდენობა</th>
+                    <th>გეორადარი</th>
+                    <th>საარქივო Excel</th>
+                    <th>საარქივო PDF</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="geophysicalTableBody">
+                <!-- Data will be populated dynamically here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- for Hazard
+    <div class="table-responsive-xxl text-center mt-1 mb-2" style="font-size: x-small;">
+        <table class="table align-middle table-bordered rounded-2 border-muted mb-0 bg-white table-striped">
+            <thead class="table-primary">
+                <tr>
+                    <th>განედი (x)</th>
+                    <th>გრძედი (y)</th>
+                    <th>სქემის აღწერა</th>
+                    <th>PGA (g) 1%</th>
+                    <th>PGA (g) 2%</th>
+                    <th>PGA (g) 5%</th>
+                    <th>PGA (g) 7%</th>
+                    <th>PGA (g) 10%</th>
+                    <th>PGA (g) 20%</th>
+                    <th>საარქივო ფაილი</th>
+                    <th>შენიშვნა</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>41.1234</td>
+                    <td>42.549</td>
+                    <td>scheme description</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>0.3</td>
+                    <td>--</td>
+                    <td>archival_material.xlsx</td>
+                    <td>Note</td>
+                    <td>
+                        <a class="btn btn-info" href="/edit_project/${project.id}">Edit</a>
+                    </td>
+                    <td>
+                        <form action="#" method="POST" style="display:inline;">
+                            <button type="submit" class="btn btn-danger btn-block" onclick="return confirm('Are you sure you want to delete this station?');">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div> -->
+
+    <!-- for Project Data -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const projectIdElement = document.getElementById("projectId");
+            const projectId = projectIdElement.getAttribute("data-project-id");
+
+            fetch(`/api/project/${projectId}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("projectName").textContent = data.projects_name;
+                    document.getElementById("contractNumber").textContent = data.contract_number || '--';
+                    document.getElementById("startTime").textContent = data.start_time;
+                    document.getElementById("endTime").textContent = data.end_time;
+                    document.getElementById("contractor").textContent = data.contractor || '--';
+                    document.getElementById("projLocation").textContent = data.proj_location;
+                    document.getElementById("projLatitude").textContent = data.proj_latitude;
+                    document.getElementById("projLongitude").textContent = data.proj_longitude;
+                })
+                .catch(error => console.error('Error fetching project data:', error));
+        });
+    </script>
+{% endblock %}

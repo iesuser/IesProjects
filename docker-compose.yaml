@@ -1,0 +1,43 @@
+version: '3.8'  # Docker Compose ვერსია
+
+services:
+  flask:
+    build: .
+    container_name: iesprojects_flask
+    ports:
+      - "5000:5000"
+    restart: always
+    volumes:
+      - /iesprojects/uploads:/uploads  # ატვირთული ფაილების დირექტორია სერვერზე
+    environment:  # გარემოს ცვლადები
+      MY_SECRET_KEY: ${MY_SECRET_KEY}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    depends_on:
+      - mysql  # ველოდებით, სანამ mysql დაიწყება
+
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - flask
+
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: always   
+
+volumes:
+  mysql_data:
