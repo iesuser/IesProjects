@@ -20,3 +20,19 @@ venv/lib/python3.10/site-packages/flask_restx/swagger.py -ში
 469 -ე ახზზე :  if any(p["type"] == "file" for p in all_params):  უნდა ჩანაცვლდეს:
 if any(p["type"] == "file" or (p["type"] == "array" and p["items"]["type"]=="file") for p in all_params):
 
+
+#1 First Start on the Docker
+
+docker-compose up
+
+#2 For Build flask_app on the Docker
+
+docker-compose build
+
+#2 Second Start flask_app on the Docker
+
+docker-compose up -d
+
+mkdir -p /home/iesflask/IesProjects/database
+sudo chmod -R 775 /home/iesflask/IesProjects/database/
+sudo chown -R $USER:$USER /home/iesflask/IesProjects/database/

@@ -4,3 +4,7 @@ chmod +x /home/iesprojects/mysql_backup.sh
 crontab -e
 # დაამატეთ შემდეგი ხაზი, რათა სკრიპტი 2 საათზე ყოველ ღამე გაწვდოს:
 0 2 * * * /home/iesprojects/mysql_backup.sh
+
+
+# ან გაუშვით შემდეგი ხაზი, რომელიც ავტომატურად ჩაამატებს cron-ში განრიგს:
+echo "0 2 * * * /home/iesprojects/mysql_backup.sh" | crontab -
