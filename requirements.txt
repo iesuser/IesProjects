@@ -3,6 +3,7 @@ aniso8601==9.0.1
 attrs==23.2.0
 blinker==1.8.2
 click==8.1.7
+cryptography==43.0.1
 dnspython==2.6.1
 email_validator==2.2.0
 Flask==3.0.3
@@ -29,3 +30,4 @@ rpds-py==0.18.1
 SQLAlchemy==2.0.31
 typing_extensions==4.12.2
 Werkzeug==3.0.3
+uWSGI==2.0.27
