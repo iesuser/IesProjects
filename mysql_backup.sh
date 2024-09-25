@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # მონაცემთა ბაზის ინფორმაცია
-MYSQL_CONTAINER_NAME="mysql"    # Docker კონტეინერის სახელი
+MYSQL_CONTAINER_NAME="db"    # Docker კონტეინერის სახელი
 USER="root"     # შეცვალეთ თქვენი MySQL-ის მომხმარებლის სახელი
 PASSWORD="Ml_Root88"    # შეცვალეთ თქვენი MySQL-ის პაროლი
 DATABASE="iesprojects"  # შეცვალეთ თქვენი მონაცემთა ბაზის სახელი
