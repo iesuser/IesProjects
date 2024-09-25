@@ -1,4 +1,5 @@
 #!/bin/bash
+
 echo "Create Database"
 flask init_db
 echo "==================================="

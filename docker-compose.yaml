@@ -17,7 +17,7 @@ services:
       - ./uploads:/uploads  # ატვირთული ფაილების დირექტორია სერვერზე
     restart: always
     depends_on:
-      - mysql  # ველოდებით, სანამ mysql დაიწყება
+      - db  # ველოდებით, სანამ db დაიწყება
 
   nginx:
     build: ./nginx
@@ -27,7 +27,7 @@ services:
     depends_on:
       - flask
 
-  mysql:
+  db:
     image: mysql:8.0
     container_name: mysql
     environment:
@@ -38,5 +38,5 @@ services:
     volumes:
       - ./database:/var/lib/mysql   # მონაცემების შენახვა ადგილობრივ დირექტორიაში
     ports:
-      - 33067:3306
+      - 3306:3306
     restart: always   
