@@ -14,7 +14,7 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
-      - ./uploads:/uploads  # ატვირთული ფაილების დირექტორია სერვერზე
+      - ./uploads:/app/uploads  # ატვირთული ფაილების დირექტორია სერვერზე
     restart: always
     depends_on:
       - db  # ველოდებით, სანამ db დაიწყება

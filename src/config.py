@@ -11,7 +11,7 @@ class Config(object):
     SECRET_KEY = os.getenv('MY_SECRET_KEY', 'default_secret_key')
     BASE_DIR = path.abspath(path.dirname(__file__) + sep + pardir)
 
-    UPLOAD_FOLDER = 'uploads'  # ეს არის დირექტორია, რომელიც Docker-ში არის /uploads, მაგრამ გადმოდის სერვერის /iesprojects/uploads-ზე
+    UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')  # ეს არის დირექტორია, რომელიც Docker-ში არის /uploads, მაგრამ გადმოდის სერვერის /iesprojects/uploads-ზე
     TEMPLATES_FOLDERS = 'src/templates'
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False

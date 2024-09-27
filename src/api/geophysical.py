@@ -58,7 +58,7 @@ class GeophysicalListAPI(Resource):
         if pdf_files:
             pdf_filename = save_uploaded_file(
                 pdf_files[0],
-                os.path.join(Config.BASE_DIR, Config.UPLOAD_FOLDER, str(proj_id), 'geophysical', 'archival_pdf'),
+                os.path.join(Config.UPLOAD_FOLDER, str(proj_id), 'geophysical', 'archival_pdf'),
                 ['application/pdf'],
                 '.pdf'
             )
@@ -69,7 +69,7 @@ class GeophysicalListAPI(Resource):
         if excel_files:
             excel_filename = save_uploaded_file(
                 excel_files[0],
-                os.path.join(Config.BASE_DIR, Config.UPLOAD_FOLDER, str(proj_id), 'geophysical', 'archival_excel'),
+                os.path.join(Config.UPLOAD_FOLDER, str(proj_id), 'geophysical', 'archival_excel'),
                 ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel'],
                 '.xlsx'
             )
@@ -138,7 +138,7 @@ class GeophysicalAPI(Resource):
 
         # Handle the PDF file upload
         if pdf_files:
-            upload_folder = os.path.join(Config.BASE_DIR, Config.UPLOAD_FOLDER, str(proj_id), 'geophysical', 'archival_pdf')
+            upload_folder = os.path.join(Config.UPLOAD_FOLDER, str(proj_id), 'geophysical', 'archival_pdf')
             pdf_filename = save_uploaded_file(
                 pdf_files[0],
                 upload_folder,
@@ -159,7 +159,7 @@ class GeophysicalAPI(Resource):
 
         # Handle the Excel file upload
         if excel_files:
-            upload_folder = os.path.join(Config.BASE_DIR, Config.UPLOAD_FOLDER, str(proj_id), 'geophysical', 'archival_excel')
+            upload_folder = os.path.join(Config.UPLOAD_FOLDER, str(proj_id), 'geophysical', 'archival_excel')
             excel_filename = save_uploaded_file(
                 excel_files[0],
                 upload_folder,
@@ -201,7 +201,7 @@ class GeophysicalAPI(Resource):
 
         # Delete the associated PDF file if it exists
         if geophysical.archival_pdf or geophysical.archival_excel:
-            geophysical_directory = os.path.join(Config.BASE_DIR, Config.UPLOAD_FOLDER, str(proj_id), 'geophysical')
+            geophysical_directory = os.path.join(Config.UPLOAD_FOLDER, str(proj_id), 'geophysical')
 
             # Delete the entire project directory if it exists
             if os.path.isdir(geophysical_directory):

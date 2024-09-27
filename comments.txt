@@ -36,3 +36,7 @@ docker-compose up -d
 mkdir -p /home/iesflask/IesProjects/database
 sudo chmod -R 775 /home/iesflask/IesProjects/database/
 sudo chown -R $USER:$USER /home/iesflask/IesProjects/database/
+
+
+docker exec -it mysql /bin/sh
+docker-compose up --build nginx
