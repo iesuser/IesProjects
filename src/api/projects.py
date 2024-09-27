@@ -70,7 +70,7 @@ class ProjectsListAPI(Resource):
 
         invalid_files = []
         images_saved = False
-        images_directory = os.path.join(Config.BASE_DIR, Config.UPLOAD_FOLDER, str(new_project.id), 'images')
+        images_directory = os.path.join(Config.UPLOAD_FOLDER, str(new_project.id), 'images')
 
         if images:
             for image in images:
@@ -169,7 +169,7 @@ class ProjectAPI(Resource):
         if project:
             try:
                 # Path to the entire project directory
-                project_directory = os.path.join(Config.BASE_DIR, Config.UPLOAD_FOLDER, str(id))
+                project_directory = os.path.join(Config.UPLOAD_FOLDER, str(id))
 
                 # Delete the entire project directory if it exists
                 if os.path.isdir(project_directory):
@@ -221,7 +221,7 @@ class ProjectImageListAPI(Resource):
         image_types = ["image/jpeg", "image/png", "image/jpg"]
         max_image_size = 5 * 1024 * 1024  # 5MB limit (example)
 
-        images_directory = os.path.join(Config.BASE_DIR, Config.UPLOAD_FOLDER,  str(proj_id), 'images')
+        images_directory = os.path.join(Config.UPLOAD_FOLDER,  str(proj_id), 'images')
         os.makedirs(images_directory, exist_ok=True)
 
         saved_images = []
@@ -270,7 +270,7 @@ class ProjectImageAPI(Resource):
             return {"error": "სურათი არ მოიძებნა."}, 404
 
         # Path to the image file
-        images_directory = os.path.join(Config.BASE_DIR, Config.UPLOAD_FOLDER, str(proj_id), 'images')
+        images_directory = os.path.join(Config.UPLOAD_FOLDER, str(proj_id), 'images')
         image_path = os.path.join(images_directory, image.path)
         
         try:
