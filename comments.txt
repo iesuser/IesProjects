@@ -1,15 +1,3 @@
-#1
-python3 -m venv env
-
-#2
-source env/bin/activate
-
-#3
-pip3 install -r requirements.txt
-
-#4
-for server start
-python3 app.py
 
 # for sqlite
 flask init_db
@@ -62,3 +50,7 @@ docker-compose up -d
 დარწმუნდით, რომ ყველა კონტეინერი მუშაობს სწორად:
 
 docker-compose ps
+
+ეს მეთოდი merge პროცესს იყენებს, რაც იმას ნიშნავს, რომ შენს ცვლილებებს არ გადააწერს და არ გადააკეთებს მათი ისტორიის თანმიმდევრობას. 
+rebase-ის გარეშე უფრო მარტივად შეგიძლია შენარჩუნო არსებული კომიტების ისტორია
+git pull --no-rebase origin master
