@@ -6,7 +6,7 @@ function filterProjectForm(event) {
     const formData = new FormData(form);
 
     // Retrieve JWT token
-    const token = sessionStorage.getItem('access_token');
+    const token = localStorage.getItem('access_token');
 
     // makeApiRequest is a utility function defined elsewhere
     makeApiRequest('/api/filter_project', {

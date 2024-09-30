@@ -1,8 +1,8 @@
 function clearSessionData(redirect = true) {
     // Remove all session-related data
-    sessionStorage.removeItem('access_token');
-    sessionStorage.removeItem('refresh_token');
-    sessionStorage.removeItem('user_email');
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    localStorage.removeItem('user_email');
     
     // Optionally redirect the user to the login page or another page
     if (redirect) {
@@ -21,7 +21,7 @@ function isTokenExpired(token) {
 
 // Define the refreshToken function globally
 function refreshToken() {
-    const refreshToken = sessionStorage.getItem('refresh_token');
+    const refreshToken = localStorage.getItem('refresh_token');
 
     if (!refreshToken) {
         clearSessionData(); // Clear session data and redirect to login
@@ -48,7 +48,7 @@ function refreshToken() {
     })
     .then(data => {
         if (data.access_token) {
-            sessionStorage.setItem('access_token', data.access_token); // Save new access token
+            localStorage.setItem('access_token', data.access_token); // Save new access token
             return data.access_token;
         } else {
             throw new Error('Failed to refresh token');
@@ -61,7 +61,7 @@ function refreshToken() {
 }
 
 function makeApiRequest(url, options) {
-    const token = sessionStorage.getItem('access_token');
+    const token = localStorage.getItem('access_token');
     
     // Check if the token is expired
     if (isTokenExpired(token)) {
@@ -91,7 +91,7 @@ function makeApiRequest(url, options) {
             }
             if (response.status === 422) {
                 // Unprocessable Entity - likely related to the request data
-                sessionStorage.removeItem('access_token');
+                localStorage.removeItem('access_token');
                 window.location.href = '/login';
             } 
             else {
@@ -148,7 +148,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const registrationPage = '/registration';
     const homePage = '/';
     const currentPage = window.location.pathname;
-    const token = sessionStorage.getItem('access_token');
+    const token = localStorage.getItem('access_token');
 
     if (!token && currentPage !== loginPage && currentPage !== registrationPage) {
         window.location.href = loginPage;

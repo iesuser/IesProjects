@@ -33,7 +33,7 @@ fetch('/api/projects')
                 projectTableBody.innerHTML += row;
             });
             // Update map markers with the filtered data
-            updateMapMarkers(data);
+            filterProjectForm();
         } else {
             console.error('Error fetching project data from server');
         }
@@ -51,7 +51,7 @@ function createProjectForm(event) {
     const formData = new FormData(form);
 
     // Retrieve JWT token
-    const token = sessionStorage.getItem('access_token');
+    const token = localStorage.getItem('access_token');
 
     // makeApiRequest is a utility function defined elsewhere
     makeApiRequest('/api/projects', {
@@ -106,7 +106,7 @@ function submitProjectForm(event) {
     const projectId = document.getElementById("editProjectForm").getAttribute("data-project-id");
 
     // Retrieve JWT token
-    const token = sessionStorage.getItem('access_token');
+    const token = localStorage.getItem('access_token');
 
     makeApiRequest(`/api/project/${projectId}`, {
         method: 'PUT',
@@ -139,7 +139,7 @@ function openConfirmDeleteProjectModal(projectId) {
 
 document.getElementById('confirmDeleteProjectButton').addEventListener('click', function() {
     if (projectIdToDelete !== null) {
-        const token = sessionStorage.getItem('access_token');
+        const token = localStorage.getItem('access_token');
 
         makeApiRequest(`/api/project/${projectIdToDelete}`, {
             method: 'DELETE',

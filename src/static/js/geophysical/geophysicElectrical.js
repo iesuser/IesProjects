@@ -118,8 +118,8 @@ function submitGeophysicElectricalForm(event) {
     const url = isEditMode ? `/api/geophysic_electrical/${currentGeophysicalId}/${geophysicElectricalId}` : `/api/geophysic_electrical/${currentGeophysicalId}`;
     const method = isEditMode ? 'PUT' : 'POST';
 
-    // Retrieve the JWT token from sessionStorage (or wherever you store it)
-    const token = sessionStorage.getItem('access_token');
+    // Retrieve the JWT token from localStorage (or wherever you store it)
+    const token = localStorage.getItem('access_token');
 
     // makeApiRequest is in the globalAccessControl.js
     makeApiRequest(url, {
@@ -150,7 +150,7 @@ document.getElementById('confirmDeleteGeophysicElectricalButton').addEventListen
     const geophysicalId = geophysicalIdElement.getAttribute("data-geophysical-id");
 
     if (electricalIdDelete !== null) {
-        const token = sessionStorage.getItem('access_token');
+        const token = localStorage.getItem('access_token');
         
         // makeApiRequest is in the globalAccessControl.js
         makeApiRequest(`/api/geophysic_electrical/${geophysicalId}/${electricalIdDelete}`, {

@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", function() {
     function deleteImage(projectId, imageId) {
         if (!confirm('დარწმუნებული ხართ რომ გსურთ ამ სურათის წაშლა?')) return;
 
-        const token = sessionStorage.getItem('access_token');
+        const token = localStorage.getItem('access_token');
 
         // makeApiRequest is in the globalAccessControl.js
         makeApiRequest(`/api/project/${projectId}/images/${imageId}`, {
@@ -151,7 +151,7 @@ document.addEventListener("DOMContentLoaded", function() {
             formData.append('images', files[i]);
         }
 
-        const token = sessionStorage.getItem('access_token');
+        const token = localStorage.getItem('access_token');
 
         uploadingSpinner.style.display = 'flex'; // Show spinner
 

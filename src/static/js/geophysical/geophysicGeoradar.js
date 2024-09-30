@@ -119,8 +119,8 @@ function submitGeophysicGeoradarForm(event) {
     const url = isEditMode ? `/api/geophysic_georadar/${currentGeophysicalId}/${geophysicGeoradarId}` : `/api/geophysic_georadar/${currentGeophysicalId}`;
     const method = isEditMode ? 'PUT' : 'POST';
 
-    // Retrieve the JWT token from sessionStorage (or wherever you store it)
-    const token = sessionStorage.getItem('access_token');
+    // Retrieve the JWT token from localStorage (or wherever you store it)
+    const token = localStorage.getItem('access_token');
 
     // makeApiRequest is in the globalAccessControl.js
     makeApiRequest(url, {
@@ -150,7 +150,7 @@ document.getElementById('confirmDeleteGeophysicGeoradarButton').addEventListener
     const geophysicalId = geophysicalIdElement.getAttribute("data-geophysical-id");
 
     if (georadarIdDelete !== null) {
-        const token = sessionStorage.getItem('access_token');
+        const token = localStorage.getItem('access_token');
 
         // makeApiRequest is in the globalAccessControl.js
         makeApiRequest(`/api/geophysic_georadar/${geophysicalId}/${georadarIdDelete}`, {

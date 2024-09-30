@@ -130,8 +130,8 @@ function submitGeophysicalForm(event) {
     const url = isEditMode ? `/api/geophysical/${currentProjectId}/${geophysicalId}` : `/api/geophysical/${currentProjectId}`;
     const method = isEditMode ? 'PUT' : 'POST';
 
-    // Retrieve the JWT token from sessionStorage (or wherever you store it)
-    const token = sessionStorage.getItem('access_token');
+    // Retrieve the JWT token from localStorage (or wherever you store it)
+    const token = localStorage.getItem('access_token');
     // makeApiRequest is in the globalAccessControl.js
     makeApiRequest(url, {
         method: method,
@@ -157,7 +157,7 @@ document.getElementById('GeophysicalForm').onsubmit = submitGeophysicalForm;
 
 document.getElementById('confirmDeleteGeophysicalButton').addEventListener('click', function() {
     if (geophysicalIdDelete !== null && projectIdToDelete !== null) {
-        const token = sessionStorage.getItem('access_token');
+        const token = localStorage.getItem('access_token');
 
         // makeApiRequest is in the globalAccessControl.js
         makeApiRequest(`/api/geophysical/${projectIdToDelete}/${geophysicalIdDelete}`, {

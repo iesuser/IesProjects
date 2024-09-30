@@ -21,10 +21,10 @@ function login(event) {
     .then(response => response.json())
     .then(data => {
         if (data.access_token) {
-            // Save the token in local storage
-            sessionStorage.setItem('access_token', data.access_token);
-            sessionStorage.setItem('refresh_token', data.refresh_token);
-            sessionStorage.setItem('user_email', email);
+            // JWT ტოკენების შენახვა localStorage-ში
+            localStorage.setItem('access_token', data.access_token);
+            localStorage.setItem('refresh_token', data.refresh_token);
+            localStorage.setItem('user_email', email);
 
             // Redirect to /projects page
             window.location.href = '/';

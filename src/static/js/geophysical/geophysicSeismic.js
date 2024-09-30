@@ -128,7 +128,7 @@ function submitGeophysicSeismicForm(event) {
     const url = isEditMode ? `/api/geophysic_seismic/${currentGeophysicalId}/${geophysicSeismicId}` : `/api/geophysic_seismic/${currentGeophysicalId}`;
     const method = isEditMode ? 'PUT' : 'POST';
 
-    const token = sessionStorage.getItem('access_token');
+    const token = localStorage.getItem('access_token');
 
     // makeApiRequest is in the globalAccessControl.js
     makeApiRequest(url, {
@@ -158,7 +158,7 @@ document.getElementById('confirmDeleteGeophysicSeismicButton').addEventListener(
     const geophysicalId = geophysicalIdElement.getAttribute("data-geophysical-id");
 
     if (seismicIdDelete !== null) {
-        const token = sessionStorage.getItem('access_token');
+        const token = localStorage.getItem('access_token');
         
         // makeApiRequest is in the globalAccessControl.js
         makeApiRequest(`/api/geophysic_seismic/${geophysicalId}/${seismicIdDelete}`, {

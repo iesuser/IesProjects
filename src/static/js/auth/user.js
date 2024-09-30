@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Open the modal for editing a User record
 function openUserModal() {
-    const token = sessionStorage.getItem('access_token');
+    const token = localStorage.getItem('access_token');
     const emailText = document.getElementById('user_email');
     const roleText = document.getElementById('user_role');
     fetch(`/api/account`, {
@@ -81,7 +81,7 @@ function submitUserForm(event) {
     formData.append('change_password', changePasswordCheck);
     formData.append('role_name', roleName);
 
-    const token = sessionStorage.getItem('access_token');
+    const token = localStorage.getItem('access_token');
 
     // makeApiRequest is in the globalAccessControl.js
     makeApiRequest(`/api/account/${UUIDField}`, {

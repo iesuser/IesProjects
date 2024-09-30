@@ -31,14 +31,14 @@ document.addEventListener("DOMContentLoaded", function() {
         navLinksStart.appendChild(listItem);
     });
 
-    // Check for access_token in sessionStorage and update the navigation
-    if (sessionStorage.getItem('access_token')) {
+    // Check for access_token in localStorage and update the navigation
+    if (localStorage.getItem('access_token')) {
         // User is logged in, show Logout button
         const logoutItem = document.createElement('li');
         logoutItem.className = 'd-flex justify-content-center';
 
-        // Retrieve the user's email from sessionStorage
-        const userEmail = sessionStorage.getItem('user_email');
+        // Retrieve the user's email from localStorage
+        const userEmail = localStorage.getItem('user_email');
         if (userEmail) {
             const emailSpan = document.createElement('span');
             emailSpan.className = 'nav-link me-4'; // Margin end for spacing
