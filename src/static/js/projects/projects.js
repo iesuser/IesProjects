@@ -33,7 +33,7 @@ fetch('/api/projects')
                 projectTableBody.innerHTML += row;
             });
             // Update map markers with the filtered data
-            filterProjectForm();
+            updateMapMarkers(data);
         } else {
             console.error('Error fetching project data from server');
         }
