@@ -78,27 +78,27 @@ def geophyElectrical_img(proj_id, geophy_id, filename):
 
 @geophysical_blueprint.route('/<int:proj_id>/geophysical/<int:geophy_id>/electrical/archival_excel/<filename>')
 def geophyElectrical_excel(proj_id, geophy_id, filename):
-    directory = f'temp/{proj_id}/geophysical/{geophy_id}/electrical/archival_excel/'
+    directory = path.join(Config.UPLOAD_FOLDER, str(proj_id), 'geophysical', str(geophy_id), 'electrical/archival_excel/')
     return send_from_directory(directory, filename)
 
 @geophysical_blueprint.route('/<int:proj_id>/geophysical/<int:geophy_id>/electrical/archival_pdf/<filename>')
 def geophyElectrical_pdf(proj_id, geophy_id, filename):
-    directory = f'temp/{proj_id}/geophysical/{geophy_id}/electrical/archival_pdf/'
+    directory = path.join(Config.UPLOAD_FOLDER, str(proj_id), 'geophysical', str(geophy_id), 'electrical/archival_pdf/')
     return send_from_directory(directory, filename)
 
 
 # Route to serve georadar archival images for a specific Geophysical record
 @geophysical_blueprint.route('/<int:proj_id>/geophysical/<int:geophy_id>/georadar/archival_img/<filename>')
 def geophyGeoradar_img(proj_id, geophy_id, filename):
-    directory = f'temp/{proj_id}/geophysical/{geophy_id}/georadar/archival_img/'
+    directory = path.join(Config.UPLOAD_FOLDER, str(proj_id), 'geophysical', str(geophy_id), 'georadar/archival_img/')
     return send_from_directory(directory, filename)
 
 @geophysical_blueprint.route('/<int:proj_id>/geophysical/<int:geophy_id>/georadar/archival_excel/<filename>')
 def geophyGeoradar_excel(proj_id, geophy_id, filename):
-    directory = f'temp/{proj_id}/geophysical/{geophy_id}/georadar/archival_excel/'
+    directory = path.join(Config.UPLOAD_FOLDER, str(proj_id), 'geophysical', str(geophy_id), 'georadar/archival_excel/')
     return send_from_directory(directory, filename)
 
 @geophysical_blueprint.route('/<int:proj_id>/geophysical/<int:geophy_id>/georadar/archival_pdf/<filename>')
 def geophyGeoradar_pdf(proj_id, geophy_id, filename):
-    directory = f'temp/{proj_id}/geophysical/{geophy_id}/georadar/archival_pdf/'
+    directory = path.join(Config.UPLOAD_FOLDER, str(proj_id), 'geophysical', str(geophy_id), 'georadar/archival_pdf/')
     return send_from_directory(directory, filename)
