@@ -73,7 +73,7 @@ def geophyLogging_pdf(proj_id, geophy_id, filename):
 # Route to serve electrical archival images for a specific Geophysical record
 @geophysical_blueprint.route('/<int:proj_id>/geophysical/<int:geophy_id>/electrical/archival_img/<filename>')
 def geophyElectrical_img(proj_id, geophy_id, filename):
-    directory = f'temp/{proj_id}/geophysical/{geophy_id}/electrical/archival_img/'
+    directory = path.join(Config.UPLOAD_FOLDER, str(proj_id), 'geophysical', str(geophy_id), 'electrical/archival_img/')
     return send_from_directory(directory, filename)
 
 @geophysical_blueprint.route('/<int:proj_id>/geophysical/<int:geophy_id>/electrical/archival_excel/<filename>')
