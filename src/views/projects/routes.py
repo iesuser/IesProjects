@@ -13,5 +13,5 @@ def view_projects(id):
 
 @projects_blueprint.route('/images/<int:proj_id>/<filename>')
 def project_image(proj_id, filename):
-    directory = path.join(Config.BASE_DIR, Config.UPLOAD_FOLDER, str(proj_id), 'images') 
+    directory = path.join(Config.UPLOAD_FOLDER, str(proj_id), 'images') 
     return send_from_directory(directory, filename)

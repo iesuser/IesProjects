@@ -52,7 +52,7 @@ class GeophysicElectricalListAPI(Resource):
         if pdf_files:
             pdf_filename = save_uploaded_file(
                 pdf_files[0],
-                os.path.join(Config.BASE_DIR, 'src', 'temp', str(proj_id), 'geophysical', str(geophy_id), 'electrical', 'archival_pdf'),
+                os.path.join(Config.UPLOAD_FOLDER, str(proj_id), 'geophysical', str(geophy_id), 'electrical', 'archival_pdf'),
                 ['application/pdf'],
                 '.pdf'
             )
@@ -63,7 +63,7 @@ class GeophysicElectricalListAPI(Resource):
         if excel_files:
             excel_filename = save_uploaded_file(
                 excel_files[0],
-                os.path.join(Config.BASE_DIR, 'src', 'temp', str(proj_id), 'geophysical', str(geophy_id), 'electrical', 'archival_excel'),
+                os.path.join(Config.UPLOAD_FOLDER, str(proj_id), 'geophysical', str(geophy_id), 'electrical', 'archival_excel'),
                 ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel'],
                 '.xlsx'
             )
@@ -74,7 +74,7 @@ class GeophysicElectricalListAPI(Resource):
         if img_files:
             img_filename = save_uploaded_file(
                 img_files[0],
-                os.path.join(Config.BASE_DIR, 'src', 'temp', str(proj_id), 'geophysical', str(geophy_id), 'electrical', 'archival_img'),
+                os.path.join(Config.UPLOAD_FOLDER, str(proj_id), 'geophysical', str(geophy_id), 'electrical', 'archival_img'),
                 ['image/jpeg', 'image/png', 'image/jpg', 'image/gif']
             )
             if not img_filename:
@@ -142,7 +142,7 @@ class GeophysicElectricalAPI(Resource):
 
         # Handle the PDF file upload
         if pdf_files:
-            upload_folder = os.path.join(Config.BASE_DIR, 'src', 'temp', str(proj_id), 'geophysical', str(geophy_id), 'electrical', 'archival_pdf')
+            upload_folder = os.path.join(Config.UPLOAD_FOLDER, str(proj_id), 'geophysical', str(geophy_id), 'electrical', 'archival_pdf')
             pdf_filename = save_uploaded_file(
                 pdf_files[0],
                 upload_folder,
@@ -162,7 +162,7 @@ class GeophysicElectricalAPI(Resource):
 
         # Handle the Excel file upload
         if excel_files:
-            upload_folder = os.path.join(Config.BASE_DIR, 'src', 'temp', str(proj_id), 'geophysical', str(geophy_id), 'electrical', 'archival_excel')
+            upload_folder = os.path.join(Config.UPLOAD_FOLDER, str(proj_id), 'geophysical', str(geophy_id), 'electrical', 'archival_excel')
             excel_filename = save_uploaded_file(
                 excel_files[0],
                 upload_folder,
@@ -182,7 +182,7 @@ class GeophysicElectricalAPI(Resource):
 
         # Handle the Image file upload
         if img_files:
-            upload_folder = os.path.join(Config.BASE_DIR, 'src', 'temp',  str(proj_id), 'geophysical', str(geophy_id), 'electrical', 'archival_img')
+            upload_folder = os.path.join(Config.UPLOAD_FOLDER,  str(proj_id), 'geophysical', str(geophy_id), 'electrical', 'archival_img')
             img_filename = save_uploaded_file(
                 img_files[0],
                 upload_folder,
@@ -230,9 +230,9 @@ class GeophysicElectricalAPI(Resource):
             return {"error": "ელექტრული პროფილი არ მოიძებნა."}, 404
 
         # Define paths for old files
-        pdf_folder = os.path.join(Config.BASE_DIR, 'src', 'temp', str(proj_id), 'geophysical', str(geophy_id), 'electrical', 'archival_pdf')
-        excel_folder = os.path.join(Config.BASE_DIR, 'src', 'temp', str(proj_id), 'geophysical', str(geophy_id), 'electrical', 'archival_excel')
-        img_folder = os.path.join(Config.BASE_DIR, 'src', 'temp', str(proj_id), 'geophysical', str(geophy_id), 'electrical', 'archival_img')
+        pdf_folder = os.path.join(Config.UPLOAD_FOLDER, str(proj_id), 'geophysical', str(geophy_id), 'electrical', 'archival_pdf')
+        excel_folder = os.path.join(Config.UPLOAD_FOLDER, str(proj_id), 'geophysical', str(geophy_id), 'electrical', 'archival_excel')
+        img_folder = os.path.join(Config.UPLOAD_FOLDER, str(proj_id), 'geophysical', str(geophy_id), 'electrical', 'archival_img')
 
         # Delete old files if they exist
         if geophysic_electrical.archival_pdf:

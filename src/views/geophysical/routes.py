@@ -6,6 +6,7 @@ from src.models import Geophysical
 
 # Define the folder path for the templates
 TEMPLATES_FOLDER = path.join(Config.BASE_DIR, "src/templates", "geophysical")
+UPLOAD_DIR = path.join(Config.BASE_DIR, Config.UPLOAD_FOLDER)
 
 # Create a Blueprint for the geophysical routes
 geophysical_blueprint = Blueprint("geophysical", __name__, template_folder=TEMPLATES_FOLDER)
@@ -26,46 +27,46 @@ def view_geophysical(id):
 # Route to serve archival material (like PDFs) for a specific project ID
 @geophysical_blueprint.route('/<int:proj_id>/geophysical/archival_excel/<filename>')
 def archival_excel(proj_id, filename):
-    directory = f'temp/{proj_id}/geophysical/archival_excel/'
+    directory = path.join(Config.UPLOAD_FOLDER, str(proj_id), 'geophysical/archival_excel/')
     return send_from_directory(directory, filename)
 
 # Route to serve archival material (like PDFs) for a specific project ID
 @geophysical_blueprint.route('/<int:proj_id>/geophysical/archival_pdf/<filename>')
 def archival_pdf(proj_id, filename):
-    directory = f'temp/{proj_id}/geophysical/archival_pdf/'
+    directory = path.join(Config.UPLOAD_FOLDER, str(proj_id), 'geophysical/archival_pdf/')
     return send_from_directory(directory, filename)
 
 # Route to serve seismic archival images for a specific Geophysical record
 @geophysical_blueprint.route('/<int:proj_id>/geophysical/<int:geophy_id>/seismic/archival_img/<filename>')
 def geophySeismic_img(proj_id, geophy_id, filename):
-    directory = f'temp/{proj_id}/geophysical/{geophy_id}/seismic/archival_img/'
+    directory = path.join(Config.UPLOAD_FOLDER, str(proj_id), 'geophysical', str(geophy_id), 'seismic/archival_img/')
     return send_from_directory(directory, filename)
 
 @geophysical_blueprint.route('/<int:proj_id>/geophysical/<int:geophy_id>/seismic/archival_excel/<filename>')
 def geophySeismic_excel(proj_id, geophy_id, filename):
-    directory = f'temp/{proj_id}/geophysical/{geophy_id}/seismic/archival_excel/'
+    directory = path.join(Config.UPLOAD_FOLDER, str(proj_id), 'geophysical', str(geophy_id), 'seismic/archival_excel/')
     return send_from_directory(directory, filename)
 
 @geophysical_blueprint.route('/<int:proj_id>/geophysical/<int:geophy_id>/seismic/archival_pdf/<filename>')
 def geophySeismic_pdf(proj_id, geophy_id, filename):
-    directory = f'temp/{proj_id}/geophysical/{geophy_id}/seismic/archival_pdf/'
+    directory = path.join(Config.UPLOAD_FOLDER, str(proj_id), 'geophysical', str(geophy_id), 'seismic/archival_pdf/')
     return send_from_directory(directory, filename)
 
 
 # Route to serve logging archival images for a specific Geophysical record
 @geophysical_blueprint.route('/<int:proj_id>/geophysical/<int:geophy_id>/logging/archival_img/<filename>')
 def geophyLogging_img(proj_id, geophy_id, filename):
-    directory = f'temp/{proj_id}/geophysical/{geophy_id}/logging/archival_img/'
+    directory = path.join(Config.UPLOAD_FOLDER, str(proj_id), 'geophysical', str(geophy_id), 'logging/archival_img/')
     return send_from_directory(directory, filename)
 
 @geophysical_blueprint.route('/<int:proj_id>/geophysical/<int:geophy_id>/logging/archival_excel/<filename>')
 def geophyLogging_excel(proj_id, geophy_id, filename):
-    directory = f'temp/{proj_id}/geophysical/{geophy_id}/logging/archival_excel/'
+    directory = path.join(Config.UPLOAD_FOLDER, str(proj_id), 'geophysical', str(geophy_id), 'logging/archival_excel/')
     return send_from_directory(directory, filename)
 
 @geophysical_blueprint.route('/<int:proj_id>/geophysical/<int:geophy_id>/logging/archival_pdf/<filename>')
 def geophyLogging_pdf(proj_id, geophy_id, filename):
-    directory = f'temp/{proj_id}/geophysical/{geophy_id}/logging/archival_pdf/'
+    directory = path.join(Config.UPLOAD_FOLDER, str(proj_id), 'geophysical', str(geophy_id), 'logging/archival_pdf/')
     return send_from_directory(directory, filename)
 
 
