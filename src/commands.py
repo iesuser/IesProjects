@@ -147,7 +147,7 @@ def populate_db():
     new_geophysic_electrical.create()
 
     click.echo("Creating Role")
-    role = Role(name="Admin", is_admin=True, can_project=True, can_geophysic=True,
+    role = Role(name="Admin", is_admin=True, can_users=True, can_project=True, can_geophysic=True,
                  can_geologic=True, can_geodetic=True, can_hazard=True)
     role.create()
     role = Role(name="User")
@@ -184,6 +184,7 @@ def insert_db():
     # if role:
     #     # Update existing Role attributes
     #     role.is_admin = False
+    #     can_users=False
     #     role.can_project = False
     #     role.can_geophysic = False
     #     role.can_geologic = False
@@ -201,6 +202,7 @@ def insert_db():
     # role = Role(
     #     name="Geophysicist",
     #     is_admin=False,
+    #     can_users=False
     #     can_project=True,
     #     can_geophysic=True,
     #     can_geologic=False,

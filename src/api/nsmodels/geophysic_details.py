@@ -4,7 +4,6 @@ from werkzeug.datastructures import FileStorage
 
 
 # For GeophysicSeismic API
-
 geophysic_seismic_ns = api.namespace('GeophysicSeismic', description='API endpoint for GeopysicSeismic related operations', path='/api')
 
 geophysic_seismic_model = api.model('GeophysicSeismic', {
@@ -36,7 +35,6 @@ geophysical_seismic__parser.add_argument("archival_pdf", required=False, type=Fi
 
 
 # For GeophysicLogging API
-
 geophysic_logging_ns = api.namespace('GeophysicLogging', description='API endpoint for GeophysicLogging related operations', path='/api')
 
 geophysic_logging_model = geophysic_logging_ns.model('GeophysicLogging', {
@@ -62,7 +60,6 @@ geophysic_logging_parser.add_argument("archival_pdf", required=False, type=FileS
 
 
 # For GeophysicElectrical API
-
 geophysic_electrical_ns = api.namespace('GeophysicElectrical', description='API endpoint for GeophysicElectrical related operations', path='/api')
 
 geophysic_electrical_model = geophysic_electrical_ns.model('GeophysicElectrical', {
@@ -88,7 +85,6 @@ geophysic_electrical_parser.add_argument("archival_pdf", required=False, type=Fi
 
 
 # For GeophysicGeoradar API
-
 geophysic_georadar_ns = api.namespace('GeophysicGeoradar', description='API endpoint for GeophysicGeoradar related operations', path='/api')
 
 geophysic_georadar_model = geophysic_electrical_ns.model('GeophysicGeoradar', {
