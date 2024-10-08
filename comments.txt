@@ -27,6 +27,18 @@ sudo chown -R $USER:$USER /home/iesflask/IesProjects/database/
 
 
 docker exec -it mysql /bin/sh
+docker exec -it mysql mysql -u root -p
+
+# Flask Migrations
+# Reset Migrations:
+flask db init
+flask db migrate -m "Initial migration"
+flask db upgrade
+
+# Re-run Migration Commands:
+flask db migrate
+flask db upgrade
+
 docker-compose up --build nginx
 
 
