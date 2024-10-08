@@ -13,6 +13,7 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - ./uploads:/app/uploads  # ატვირთული ფაილების დირექტორია სერვერზე
+      - ./migrations:/app/migrations  # ბაზის მიგრაციების ფაილი
     restart: always
     depends_on:
       - db  # ველოდებით, სანამ db დაიწყება
