@@ -82,7 +82,7 @@ class AccessTokenRefreshApi(Resource):
     
 @auth_ns.route('/account')
 @auth_ns.doc(responses={200: 'OK', 400: 'Invalid Argument', 401: 'JWT Token Expires', 403: 'Forbidden', 404: 'Not Found'})
-class UserApi(Resource):
+class AccountApi(Resource):
     @jwt_required()
     @auth_ns.doc(security='JsonWebToken')
     @auth_ns.marshal_with(user_model)
@@ -101,7 +101,7 @@ class UserApi(Resource):
 
 @auth_ns.route('/account/<string:uuid>')
 @auth_ns.doc(responses={200: 'OK', 400: 'Invalid Argument', 401: 'JWT Token Expires', 403: 'Forbidden', 404: 'Not Found'})
-class AccountApi(Resource):
+class EditAccountApi(Resource):
     @jwt_required()
     @auth_ns.doc(security='JsonWebToken')
     @auth_ns.expect(user_parser)
@@ -159,36 +159,3 @@ class AccountApi(Resource):
             return {'message': 'მონაცემები წარმატებით განახლდა.'}, 200
         else:
             return {'error': "არ გაქვს მონაცემების განახლების ნებართვა."}, 403
-    
-@auth_ns.route('/users')
-@auth_ns.doc(responses={200: 'OK', 400: 'Invalid Argument', 401: 'JWT Token Expires', 403: 'Forbidden', 404: 'Not Found'})
-class AccountListApi(Resource):
-    @jwt_required()
-    @auth_ns.doc(security='JsonWebToken')
-    def get(self):
-        identity = get_jwt_identity()
-        user = User.query.filter_by(uuid=identity).first()
-
-        # Check if the user has admin privileges
-        if user and user.role and user.role.name == "Admin":
-            users = User.query.all()
-
-            if not users:
-                return {'error': 'მომხმარებლები ვერ მოიძებნა.'}, 404
-
-            # Append role_name to each user
-            user_list = [
-                {
-                    'uuid': user.uuid,
-                    'name': user.name,
-                    'lastname': user.lastname,
-                    'email': user.email,
-                    'role_name': user.role.name if user.role else 'No Role'
-                } 
-                for user in users
-            ]
-            
-            return user_list, 200
-        
-        else:
-            return {'error': "არ გაქვს მონაცემების ნახვის ნებართვა."}, 403
