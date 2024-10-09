@@ -1,5 +1,5 @@
 from flask_restx import Resource
-from flask_jwt_extended import jwt_required, current_user, get_jwt_identity
+from flask_jwt_extended import jwt_required, current_user
 
 from src.models import User, Role
 from src.api.nsmodels import users_ns, roles_model
@@ -11,8 +11,6 @@ class UserListApi(Resource):
     @jwt_required()
     @users_ns.doc(security='JsonWebToken')
     def get(self):
-        identity = get_jwt_identity()
-
         # Check if the user has permission
         if not current_user.check_permission('can_users'):
             return {"error": "არ გაქვს მომხმარებლის ნახვის ნებართვა."}, 403
