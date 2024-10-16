@@ -24,7 +24,7 @@ class UserListApi(Resource):
                 'name': user.name,
                 'lastname': user.lastname,
                 'email': user.email,
-                'role_name': user.role.name if user.role else 'No Role'
+                'role_name': user.role.name
             } 
             for user in users
         ]

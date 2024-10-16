@@ -59,6 +59,11 @@ function openUserModal() {
             document.getElementById('user_lastname').value = data.lastname;
             emailText.textContent = data.email;
             roleText.textContent = data.role_name;
+
+            // Show the update button only if the role is Admin
+            if (data.role_name === 'Admin') {
+                accountsButton.style.display = 'block';
+            }
         } else {
             showAlert('danger', 'მომხმარებელი არ მოიძებნა.');
         }
@@ -68,6 +73,11 @@ function openUserModal() {
 
     const modal = new bootstrap.Modal(document.getElementById('UserModal'));
     modal.show();
+}
+
+// Redirect to the accounts page
+function redirectToAccounts() {
+    window.location.href = '/accounts';
 }
 
 function submitUserForm(event) {
