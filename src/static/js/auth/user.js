@@ -31,7 +31,7 @@ function openUserModal() {
     const token = localStorage.getItem('access_token');
     const emailText = document.getElementById('user_email');
     const roleText = document.getElementById('user_role');
-    fetch(`/api/account`, {
+    fetch(`/api/user`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`,  // Include the JWT token

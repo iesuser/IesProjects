@@ -5,7 +5,31 @@
 {% endblock %}
 
 {% block body %} 
-<div class="d-flex justify-content-center align-items-center pt-5">
-    <h2>index page</h2>
+<!-- Table Header -->
+<div class="d-flex justify-content-center">
+    <h4 class="modal-title m-3">Dashboard</h4>
+</div>
+<div class="table-responsive-xxl text-center mt-1 mb-3" style="font-size: x-small;">
+    <table class="table align-middle table-bordered border-muted mb-0 bg-white table-striped">
+        <thead class="table-primary">
+            <tr>
+                <th>Username</th>
+                <th>Role Name</th>
+                <th>Is Admin</th>
+                <th>Can Users</th>
+                <th>Can Project</th>
+                <th>Can Geophysic</th>
+                <th>Can Geologic</th>
+                <th>Can Hazard</th>
+                <th>Can Geodetic</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="accountsTableBody">
+            <!-- Data will be populated dynamically here -->
+        </tbody>
+    </table>
 </div>
 {% endblock %}
