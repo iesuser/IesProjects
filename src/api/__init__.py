@@ -6,6 +6,6 @@ from src.api.geophysic.geophysic_seismic import GeophysicSeismicListAPI, Geophys
 from src.api.geophysic.geophysic_logging import GeophysicLoggingListAPI, GeophysicLoggingAPI
 from src.api.geophysic.geophysic_electrical import GeophysicElectricalListAPI, GeophysicElectricalAPI
 from src.api.geophysic.geophysic_georadar import GeophysicGeoradarListAPI, GeophysicGeoradarAPI
-from src.api.authentication import RegistrationApi, AuthorizationApi, AccessTokenRefreshApi, AccountApi, EditAccountApi
+from src.api.authentication import RegistrationApi, AuthorizationApi, AccessTokenRefreshApi
 from src.api.filters import FilterProjectAPI
-from src.api.users import UserListApi, RolesListApi
+from src.api.accounts import UserApi, UserListApi, AccountAPI, RolesListApi
