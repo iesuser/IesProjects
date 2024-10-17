@@ -2,7 +2,7 @@ from flask_restx import Resource
 from flask_jwt_extended import jwt_required, current_user, get_jwt_identity
 
 from src.models import User, Role
-from src.api.nsmodels import accounts_ns, user_model, user_parser, roles_model
+from src.api.nsmodels import accounts_ns, user_model, user_parser, accounts_model, roles_model, roles_parser
 
 
 @accounts_ns.route('/user')
@@ -24,34 +24,40 @@ class UserApi(Resource):
         else:
             return {'error': 'მომხმარებელი ვერ მოიძებნა.'}, 404
 
-@accounts_ns.route('/users')
+@accounts_ns.route('/accounts')
 @accounts_ns.doc(responses={200: 'OK', 400: 'Invalid Argument', 401: 'JWT Token Expires', 403: 'Forbidden', 404: 'Not Found'})
 class UserListApi(Resource):
     @jwt_required()
     @accounts_ns.doc(security='JsonWebToken')
+    @accounts_ns.marshal_with(accounts_model)
     def get(self):
         # Check if the user has permission
         if not current_user.check_permission('can_users'):
             return {"error": "არ გაქვს მომხმარებლის ნახვის ნებართვა."}, 403
 
-        users = User.query.all()
-
-        # Append role_name to each user
-        user_list = [
+        # Query all users from the database
+        users = User.query.all() 
+        # Prepare the response data using a list comprehension
+        result = [
             {
-                'uuid': user.uuid,
-                'name': user.name,
-                'lastname': user.lastname,
-                'email': user.email,
-                'role_name': user.role.name
-            } 
+                "id": user.id,
+                "username": f"{user.name} {user.lastname}",
+                "email": user.email,
+                "role": {
+                    "name": user.role.name if user.role else "No Role",
+                    "is_admin": user.role.is_admin if user.role else False,
+                    "can_users": user.role.can_users if user.role else False,
+                    "can_project": user.role.can_project if user.role else False,
+                    "can_geophysic": user.role.can_geophysic if user.role else False,
+                    "can_geologic": user.role.can_geologic if user.role else False,
+                    "can_hazard": user.role.can_hazard if user.role else False,
+                    "can_geodetic": user.role.can_geodetic if user.role else False,
+                } if user.role else None,
+            }
             for user in users
         ]
 
-        if not users:
-            return {'error': "მომხმარებლები ვერ მოიძებნა."}, 404
-
-        return user_list, 200
+        return result, 200
 
 @accounts_ns.route('/account/<string:uuid>')
 @accounts_ns.doc(responses={200: 'OK', 400: 'Invalid Argument', 401: 'JWT Token Expires', 403: 'Forbidden', 404: 'Not Found'})
@@ -133,3 +139,38 @@ class RolesListApi(Resource):
             return {'error': 'როლი ვერ მოიძებნა.'}, 404
         
         return roles, 200
+
+@accounts_ns.route('/roles/<int:role_id>')
+@accounts_ns.doc(responses={200: 'OK', 400: 'Invalid Argument', 401: 'JWT Token Expires', 403: 'Forbidden', 404: 'Not Found'})
+class RolesAPI(Resource):
+    @jwt_required()
+    @accounts_ns.doc(parser=roles_parser)
+    @accounts_ns.doc(security = 'JsonWebToken')
+    def put(self):
+        """Update an existing role"""
+        args = roles_parser.parse_args()
+        
+        # Query the role by ID, not name
+        role = Role.query.get(role_id)
+
+        if not role:
+            return {"error": "Role not found."}, 404
+
+        # Update role fields if provided
+        if args['is_admin'] is not None:
+            role.is_admin = args['is_admin']
+        if args['can_users']:
+            role.can_users = args['can_users']
+        if args['can_project']:
+            role.can_project = args['can_project']
+        if args['can_geophysic']:
+            role.can_geophysic = args['can_geophysic']
+        if args['can_geologic']:
+            role.can_geologic = args['can_geologic']
+        if args['can_hazard']:
+            role.can_hazard = args['can_hazard']
+        if args['can_geodetic']:
+            role.can_geodetic = args['can_geodetic']
+
+        role.save()
+        return {"message": f"Role '{role.name}' updated successfully."}, 200

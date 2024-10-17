@@ -37,3 +37,23 @@ roles_model = accounts_ns.model('Roles', {
 })
 
 
+# Parser for Roles
+roles_parser = reqparse.RequestParser()
+roles_parser.add_argument('name', type=str, required=False, help='Role name')
+roles_parser.add_argument('is_admin', type=bool, required=False, help='Admin Privileges')
+roles_parser.add_argument('can_users', type=bool, required=False, help='Manage Users')
+roles_parser.add_argument('can_project', type=bool, required=False, help='Manage Projects')
+roles_parser.add_argument('can_geophysic', type=bool, required=False, help='Manage Geophysic Data')
+roles_parser.add_argument('can_geologic', type=bool, required=False, help='Manage Geologic Data')
+roles_parser.add_argument('can_hazard', type=bool, required=False, help='Manage Hazard Data')
+roles_parser.add_argument('can_geodetic', type=bool, required=False, help='Manage Geodetic Data')
+
+accounts_model = api.model(
+    'Accounts',
+    {
+        "id": fields.Integer(description="User ID"),
+        "username": fields.String(description="Full Name (name + lastname)"),
+        "email": fields.String(description="User Email"),
+        "role": fields.Nested(roles_model, description="Role Details"),
+    },
+)
