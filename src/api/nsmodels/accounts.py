@@ -21,7 +21,6 @@ user_parser.add_argument("old_password", required=False, type=str, help="Old pas
 user_parser.add_argument("new_password", required=False, type=str, help="New Password example: Grigalash27")
 user_parser.add_argument("repeat_new_password", required=False, type=str, help="Repeat new Password example: Grigalash27")
 user_parser.add_argument("change_password", required=True, type=inputs.boolean, help="Password example: true")
-user_parser.add_argument('role_name', required=True, type=str, help='Name of the role example: User')
 
 
 # Role model for documentation in Swagger UI
@@ -40,13 +39,13 @@ roles_model = accounts_ns.model('Roles', {
 # Parser for Roles
 roles_parser = reqparse.RequestParser()
 roles_parser.add_argument('name', type=str, required=False, help='Role name')
-roles_parser.add_argument('is_admin', type=bool, required=False, help='Admin Privileges')
-roles_parser.add_argument('can_users', type=bool, required=False, help='Manage Users')
-roles_parser.add_argument('can_project', type=bool, required=False, help='Manage Projects')
-roles_parser.add_argument('can_geophysic', type=bool, required=False, help='Manage Geophysic Data')
-roles_parser.add_argument('can_geologic', type=bool, required=False, help='Manage Geologic Data')
-roles_parser.add_argument('can_hazard', type=bool, required=False, help='Manage Hazard Data')
-roles_parser.add_argument('can_geodetic', type=bool, required=False, help='Manage Geodetic Data')
+roles_parser.add_argument('is_admin', type=inputs.boolean, required=False, help='Admin Privileges')
+roles_parser.add_argument('can_users', type=inputs.boolean, required=False, help='Manage Users')
+roles_parser.add_argument('can_project', type=inputs.boolean, required=False, help='Manage Projects')
+roles_parser.add_argument('can_geophysic', type=inputs.boolean, required=False, help='Manage Geophysic Data')
+roles_parser.add_argument('can_geologic', type=inputs.boolean, required=False, help='Manage Geologic Data')
+roles_parser.add_argument('can_hazard', type=inputs.boolean, required=False, help='Manage Hazard Data')
+roles_parser.add_argument('can_geodetic', type=inputs.boolean, required=False, help='Manage Geodetic Data')
 
 accounts_model = api.model(
     'Accounts',

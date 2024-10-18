@@ -86,15 +86,13 @@ function submitUserForm(event) {
     const formData = new FormData(document.getElementById('UserForm'));
     const UUIDField = document.getElementById('userUUID').value;
     const changePasswordCheck = document.getElementById('changePasswordCheck').checked;
-    const roleName = document.getElementById('user_role').textContent;
 
     formData.append('change_password', changePasswordCheck);
-    formData.append('role_name', roleName);
 
     const token = localStorage.getItem('access_token');
 
     // makeApiRequest is in the globalAccessControl.js
-    makeApiRequest(`/api/account/${UUIDField}`, {
+    makeApiRequest(`/api/user/${UUIDField}`, {
         method: 'PUT',
         headers: {
             'Authorization': `Bearer ${token}`

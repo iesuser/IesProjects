@@ -12,6 +12,7 @@ class UserApi(Resource):
     @accounts_ns.doc(security='JsonWebToken')
     @accounts_ns.marshal_with(user_model)
     def get(self):
+        """საკუთარი მომხმარებლის მონაცემების მიღება"""
         identity = get_jwt_identity()
         user = User.query.filter_by(uuid=identity).first()
 
@@ -24,52 +25,18 @@ class UserApi(Resource):
         else:
             return {'error': 'მომხმარებელი ვერ მოიძებნა.'}, 404
 
-@accounts_ns.route('/accounts')
+@accounts_ns.route('/user/<string:uuid>')
 @accounts_ns.doc(responses={200: 'OK', 400: 'Invalid Argument', 401: 'JWT Token Expires', 403: 'Forbidden', 404: 'Not Found'})
-class UserListApi(Resource):
-    @jwt_required()
-    @accounts_ns.doc(security='JsonWebToken')
-    @accounts_ns.marshal_with(accounts_model)
-    def get(self):
-        # Check if the user has permission
-        if not current_user.check_permission('can_users'):
-            return {"error": "არ გაქვს მომხმარებლის ნახვის ნებართვა."}, 403
-
-        # Query all users from the database
-        users = User.query.all() 
-        # Prepare the response data using a list comprehension
-        result = [
-            {
-                "id": user.id,
-                "username": f"{user.name} {user.lastname}",
-                "email": user.email,
-                "role": {
-                    "name": user.role.name if user.role else "No Role",
-                    "is_admin": user.role.is_admin if user.role else False,
-                    "can_users": user.role.can_users if user.role else False,
-                    "can_project": user.role.can_project if user.role else False,
-                    "can_geophysic": user.role.can_geophysic if user.role else False,
-                    "can_geologic": user.role.can_geologic if user.role else False,
-                    "can_hazard": user.role.can_hazard if user.role else False,
-                    "can_geodetic": user.role.can_geodetic if user.role else False,
-                } if user.role else None,
-            }
-            for user in users
-        ]
-
-        return result, 200
-
-@accounts_ns.route('/account/<string:uuid>')
-@accounts_ns.doc(responses={200: 'OK', 400: 'Invalid Argument', 401: 'JWT Token Expires', 403: 'Forbidden', 404: 'Not Found'})
-class AccountAPI(Resource):
+class UserUpdateAPI(Resource):
     @jwt_required()
     @accounts_ns.doc(security='JsonWebToken')
     @accounts_ns.expect(user_parser)
     def put(self, uuid):
+        """შესაძლებელია საკუთარი მონაცემის განახლება"""
         identity = get_jwt_identity()
         check_user = User.query.filter_by(uuid=identity).first()
 
-        if identity == uuid or (check_user and check_user.role.name == "Admin"):
+        if identity == uuid:
             user = User.query.filter_by(uuid=uuid).first()
 
             if not user:
@@ -101,13 +68,6 @@ class AccountAPI(Resource):
 
                 # Update the password
                 user.password = new_password
-
-            if check_user.role.name == "Admin":
-                # Verify old password when not changing it
-                role = Role.query.filter_by(name=args["role_name"]).first()
-                if not role:
-                    return {"error": "როლი ვერ მოიძებნა."}, 400
-                user.role_id = role.id
                 
             # Update user fields
             user.name = args["name"]
@@ -120,6 +80,41 @@ class AccountAPI(Resource):
         else:
             return {'error': "არ გაქვს მონაცემების განახლების ნებართვა."}, 403
 
+@accounts_ns.route('/accounts')
+@accounts_ns.doc(responses={200: 'OK', 400: 'Invalid Argument', 401: 'JWT Token Expires', 403: 'Forbidden', 404: 'Not Found'})
+class UserListApi(Resource):
+    @jwt_required()
+    @accounts_ns.doc(security='JsonWebToken')
+    @accounts_ns.marshal_with(accounts_model)
+    def get(self):
+        """მომხმარებლების სიის მიღება, წვდომა აქვს მხოლოდ role-ით (can_users) """
+        # Check if the user has permission
+        if not current_user.check_permission('can_users'):
+            return {"error": "არ გაქვს მომხმარებლის ნახვის ნებართვა."}, 403
+
+        # Query all users from the database
+        users = User.query.all() 
+        # Prepare the response data using a list comprehension
+        result = [
+            {
+                "id": user.id,
+                "username": f"{user.name} {user.lastname}",
+                "email": user.email,
+                "role": {
+                    "name": user.role.name if user.role else "No Role",
+                    "is_admin": user.role.is_admin if user.role else False,
+                    "can_users": user.role.can_users if user.role else False,
+                    "can_project": user.role.can_project if user.role else False,
+                    "can_geophysic": user.role.can_geophysic if user.role else False,
+                    "can_geologic": user.role.can_geologic if user.role else False,
+                    "can_hazard": user.role.can_hazard if user.role else False,
+                    "can_geodetic": user.role.can_geodetic if user.role else False,
+                } if user.role else None,
+            }
+            for user in users
+        ]
+
+        return result, 200
 
 @accounts_ns.route('/roles')
 @accounts_ns.doc(responses={200: 'OK', 400: 'Invalid Argument', 401: 'JWT Token Expires', 403: 'Forbidden', 404: 'Not Found'})
@@ -128,6 +123,7 @@ class RolesListApi(Resource):
     @accounts_ns.doc(security='JsonWebToken')
     @accounts_ns.marshal_with(roles_model)
     def get(self):
+        """როლების სიის მიღება, წვდომა აქვს მხოლოდ role-ით (can_users)"""
         # Check if the user has permission
         if not current_user.check_permission('can_users'):
             return {"error": "არ გაქვს მომხმარებლის ნახვის ნებართვა."}, 403
@@ -146,10 +142,13 @@ class RolesAPI(Resource):
     @jwt_required()
     @accounts_ns.doc(parser=roles_parser)
     @accounts_ns.doc(security = 'JsonWebToken')
-    def put(self):
-        """Update an existing role"""
+    def put(self, role_id):
+        """როლის განახლება, წვდომა აქვს მხოლოდ role-ით (can_users)"""
+        # Check if the user has permission
+        if not current_user.check_permission('can_users'):
+            return {"error": "არ გაქვს მომხმარებლის განახლების ნებართვა."}, 403
+
         args = roles_parser.parse_args()
-        
         # Query the role by ID, not name
         role = Role.query.get(role_id)
 
@@ -157,20 +156,22 @@ class RolesAPI(Resource):
             return {"error": "Role not found."}, 404
 
         # Update role fields if provided
+        if args['name'] is not None:
+            role.name = args['name']
         if args['is_admin'] is not None:
             role.is_admin = args['is_admin']
-        if args['can_users']:
+        if args['can_users'] is not None:
             role.can_users = args['can_users']
-        if args['can_project']:
+        if args['can_project'] is not None:
             role.can_project = args['can_project']
-        if args['can_geophysic']:
+        if args['can_geophysic'] is not None:
             role.can_geophysic = args['can_geophysic']
-        if args['can_geologic']:
+        if args['can_geologic'] is not None:
             role.can_geologic = args['can_geologic']
-        if args['can_hazard']:
+        if args['can_hazard'] is not None:
             role.can_hazard = args['can_hazard']
-        if args['can_geodetic']:
+        if args['can_geodetic'] is not None:
             role.can_geodetic = args['can_geodetic']
 
         role.save()
-        return {"message": f"Role '{role.name}' updated successfully."}, 200
+        return {"message": f"როლი წარმატებით განახლდა."}, 200
