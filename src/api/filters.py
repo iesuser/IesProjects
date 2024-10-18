@@ -15,12 +15,12 @@ from src.config import Config
 @filter_ns.route('/filter_project')
 @filter_ns.doc(responses={200: 'OK', 400: 'Invalid Argument', 401: 'JWT Token Expires', 403: 'Unauthorized', 404: 'Not Found'})
 class FilterProjectAPI(Resource):
-
     @jwt_required()
     @filter_ns.doc(parser=filter_parser)
     @filter_ns.doc(security='JsonWebToken')
     @filter_ns.marshal_list_with(filter_model)
     def post(self):
+        '''გავფილტროთ პროექტები სხვადასხვა პარამეტრებით'''
         # Parse the filter arguments
         args = filter_parser.parse_args()
 
