@@ -37,7 +37,8 @@ function refreshToken() {
     })
     .then(response => {
         if (response.status === 401) {
-            alert("გთხოვთ ხელახლა გაიაროთ ავტორიზაცია.");
+            // alert("გთხოვთ ხელახლა გაიაროთ ავტორიზაცია.");
+            showAlert('danger', ' გთხოვთ ხელახლა გაიაროთ ავტორიზაცია.');
             clearSessionData(); // Clear session data and redirect to login
             return Promise.reject('Unauthorized');
         }
