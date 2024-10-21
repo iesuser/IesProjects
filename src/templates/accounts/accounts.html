@@ -5,10 +5,18 @@
 {% endblock %}
 
 {% block body %} 
+<script type="text/javascript" src="{{ url_for('static', filename='js/accounts/accounts.js') }}" defer></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/accounts/changeRole.js') }}" defer></script>
+
 <!-- Table Header -->
 <div class="d-flex justify-content-center">
     <h4 class="modal-title m-3">Dashboard</h4>
 </div>
+<ul class="list-group list-group-light">
+    <li class="list-group-item px-3 border-0">
+        <a type="button" class="btn btn-sm btn-primary" onclick="openCreateRoleModal()">როლის დამატება</a>
+    </li>
+</ul>
 <div class="table-responsive-xxl text-center mt-1 mb-3" style="font-size: x-small;">
     <table class="table align-middle table-bordered border-muted mb-0 bg-white table-striped">
         <thead class="table-primary">
@@ -23,8 +31,6 @@
                 <th>Can Hazard</th>
                 <th>Can Geodetic</th>
                 <th></th>
-                <th></th>
-                <th></th>
             </tr>
         </thead>
         <tbody id="accountsTableBody">
@@ -32,4 +38,6 @@
         </tbody>
     </table>
 </div>
+
+{% include "change_role.html" %}
 {% endblock %}
