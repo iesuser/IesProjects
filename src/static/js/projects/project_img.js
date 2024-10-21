@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function() {
         deleteIcon.style.top = '10px';
         deleteIcon.style.right = '200px';
         deleteIcon.style.cursor = 'pointer';
-        deleteIcon.onclick = () => deleteImage(projectId, imageId, carouselItem);
+        deleteIcon.onclick = () => openConfirmDeleteImageModal(projectId, imageId);
         return deleteIcon;
     }
 
@@ -106,32 +106,47 @@ document.addEventListener("DOMContentLoaded", function() {
         indicator.setAttribute('aria-label', `Slide ${index + 1}`);
         return indicator;
     }
+    // Function to confirm and delete a project
+    let imageIdToDelete = null;
+    let projectIdToDelete = null;
 
-    function deleteImage(projectId, imageId) {
-        if (!confirm('დარწმუნებული ხართ რომ გსურთ ამ სურათის წაშლა?')) return;
-
-        const token = localStorage.getItem('access_token');
-
-        // makeApiRequest is in the globalAccessControl.js
-        makeApiRequest(`/api/project/${projectId}/images/${imageId}`, {
-            method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-        .then(data => {
-            if (data.message) {
-                showAlert('success', data.message);
-                // Optionally, remove the row from the table
-                fetchImages();
-            } else if (data.error) {
-                showAlert('danger', data.error || 'Error: გაუმართავი სურათის წაშლა.');
-            }
-        })
-        .catch(error => {
-            console.error('Error during deleting image:', error);
-        });
+    function openConfirmDeleteImageModal(projectId, imageId) {
+        imageIdToDelete = imageId; // Store the project ID to delete
+        projectIdToDelete = projectId;
+        const confirmDeleteModal = new bootstrap.Modal(document.getElementById('confirmDeleteImageModal'));
+        confirmDeleteModal.show();
     }
+
+
+    document.getElementById('confirmDeleteImageButton').addEventListener('click', function() {
+        if (imageIdToDelete !== null && projectIdToDelete !== null) {
+            const token = localStorage.getItem('access_token');
+
+            // makeApiRequest is in the globalAccessControl.js
+            makeApiRequest(`/api/project/${projectIdToDelete}/images/${imageIdToDelete}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(data => {
+                if (data.message) {
+                    showAlert('success', data.message);
+                    // Optionally, remove the row from the table
+                    fetchImages();
+                } else if (data.error) {
+                    showAlert('danger', data.error || 'Error: გაუმართავი სურათის წაშლა.');
+                }
+            })
+            .catch(error => {
+                console.error('Error during deleting image:', error);
+            }).finally(() => {
+                closeModal('confirmDeleteImageModal');
+                imageIdToDelete = null;
+                projectIdToDelete = null; // Clear the project ID
+            });
+        }
+    })
 
     document.getElementById('uploadButton').onclick = function() {
         uploadImages();

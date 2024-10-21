@@ -79,6 +79,24 @@
         </div>
         <span class="row fs-6 text-light m-3">Uploading ...</span>
     </div>
+    <!-- Confirmation Modal -->
+    <div class="modal fade" id="confirmDeleteImageModal" tabindex="-1" aria-labelledby="confirmDeleteImageModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeleteImageModalLabel">დადასტურება</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ნამდვილად გსურთ ამ სურათის წაშლა?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">გაუქმება</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteImageButton">წაშლა</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="table-responsive-xxl table-bordered text-center mt-2" style="font-size: small;">
         <table class="table align-middle rounded-2 border-muted mb-0 bg-white">
