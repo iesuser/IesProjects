@@ -10,9 +10,9 @@ registration_parser.add_argument('lastname', type=str, required=True, help="Last
 registration_parser.add_argument('email', type=inputs.email(check=True), required=True, help="Email example: roma.grigalashvili@iliauni.edu.ge")
 registration_parser.add_argument('password', type=str, required=True, help="Password example: Grigalash1")
 registration_parser.add_argument('passwordRepeat', type=str, required=True, help='Repeat the password example: Grigalash1')
-registration_parser.add_argument('role_name', type=str, required=False, help="Name of the role example: User")
+registration_parser.add_argument('role_name', type=str, required=False, default='User', help="Name of the role example: User")
 
-# auth parser
+# Auth parser
 auth_parser = reqparse.RequestParser()
 auth_parser.add_argument("email", required=True, type=str, help="Email example: roma.grigalashvili@iliauni.edu.ge")
 auth_parser.add_argument("password", required=True, type=str, help="Password example: Grigalash1")

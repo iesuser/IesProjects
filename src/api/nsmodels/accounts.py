@@ -12,7 +12,7 @@ user_model = accounts_ns.model('User', {
     'role_name': fields.String(required=True, type=str, description='The role ID associated with the user')
 })
 
-# auth parser
+# Auth parser
 user_parser = reqparse.RequestParser()
 
 user_parser.add_argument('name', required=True, type=str, help='Name example: Roma (1-20 characters)')
@@ -25,6 +25,7 @@ user_parser.add_argument("change_password", required=True, type=inputs.boolean, 
 
 # Role model for documentation in Swagger UI
 roles_model = accounts_ns.model('Roles', {
+    'id': fields.Integer(readOnly=True, description='The unique identifier of a roles record'),
     'name': fields.String(required=True, description='Role Name'),
     'is_admin': fields.Boolean(description='Admin Privileges'),
     'can_users': fields.Boolean(description='Permission to manage users'),
@@ -47,12 +48,13 @@ roles_parser.add_argument('can_geologic', type=inputs.boolean, required=False, h
 roles_parser.add_argument('can_hazard', type=inputs.boolean, required=False, help='Manage Hazard Data')
 roles_parser.add_argument('can_geodetic', type=inputs.boolean, required=False, help='Manage Geodetic Data')
 
-accounts_model = api.model(
-    'Accounts',
-    {
-        "id": fields.Integer(description="User ID"),
+accounts_model = api.model('Accounts', {
+        'uuid': fields.String(description='The unique UUID of the user'),
         "username": fields.String(description="Full Name (name + lastname)"),
         "email": fields.String(description="User Email"),
         "role": fields.Nested(roles_model, description="Role Details"),
-    },
-)
+})
+
+accounts_parser = reqparse.RequestParser()
+user_parser.add_argument('uuid', required=True, type=str, help='UUID of the user (1-20 characters)')
+

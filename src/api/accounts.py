@@ -82,7 +82,7 @@ class UserUpdateAPI(Resource):
 
 @accounts_ns.route('/accounts')
 @accounts_ns.doc(responses={200: 'OK', 400: 'Invalid Argument', 401: 'JWT Token Expires', 403: 'Forbidden', 404: 'Not Found'})
-class UserListApi(Resource):
+class AccountsListApi(Resource):
     @jwt_required()
     @accounts_ns.doc(security='JsonWebToken')
     @accounts_ns.marshal_with(accounts_model)
@@ -93,11 +93,11 @@ class UserListApi(Resource):
             return {"error": "არ გაქვს მომხმარებლის ნახვის ნებართვა."}, 403
 
         # Query all users from the database
-        users = User.query.all() 
+        users = User.query.all()
         # Prepare the response data using a list comprehension
         result = [
             {
-                "id": user.id,
+                "uuid": user.uuid,
                 "username": f"{user.name} {user.lastname}",
                 "email": user.email,
                 "role": {
@@ -115,6 +115,14 @@ class UserListApi(Resource):
         ]
 
         return result, 200
+
+# @accounts_ns.route('/accounts/<string:uuid>')
+# @accounts_ns.doc(responses={200: 'OK', 400: 'Invalid Argument', 401: 'JWT Token Expires', 403: 'Forbidden', 404: 'Not Found'})
+# class AccountsApi(Resource):
+#     @jwt_required()
+#     @accounts_ns.doc(security='JsonWebToken')
+#     @accounts_ns.marshal_with(accounts_model)
+
 
 @accounts_ns.route('/roles')
 @accounts_ns.doc(responses={200: 'OK', 400: 'Invalid Argument', 401: 'JWT Token Expires', 403: 'Forbidden', 404: 'Not Found'})
@@ -135,13 +143,45 @@ class RolesListApi(Resource):
             return {'error': 'როლი ვერ მოიძებნა.'}, 404
         
         return roles, 200
+    
+    @jwt_required()
+    @accounts_ns.doc(security='JsonWebToken')
+    @accounts_ns.doc(parser=roles_parser)
+    def post(self):
+        """როლის დამატება, წვდომა აქვს მხოლოდ role-ით (can_users)"""
+        # Check if the user has permission
+        if not current_user.check_permission('can_users'):
+            return {"error": "არ გაქვს მომხმარებლის განახლების ნებართვა."}, 403
+        
+        # Parse the input arguments
+        args = roles_parser.parse_args()
+        
+        # Check if the role already exists
+        if Role.query.filter_by(name=args['name']).first():
+            return {"error": "ეს როლი უკვე არსებობს."}, 400
+        
+        # Create a new role
+        new_role = Role(
+            name=args['name'],
+            is_admin=args.get('is_admin', False),
+            can_users=args.get('can_users', False),
+            can_project=args.get('can_project', False),
+            can_geophysic=args.get('can_geophysic', False),
+            can_geologic=args.get('can_geologic', False),
+            can_hazard=args.get('can_hazard', False),
+            can_geodetic=args.get('can_geodetic', False)
+        )
+        
+        # Save the new role to the database
+        new_role.create()
+        return {"message": f"როლი წარმატებით დაემატა."}, 200
 
 @accounts_ns.route('/roles/<int:role_id>')
 @accounts_ns.doc(responses={200: 'OK', 400: 'Invalid Argument', 401: 'JWT Token Expires', 403: 'Forbidden', 404: 'Not Found'})
 class RolesAPI(Resource):
     @jwt_required()
-    @accounts_ns.doc(parser=roles_parser)
     @accounts_ns.doc(security = 'JsonWebToken')
+    @accounts_ns.doc(parser=roles_parser)
     def put(self, role_id):
         """როლის განახლება, წვდომა აქვს მხოლოდ role-ით (can_users)"""
         # Check if the user has permission
