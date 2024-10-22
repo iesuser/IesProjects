@@ -2,7 +2,7 @@ from flask_restx import Resource
 from flask_jwt_extended import jwt_required, current_user, get_jwt_identity
 
 from src.models import User, Role
-from src.api.nsmodels import accounts_ns, user_model, user_parser, accounts_model, roles_model, roles_parser
+from src.api.nsmodels import accounts_ns, user_model, user_parser, accounts_model, accounts_parser, roles_model, roles_parser
 
 
 @accounts_ns.route('/user')
@@ -101,6 +101,7 @@ class AccountsListApi(Resource):
                 "username": f"{user.name} {user.lastname}",
                 "email": user.email,
                 "role": {
+                    "id": user.role.id if user.role else "null",
                     "name": user.role.name if user.role else "No Role",
                     "is_admin": user.role.is_admin if user.role else False,
                     "can_users": user.role.can_users if user.role else False,
@@ -115,14 +116,33 @@ class AccountsListApi(Resource):
         ]
 
         return result, 200
+@accounts_ns.route('/accounts/<string:uuid>')
+@accounts_ns.doc(responses={200: 'OK', 400: 'Invalid Argument', 401: 'JWT Token Expires', 403: 'Forbidden', 404: 'Not Found'})
+class AccountsApi(Resource):
+    @jwt_required()
+    @accounts_ns.doc(security='JsonWebToken')
+    @accounts_ns.doc(parser=accounts_parser)
+    def put(self, uuid):
+        """მომხმარებლის როლის შეცვლა, წვდომა აქვს მხოლოდ role-ით (can_users)"""
+        # Check if the user has permission
+        if not current_user.check_permission('can_users'):
+            return {"error": "არ გაქვს მომხმარებლის ნახვის ნებართვა."}, 403
 
-# @accounts_ns.route('/accounts/<string:uuid>')
-# @accounts_ns.doc(responses={200: 'OK', 400: 'Invalid Argument', 401: 'JWT Token Expires', 403: 'Forbidden', 404: 'Not Found'})
-# class AccountsApi(Resource):
-#     @jwt_required()
-#     @accounts_ns.doc(security='JsonWebToken')
-#     @accounts_ns.marshal_with(accounts_model)
+        args = accounts_parser.parse_args()
+        role_id = args["role_id"]
 
+        user = User.query.filter_by(uuid=uuid).first()
+        if not user:
+            return {"error": "User not found"}, 404
+
+        # Find the role by role_id
+        role = Role.query.get(role_id)
+        if not role:
+            return {"error": "Role not found"}, 404
+        
+        user.role_id = role_id
+        user.save()
+        return {"message": "User role updated successfully"}, 200
 
 @accounts_ns.route('/roles')
 @accounts_ns.doc(responses={200: 'OK', 400: 'Invalid Argument', 401: 'JWT Token Expires', 403: 'Forbidden', 404: 'Not Found'})

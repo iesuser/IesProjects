@@ -56,5 +56,5 @@ accounts_model = api.model('Accounts', {
 })
 
 accounts_parser = reqparse.RequestParser()
-user_parser.add_argument('uuid', required=True, type=str, help='UUID of the user (1-20 characters)')
+accounts_parser.add_argument('role_id', required=True, type=int, help='The unique identifier of a roles record')
 
