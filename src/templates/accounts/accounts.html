@@ -7,6 +7,7 @@
 {% block body %} 
 <script type="text/javascript" src="{{ url_for('static', filename='js/accounts/accounts.js') }}" defer></script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/accounts/changeRole.js') }}" defer></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/accounts/createRole.js') }}" defer></script>
 
 <!-- Table Header -->
 <div class="d-flex justify-content-center">
@@ -14,7 +15,7 @@
 </div>
 <ul class="list-group list-group-light">
     <li class="list-group-item px-3 border-0">
-        <a type="button" class="btn btn-sm btn-primary" onclick="openCreateRoleModal()">როლის დამატება</a>
+        <a type="button" class="btn btn-sm btn-primary" onclick="createRole()">როლის დამატება</a>
     </li>
 </ul>
 <div class="table-responsive-xxl text-center mt-1 mb-3" style="font-size: small;">
@@ -39,5 +40,6 @@
     </table>
 </div>
 
-{% include "change_role.html" %}
+{% include "changeRole.html" %}
+{% include "createRole.html" %}
 {% endblock %}
