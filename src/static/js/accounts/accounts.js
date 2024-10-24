@@ -24,7 +24,7 @@ function populateTable(accounts) {
     tbody.innerHTML = ''; // Clear existing data
 
     accounts.forEach(account => {
-        const {id, username, email, role } = account;
+        const {uuid, username, email, role } = account;
         const row = document.createElement('tr');
         
         row.innerHTML = `
@@ -33,10 +33,10 @@ function populateTable(accounts) {
                 <span style="font-size: x-small;">${email}</span>
             </td>
             <td>
-                ${role.name}
-                <button class="btn btn-sm btn-outline-primary ms-2" style="font-size: x-small;" onclick="changeRole(${id})">
-                    Chng Role
-                </button>
+                <div class="d-flex justify-content-around align-items-center">
+                    ${role.name}
+                    <img src="/static/img/arrows-up-down.svg" alt="Up_and_Down" style="width: 20px; height: 20px; cursor: pointer;" class="delete-icon" onclick="changeRole('${uuid}')">
+                </div>
             </td>
             <td>${role.is_admin ? 'Yes' : 'No'}</td>
             <td>${role.can_users ? 'Yes' : 'No'}</td>

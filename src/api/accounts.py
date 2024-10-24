@@ -133,16 +133,15 @@ class AccountsApi(Resource):
 
         user = User.query.filter_by(uuid=uuid).first()
         if not user:
-            return {"error": "User not found"}, 404
-
-        # Find the role by role_id
+            return {"error": "მომხმარებელი არ მოიძებნა"}, 404
+            
         role = Role.query.get(role_id)
         if not role:
-            return {"error": "Role not found"}, 404
+            return {"error": "როლი არ მოიძებნა"}, 404
         
         user.role_id = role_id
         user.save()
-        return {"message": "User role updated successfully"}, 200
+        return {"message": "მომხმარებლის როლი წარმატებით განახლდა"}, 200
 
 @accounts_ns.route('/roles')
 @accounts_ns.doc(responses={200: 'OK', 400: 'Invalid Argument', 401: 'JWT Token Expires', 403: 'Forbidden', 404: 'Not Found'})

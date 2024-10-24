@@ -1,3 +1,4 @@
+function loadProjectData() {
 fetch('/api/projects')
     .then(response => response.json())
     .then(data => {
@@ -41,8 +42,12 @@ fetch('/api/projects')
     .catch(error => {
         console.error('Error fetching project data:', error);
     });
+}
 
-
+// Initialize the page by loading project data when it loads
+document.addEventListener("DOMContentLoaded", function() {
+    loadProjectData();
+});
 // Send POST request for creating a new project
 function createProjectForm(event) {
     event.preventDefault(); // Prevent default form submission
