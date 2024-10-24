@@ -33,9 +33,13 @@ function populateTable(accounts) {
                 <span style="font-size: x-small;">${email}</span>
             </td>
             <td>
-                <div class="d-flex justify-content-around align-items-center">
-                    ${role.name}
-                    <img src="/static/img/arrows-up-down.svg" alt="Up_and_Down" style="width: 20px; height: 20px; cursor: pointer;" class="delete-icon" onclick="changeRole('${uuid}')">
+                <div class="row me-1 ms-1">
+                    <div class="col">
+                        ${role.name}
+                    </div>
+                    <div class="col">
+                        <img src="/static/img/arrows-up-down.svg" alt="Up_and_Down" style="width: 20px; height: 20px; cursor: pointer;" onclick="changeRole('${uuid}')">
+                    </div>
                 </div>
             </td>
             <td>${role.is_admin ? 'Yes' : 'No'}</td>
