@@ -49,7 +49,7 @@ function changeRole(userUUID) {
         };
 
         // Send PUT request to update role
-        fetch(`/api/accounts/${userUUID}`, {
+        makeApiRequest(`/api/accounts/${userUUID}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
