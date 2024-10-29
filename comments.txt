@@ -67,3 +67,9 @@ docker-compose ps
 ეს მეთოდი merge პროცესს იყენებს, რაც იმას ნიშნავს, რომ შენს ცვლილებებს არ გადააწერს და არ გადააკეთებს მათი ისტორიის თანმიმდევრობას. 
 rebase-ის გარეშე უფრო მარტივად შეგიძლია შენარჩუნო არსებული კომიტების ისტორია
 git pull --no-rebase origin master
+
+
+# For Github
+git add .
+git commit -m "Your commit message"
+git push origin master
