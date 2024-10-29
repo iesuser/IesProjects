@@ -49,7 +49,7 @@ function populateTable(accounts) {
             <td>${role.can_geologic ? 'Yes' : 'No'}</td>
             <td>${role.can_hazard ? 'Yes' : 'No'}</td>
             <td>${role.can_geodetic ? 'Yes' : 'No'}</td>
-            <td><button class="btn btn-info btn-sm">Edit Role</button></td>
+            <td><button class="btn btn-info btn-sm" onclick="populateEditRoleModal(${role.id})">Edit Role</button></td>
         `;
         tbody.appendChild(row);
     });

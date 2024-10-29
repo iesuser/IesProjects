@@ -8,6 +8,7 @@
 <script type="text/javascript" src="{{ url_for('static', filename='js/accounts/accounts.js') }}" defer></script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/accounts/changeRole.js') }}" defer></script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/accounts/createRole.js') }}" defer></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/accounts/editRole.js') }}" defer></script>
 
 <!-- Table Header -->
 <div class="d-flex justify-content-center">
@@ -42,4 +43,5 @@
 
 {% include "changeRole.html" %}
 {% include "createRole.html" %}
+{% include "editRole.html" %}
 {% endblock %}

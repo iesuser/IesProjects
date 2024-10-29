@@ -199,6 +199,23 @@ class RolesListApi(Resource):
 @accounts_ns.doc(responses={200: 'OK', 400: 'Invalid Argument', 401: 'JWT Token Expires', 403: 'Forbidden', 404: 'Not Found'})
 class RolesAPI(Resource):
     @jwt_required()
+    @accounts_ns.doc(security='JsonWebToken')
+    @accounts_ns.marshal_with(roles_model)
+    def get(self, role_id):
+        """როლის დეტალების მიღება, წვდომა აქვს მხოლოდ role-ით (can_users)"""
+        # Check if the user has permission
+        if not current_user.check_permission('can_users'):
+            return {"error": "არ გაქვს მომხმარებლის ნახვის ნებართვა."}, 403
+        
+        # Fetch the role by ID
+        role = Role.query.get(role_id)
+        
+        if not role:
+            return {'error': 'როლი ვერ მოიძებნა.'}, 404
+        
+        return role, 200
+
+    @jwt_required()
     @accounts_ns.doc(security = 'JsonWebToken')
     @accounts_ns.doc(parser=roles_parser)
     def put(self, role_id):
@@ -212,7 +229,7 @@ class RolesAPI(Resource):
         role = Role.query.get(role_id)
 
         if not role:
-            return {"error": "Role not found."}, 404
+            return {"error": "როლი ვერ მოიძებნა."}, 404
 
         # Update role fields if provided
         if args['name'] is not None:

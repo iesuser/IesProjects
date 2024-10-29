@@ -1,0 +1,60 @@
+<!-- Edit Role Modal -->
+<div class="modal fade" id="editRoleModal" tabindex="-1" aria-labelledby="editRoleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editRoleModalLabel">როლის რედაქტირება</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editRoleForm" class="d-flex justify-content-center align-items-center row">
+                    <input type="hidden" id="editRoleId" name="role_id">
+                    <div class="row">
+                        <div class="mb-3">
+                            <label for="editRoleName" class="form-label">როლის სახელი</label>
+                            <input type="text" class="form-control" id="editRoleName" name="name" required>
+                        </div>
+                    </div>
+                    <div class="row ms-3">
+                        <div class="form-check col">
+                            <input type="checkbox" class="form-check-input" id="editIsAdmin" name="is_admin">
+                            <label class="form-check-label" for="editIsAdmin">ადმინისტრატორი</label>
+                        </div>
+                        <div class="form-check col">
+                            <input type="checkbox" class="form-check-input" id="editCanUsers" name="can_users">
+                            <label class="form-check-label" for="editCanUsers">მომხმარებლების მართვა</label>
+                        </div>
+                    </div>
+                    <div class="row ms-3">
+                        <div class="form-check col">
+                            <input type="checkbox" class="form-check-input" id="editCanProject" name="can_project">
+                            <label class="form-check-label" for="editCanProject">პროექტების მართვა</label>
+                        </div>
+                        <div class="form-check col">
+                            <input type="checkbox" class="form-check-input" id="editCanGeophysic" name="can_geophysic">
+                            <label class="form-check-label" for="editCanGeophysic">გეოფიზიკური მონაცემები</label>
+                        </div>
+                    </div>
+                    <div class="row ms-3">
+                        <div class="form-check col">
+                            <input type="checkbox" class="form-check-input" id="editCanGeologic" name="can_geologic">
+                            <label class="form-check-label" for="editCanGeologic">გეოლოგიური მონაცემები</label>
+                        </div>
+                        <div class="form-check col">
+                            <input type="checkbox" class="form-check-input" id="editCanHazard" name="can_hazard">
+                            <label class="form-check-label" for="editCanHazard">Hazard მონაცემები</label>
+                        </div>
+                    </div>
+                    <div class="row ms-3">
+                        <div class="form-check col">
+                            <input type="checkbox" class="form-check-input" id="editCanGeodetic" name="can_geodetic">
+                            <label class="form-check-label" for="editCanGeodetic">გეოდეზიური მონაცემები</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">როლის რედაქტირება</button>
+                </form>
+                <div id="editRoleAlert" class="mt-3"></div>
+            </div>
+        </div>
+    </div>
+</div>
