@@ -28,7 +28,7 @@ function updateMapMarkers(projects) {
             map: map,
             title: project.projects_name,
             icon: {
-                url: 'https://cdn-icons-png.flaticon.com/128/13379/13379300.png',
+                url: '/static/img/proj_location.svg',
                 scaledSize: new google.maps.Size(30, 30)
             }
         });
