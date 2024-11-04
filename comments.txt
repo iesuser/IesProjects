@@ -84,19 +84,19 @@ docker-compose up --build --scale flask=2 -d
 
 # Load Balancing
 ნაბიჯები პირველი Flask კონტეინერის განახლებისთვის:
-გაჩერეთ პირველი Flask კონტეინერი (მაგალითად, iesprojects_flask_1):
+გაჩერეთ პირველი Flask კონტეინერი (მაგალითად, iesprojects-flask-1):
 
-docker stop iesprojects_flask_1
+docker stop iesprojects-flask-1
 
 გავაკეთოთ rebuild და გაუშვით პირველი Flask კონტეინერი:
 
 docker-compose up --build -d flask
-ამ ბრძანებით პირველი კონტეინერი გააკეთებს rebuild და გაუშვებს ხელახლა, ხოლო მეორე Flask კონტეინერი (მაგალითად, iesprojects_flask_2) კვლავ იმუშავებს.
+ამ ბრძანებით პირველი კონტეინერი გააკეთებს rebuild და გაუშვებს ხელახლა, ხოლო მეორე Flask კონტეინერი (მაგალითად, iesprojects-flask-2) კვლავ იმუშავებს.
 
 მეორე Flask კონტეინერის განახლება:
-ახლა გააჩერეთ მეორე Flask კონტეინერი (მაგალითად, iesprojects_flask_2):
+ახლა გააჩერეთ მეორე Flask კონტეინერი (მაგალითად, iesprojects-flask-2):
 
-docker stop iesprojects_flask_2
+docker stop iesprojects-flask-2
 გავაკეთოთ კონტეინერის rebuild და გაუშვით მეორე Flask კონტეინერი:
 
 docker-compose up --build -d flask
