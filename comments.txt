@@ -73,3 +73,30 @@ git pull --no-rebase origin master
 git add .
 git commit -m "Your commit message"
 git push origin master
+
+
+# For Docker container
+
+Flask სერვისის მასშტაბირება ორი კონტეინერისთვის
+კონტეინერების გასაშვებად ორი Flask კონტეინერით, გამოიყენეთ შემდეგი ბრძანება:
+
+docker-compose up --build --scale flask=2 -d
+
+# Load Balancing
+ნაბიჯები პირველი Flask კონტეინერის განახლებისთვის:
+გაჩერეთ პირველი Flask კონტეინერი (მაგალითად, iesprojects_flask_1):
+
+docker stop iesprojects_flask_1
+
+გავაკეთოთ rebuild და გაუშვით პირველი Flask კონტეინერი:
+
+docker-compose up --build -d flask
+ამ ბრძანებით პირველი კონტეინერი გააკეთებს rebuild და გაუშვებს ხელახლა, ხოლო მეორე Flask კონტეინერი (მაგალითად, iesprojects_flask_2) კვლავ იმუშავებს.
+
+მეორე Flask კონტეინერის განახლება:
+ახლა გააჩერეთ მეორე Flask კონტეინერი (მაგალითად, iesprojects_flask_2):
+
+docker stop iesprojects_flask_2
+გავაკეთოთ კონტეინერის rebuild და გაუშვით მეორე Flask კონტეინერი:
+
+docker-compose up --build -d flask

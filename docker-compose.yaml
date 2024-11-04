@@ -1,10 +1,13 @@
+# Docker Compose ფაილის ვერსია, რომელიც გამოიყენება ამ კონფიგურაციაში.
+# ვერსია '3.8' მოიცავს უახლეს ფუნქციონალს და თავსებადობას Docker-ის ახალ ვერსიებთან.
+version: '3.8'
+
 services:
+  # Flask სერვისი
   flask:
-    build: .
-    container_name: iesprojects_flask
-    ports:
-      - "5000:5000"
-    environment:  # გარემოს ცვლადები
+    build: .  # Flask აპლიკაციის იმიჯი ეწყობა მიმდინარე დირექტორიიდან.
+    environment:
+      # გარემოს ცვლადები, რომლებიც საჭიროა Flask აპლიკაციისთვის.
       MY_SECRET_KEY: ${MY_SECRET_KEY}
       JWT_SECRET_KEY: ${JWT_SECRET_KEY}
       MYSQL_HOST: ${MYSQL_HOST}
@@ -12,31 +15,46 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
-      - ./uploads:/app/uploads  # ატვირთული ფაილების დირექტორია სერვერზე
-      - ./migrations:/app/migrations  # ბაზის მიგრაციების ფაილი
-    restart: always
+      - ./uploads:/app/uploads        # ატვირთული ფაილების შენახვის დირექტორია
+      - ./migrations:/app/migrations  # ბაზის მიგრაციის ფაილების დირექტორია
+    restart: always  # კონტეინერი ავტომატურად გადატვირთოს, თუ გათიშულია.
     depends_on:
-      - db  # ველოდებით, სანამ db დაიწყება
+      - db  # Flask სერვერი ელოდება, სანამ MySQL სერვერი ჩაირთვება.
+    networks:
+      - app_network  # სერვისის გაერთიანება იდენტურ ქსელში
 
+  # Nginx სერვისი, რომელიც მოქმედებს როგორც ლოუდ ბალანსერი და რევერს-პროსი.
   nginx:
-    build: ./nginx
-    container_name: nginx
+    image: nginx:1.27  # ოფიციალური NGINX იმიჯის ვერსია Docker Hub-დან
     ports:
-      - "80:80"
-      - "443:443"  # SSL ტრაფიკისთვის
+      - "80:80"  # HTTP პორტი
+      - "443:443"  # HTTPS პორტი
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro  # NGINX კონფიგურაციის ფაილი
+      - ./nginx/certs:/etc/nginx/certs:ro            # SSL სერთიფიკატები
     depends_on:
-      - flask
+      - flask  # NGINX ელოდება, სანამ Flask სერვერი ჩაირთვება.
+    networks:
+      - app_network  # NGINX და Flask კონტეინერები საერთო ქსელში არიან.
 
+  # MySQL მონაცემთა ბაზის სერვისი
   db:
-    image: mysql:8.0
-    container_name: mysql
+    image: mysql:8.0  # ოფიციალური MySQL 8.0 იმიჯი Docker Hub-დან
     environment:
+      # გარემოს ცვლადები მონაცემთა ბაზის კონფიგურაციისთვის.
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
-      - ./database:/var/lib/mysql   # მონაცემების შენახვა ადგილობრივ დირექტორიაში
+      - ./database:/var/lib/mysql  # მონაცემთა ბაზის მუდმივი შენახვა ადგილობრივ დირექტორიაში
     ports:
-      - 3306:3306
-    restart: always   
+      - 3306:3306  # MySQL პორტი, რისი მეშვეობითაც შესაძლებელია კავშირის დამყარება.
+    restart: always  # ავტომატურად გადატვირთვა გათიშვისას.
+    networks:
+      - app_network  # MySQL დაკავშირებულია საერთო ქსელზე.
+
+# საერთო ქსელი სერვისებისთვის, რომელიც საშუალებას აძლევს მათ კომუნიკაცია მოახდინონ ერთმანეთთან.
+networks:
+  app_network:
+    driver: bridge  # Bridge ტიპის ქსელი, რომელიც გამოიყენება კონტეინერების იზოლაციისთვის.
