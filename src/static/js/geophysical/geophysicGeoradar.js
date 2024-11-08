@@ -29,8 +29,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
                     const row = `
                         <tr data-geophysicGeoradar-id="${data.id}">
+                            <td>${data.latitude}</td>    
                             <td>${data.longitude}</td>
-                            <td>${data.latitude}</td>
                             <td>${data.profile_length}</td>
                             <td>${archivalImgLink}</td>
                             <td>${archivalExcelLink}</td>
