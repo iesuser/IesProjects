@@ -78,9 +78,6 @@ git push origin master
 # For Docker container
 
 Flask სერვისის მასშტაბირება ორი კონტეინერისთვის
-კონტეინერების გასაშვებად ორი Flask კონტეინერით, გამოიყენეთ შემდეგი ბრძანება:
-
-docker-compose up --build --scale flask=2 -d
 
 # Load Balancing
 ნაბიჯები პირველი Flask კონტეინერის განახლებისთვის:
