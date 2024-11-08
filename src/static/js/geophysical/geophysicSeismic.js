@@ -29,8 +29,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
                     const row = `
                         <tr data-geophysicSeismic-id="${data.id}">
-                            <td>${data.longitude}</td>
                             <td>${data.latitude}</td>
+                            <td>${data.longitude}</td>
                             <td>${data.profile_length}</td>
                             <td>${data.vs30}</td>
                             <td>${data.ground_category_geo}</td>
@@ -105,13 +105,12 @@ function fetchGeophysicSeismicData(geophysicalId, geophysicSeismicId) {
         .then(data => {
             if (data) {
                 document.getElementById('geophysicSeismicId').value = data.id;
-                document.getElementById('seismic_longitude').value = data.longitude;
                 document.getElementById('seismic_latitude').value = data.latitude;
+                document.getElementById('seismic_longitude').value = data.longitude;
                 document.getElementById('seismic_profile_length').value = data.profile_length;
                 document.getElementById('seismic_vs30').value = data.vs30;
                 document.getElementById('seismic_ground_category_geo').value = data.ground_category_geo;
                 document.getElementById('seismic_ground_category_euro').value = data.ground_category_euro;
-
 
                 // console.log(data);
             } else {

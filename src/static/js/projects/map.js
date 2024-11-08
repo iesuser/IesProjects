@@ -42,7 +42,6 @@ function attachInfoWindow(marker, project) {
         content: `
             <div class="text-center">
                 <strong>პროექტის სახელი: ${project.projects_name}</strong><br>
-                ხელშეკრულების ნომერი: ${project.contract_number || '----'}<br>
                 დაწყების დღე: ${project.start_time}<br>
                 დასრულების დღე: ${project.end_time}<br>
                 დამკვეთი: ${project.contractor || '----'}<br>
