@@ -33,12 +33,21 @@
                 <form class="row mt-2" id="GeophysicSeismicForm" enctype="multipart/form-data">
                     <input type="hidden" id="geophysicSeismicId" name="id">
                     <div class="col">
-                        <label for="seismic_latitude" class="form-label"><span class="text-danger me-1">*</span>განედი (y):</label>
-                        <input type="number" step="any" class="form-control" id="seismic_latitude" name="latitude" required>
+                        <label for="first_seismic_latitude" class="form-label"><span class="text-danger me-1">*</span>პირველი განედი (y):</label>
+                        <input type="number" step="any" class="form-control" id="first_seismic_latitude" name="first_latitude" required>
                     </div>
                     <div class="col">
-                        <label for="seismic_longitude" class="form-label"><span class="text-danger me-1">*</span>გრძედი (x):</label>
-                        <input type="number" step="any" class="form-control" id="seismic_longitude" name="longitude" required>
+                        <label for="first_seismic_longitude" class="form-label"><span class="text-danger me-1">*</span>პირველი გრძედი (x):</label>
+                        <input type="number" step="any" class="form-control" id="first_seismic_longitude" name="first_longitude" required>
+                    </div>
+                    <div class="mt-1"></div>
+                    <div class="col">
+                        <label for="second_seismic_latitude" class="form-label"><span class="text-danger me-1">*</span>მეორე განედი (y):</label>
+                        <input type="number" step="any" class="form-control" id="second_seismic_latitude" name="second_latitude" required>
+                    </div>
+                    <div class="col">
+                        <label for="second_seismic_longitude" class="form-label"><span class="text-danger me-1">*</span>მეორე გრძედი (x):</label>
+                        <input type="number" step="any" class="form-control" id="second_seismic_longitude" name="second_longitude" required>
                     </div>
                     <div class="mb-3">
                         <label for="seismic_profile_length" class="form-label"><span class="text-danger me-1">*</span>პროფილის სიგრძე:</label>

@@ -1,7 +1,6 @@
 from flask.cli import with_appcontext
 import click
 from datetime import datetime
-from werkzeug.security import generate_password_hash
 
 from src.extensions import db
 from src.models import Projects, Geological, Geophysical, GeophysicSeismic, GeophysicLogging, GeophysicElectrical
@@ -27,8 +26,8 @@ def populate_db():
         end_time=datetime.strptime('2024-03-03', '%Y-%m-%d').date(),
         contractor="New Contractor",
         proj_location="Example Location",
-        proj_latitude=42.1234,
-        proj_longitude=43.649
+        proj_latitude=41.6433,
+        proj_longitude=41.6206
     )
     new_project.create()
 
@@ -92,8 +91,10 @@ def populate_db():
     click.echo("Creating First GeophysicSeismic")
     new_geophysical_seismic = GeophysicSeismic(
         geophysical_id=1,
-        longitude=42.1234,
-        latitude=42.549,
+        first_latitude=41.6433,
+        first_longitude=41.6206,
+        second_longitude=41.6533,
+        second_latitude=41.6306,
         profile_length=0,
         vs30=650,
         ground_category_geo="II",
@@ -105,19 +106,21 @@ def populate_db():
 
     new_geophysical_seismic.create()
 
-    click.echo("Creating Second GeophysicSeismic")
-    new_geophysical_seismic = GeophysicSeismic(
-        geophysical_id=1,
-        longitude=42.1234,
-        latitude=42.549,
-        profile_length=0,
-        vs30=550,
-        ground_category_geo="II",
-        ground_category_euro="B",
-        # archival_img="image.png",
-        # archival_excel="test.xlsx",
-        # archival_pdf="testarchve.pdf"
-    )
+    # click.echo("Creating Second GeophysicSeismic")
+    # new_geophysical_seismic = GeophysicSeismic(
+    #     geophysical_id=1,
+    #     first_latitude=41.249,
+    #     first_longitude=41.1234,
+    #     second_latitude=41.334,
+    #     second_longitude=41.549,
+    #     profile_length=0,
+    #     vs30=550,
+    #     ground_category_geo="II",
+    #     ground_category_euro="B",
+    #     # archival_img="image.png",
+    #     # archival_excel="test.xlsx",
+    #     # archival_pdf="testarchve.pdf"
+    # )
 
     new_geophysical_seismic.create()
 

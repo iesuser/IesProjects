@@ -29,8 +29,10 @@ class GeophysicSeismic(db.Model, BaseModel):
 
     geophysical_id = db.Column(db.Integer, db.ForeignKey('geophysical.id', ondelete="CASCADE"), nullable=False)
     
-    longitude = db.Column(db.Float, nullable=False)
-    latitude = db.Column(db.Float, nullable=False)
+    first_latitude = db.Column(db.Float, nullable=False)
+    first_longitude = db.Column(db.Float, nullable=False)
+    second_latitude = db.Column(db.Float, nullable=False)
+    second_longitude = db.Column(db.Float, nullable=False)
     profile_length = db.Column(db.Float, nullable=False)
     vs30 = db.Column(db.Integer, nullable=False)
     ground_category_geo = db.Column(db.String(255), nullable=False)

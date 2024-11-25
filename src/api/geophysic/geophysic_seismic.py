@@ -83,8 +83,10 @@ class GeophysicSeismicListAPI(Resource):
         # Create the Geophysical record
         new_geophysical_seismic = GeophysicSeismic(
             geophysical_id=geophy_id,
-            longitude=args['longitude'],
-            latitude=args['latitude'],
+            first_latitude=args['first_latitude'],
+            first_longitude=args['first_longitude'],
+            second_latitude=args['second_latitude'],
+            second_longitude=args['second_longitude'],
             profile_length=args['profile_length'],
             vs30=args['vs30'],
             ground_category_geo=args['ground_category_geo'],
@@ -203,8 +205,10 @@ class GeophysicSeismicAPI(Resource):
                 server_message += ' არ აიტვირთა საარქივო Image-ის ფაილი.'
 
         # Update the record fields
-        geophysic_seismic.longitude = args['longitude']
-        geophysic_seismic.latitude = args['latitude']
+        geophysic_seismic.first_latitude = args['first_latitude']
+        geophysic_seismic.first_longitude = args['first_longitude']
+        geophysic_seismic.second_latitude = args['second_latitude']
+        geophysic_seismic.second_longitude = args['second_longitude']
         geophysic_seismic.profile_length = args['profile_length']
         geophysic_seismic.vs30 = args['vs30']
         geophysic_seismic.ground_category_geo = args['ground_category_geo']
