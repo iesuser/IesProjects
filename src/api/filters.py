@@ -1,15 +1,10 @@
 from flask_restx import Resource
 from datetime import datetime
-import os
-import uuid
-import shutil
-import mimetypes
-from flask_jwt_extended import jwt_required, current_user
+from flask_jwt_extended import jwt_required
 from sqlalchemy import and_
 
 from src.api.nsmodels import filter_ns, filter_parser, filter_model
-from src.models import Projects, Geophysical  # Import your models
-from src.config import Config
+from src.models import Projects, Geophysical
 
 
 @filter_ns.route('/filter_project')

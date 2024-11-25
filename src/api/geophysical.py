@@ -1,5 +1,4 @@
 from flask_restx import Resource
-from werkzeug.exceptions import NotFound
 import os
 import uuid
 import shutil
