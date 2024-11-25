@@ -2,7 +2,7 @@ from flask_restx import Resource
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity
 
 from src.models import User, Role
-from src.api.nsmodels import auth_ns, registration_parser, auth_parser, user_model, user_parser
+from src.api.nsmodels import auth_ns, registration_parser, auth_parser
 
 
 
