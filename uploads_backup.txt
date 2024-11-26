@@ -1,0 +1,16 @@
+# სკრიპტის შესრულების უფლებების მიცემა
+chmod +x /home/iesflask/Iesprojects/uploads_backup.sh
+# გახსენით cron-ის მენიუ:
+crontab -e
+
+# დაამატეთ შემდეგი ხაზი, რათა სკრიპტი 2 საათზე ყოველ ღამე გაწვდოს:
+0 2 * * * /home/iesflask/Iesprojects/uploads_backup.sh /home/iesflask/Iesprojects/uploads /flask_app/backups/uploads
+
+
+
+# ან გაუშვით შემდეგი ხაზი, რომელიც ავტომატურად ჩაამატებს cron-ში განრიგს:
+echo "0 2 * * * /home/iesflask/Iesprojects/uploads_backup.sh /home/iesflask/Iesprojects/uploads /flask_app/backups/uploads" | crontab -
+
+# წინასწარ გავამწადოთ ფოლდერი სადაც უნდა განხორციელდეს backup
+sudo mkdir -p /flask_app/backups/uploads
+sudo chown -R iesflask:iesflask /flask_app/backups
