@@ -10,8 +10,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Define the login and registration links
     const authLinks = [
-        { endpoint: '/login', text: 'შესვლა' },
-        { endpoint: '/registration', text: 'რეგისტრაცია' }
+        { endpoint: '/login', text: 'შესვლა' }
     ];
 
     // Get the current path

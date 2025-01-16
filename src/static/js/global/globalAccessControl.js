@@ -146,12 +146,11 @@ function closeModal(modalName) {
 // The DOMContentLoaded event listener
 document.addEventListener("DOMContentLoaded", function() {
     const loginPage = '/login';
-    const registrationPage = '/registration';
     const homePage = '/';
     const currentPage = window.location.pathname;
     const token = localStorage.getItem('access_token');
 
-    if (!token && currentPage !== loginPage && currentPage !== registrationPage) {
+    if (!token && currentPage !== loginPage) {
         window.location.href = loginPage;
     }
 
@@ -161,7 +160,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // Redirect to home page if token exists and user is on the login or registration page
-    if (token && (currentPage === loginPage || currentPage === registrationPage)) {
+    if (token && (currentPage === loginPage)) {
         window.location.href = homePage;
     }
 });
