@@ -38,4 +38,9 @@ class Config(object):
         }
     }
     
+class TestConfig(Config):
 
+    TESTING = True
+    WTF_CSRF_ENABLED = False
+
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://iesproject:Ml_Iesproject88@localhost/iesprojects'
