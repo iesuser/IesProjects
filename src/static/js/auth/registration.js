@@ -4,6 +4,7 @@ function registration(event) {
     // Gather form data
     const password = document.getElementById('password').value;
     const passwordRepeat = document.getElementById('passwordRepeat').value;
+    const token = localStorage.getItem('access_token');
 
     // Check if passwords match
     if (password !== passwordRepeat) {
@@ -24,7 +25,8 @@ function registration(event) {
     fetch('/api/registration', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(formData)
     })
