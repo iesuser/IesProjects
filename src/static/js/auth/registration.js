@@ -41,6 +41,9 @@ function registration(event) {
     .then(({ status, data }) => {
         if (status === 200) {
             showAlert('success', data.message);
+            setTimeout(() => {
+                window.location.href = '/registration';  // Redirect after success
+            }, 2000);
         } else {
             showAlert('danger', data.error || 'რეგისტრაციისას მოხდა შეცდომა.');
         }
