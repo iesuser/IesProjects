@@ -42,7 +42,7 @@ function registration(event) {
         if (status === 200) {
             showAlert('success', data.message);
             setTimeout(() => {
-                window.location.href = '/registration';  // Redirect after success
+                window.location.href = '/accounts';  // Redirect after success
             }, 2000);
         } else {
             showAlert('danger', data.error || 'რეგისტრაციისას მოხდა შეცდომა.');
