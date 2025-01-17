@@ -32,9 +32,12 @@ docker exec -it mysql mysql -u root -p
 # Flask Migrations
 docker exec -it iesprojects_flask /bin/sh 
 # Reset Migrations:
-flask db init
+flask db current
 flask db migrate -m "Initial migration"
 flask db upgrade
+
+# History
+flask db history
 
 # Re-run Migration Commands:
 flask db migrate
