@@ -5,6 +5,20 @@ document.addEventListener("DOMContentLoaded", function() {
     const projectIdElement = document.getElementById("projectId");
     const projectId = projectIdElement.getAttribute("data-project-id");
     
+
+    let permissions = getPermissions()
+
+    let thEditSeismic = document.getElementById('thEditSeismic')
+    let thDeleteSeismic = document.getElementById('thDeleteSeismic')
+
+
+
+    if (!permissions.can_geophysic){
+        thEditSeismic.remove()
+        thDeleteSeismic.remove()
+    }
+
+
     // Fetch data from API endpoint geophysic_seismic
     fetch(`/api/geophysic_seismic/${geophysicalId}`)
         .then(response => response.json())
@@ -40,12 +54,8 @@ document.addEventListener("DOMContentLoaded", function() {
                             <td>${archivalImgLink}</td>
                             <td>${archivalExcelLink}</td>
                             <td>${archivalPdfLink}</td>
-                            <td>
-                                <img src="/static/img/pen-solid.svg" alt="Edit" style="width: 20px; height: 20px; cursor: pointer;" onclick="openGeophysicSeismicModal(true, ${data.id})">
-                            </td>
-                            <td>
-                                <img src="/static/img/trash-solid.svg" alt="Delete" style="width: 20px; height: 20px; cursor: pointer;" onclick="openConfirmDeleteGeophysicSeismicModal(${data.id})">
-                            </td>
+                        ${permissions.can_geophysic ? `<td><img src="/static/img/pen-solid.svg" alt="Edit" style="width: 20px; height: 20px; cursor: pointer;" onclick="openGeophysicSeismicModal(true, ${data.id})"></td>` : ''}
+                        ${permissions.can_geophysic ? `<td><img src="/static/img/trash-solid.svg" alt="Delete" style="width: 20px; height: 20px; cursor: pointer;" onclick="openConfirmDeleteGeophysicSeismicModal(${data.id})"></td>` : ''}
                         </tr>
                     `;
                     geophysicSeismicTable.innerHTML += row;

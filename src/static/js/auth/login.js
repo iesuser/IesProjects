@@ -24,7 +24,9 @@ function login(event) {
             // JWT ტოკენების შენახვა localStorage-ში
             localStorage.setItem('access_token', data.access_token);
             localStorage.setItem('refresh_token', data.refresh_token);
-            localStorage.setItem('user_email', email);
+            localStorage.setItem('permissions_token', data.permissions_token);
+
+            // localStorage.setItem('user_email', email);
 
             // Redirect to /projects page
             window.location.href = '/';

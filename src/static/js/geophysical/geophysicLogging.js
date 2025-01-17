@@ -5,6 +5,18 @@ document.addEventListener("DOMContentLoaded", function() {
     const projectIdElement = document.getElementById("projectId");
     const projectId = projectIdElement.getAttribute("data-project-id");
 
+
+    let permissions = getPermissions()
+
+    let thEditLogging = document.getElementById('thEditLogging')
+    let thDeleteLogging = document.getElementById('thDeleteLogging')
+
+    if (!permissions.can_geophysic){
+        thEditLogging.remove()
+        thDeleteLogging.remove()
+    }
+
+
     // Fetch data from API endpoint geophysic_logging
     fetch(`/api/geophysic_logging/${geophysicalId}`)
         .then(response => response.json())
@@ -35,12 +47,9 @@ document.addEventListener("DOMContentLoaded", function() {
                             <td>${archivalImgLink}</td>
                             <td>${archivalExcelLink}</td>
                             <td>${archivalPdfLink}</td>
-                            <td>
-                                <img src="/static/img/pen-solid.svg" alt="Edit" style="width: 20px; height: 20px; cursor: pointer;" onclick="openGeophysicLoggingModal(true, ${data.id})">
-                            </td>
-                            <td>
-                                <img src="/static/img/trash-solid.svg" alt="Delete" style="width: 20px; height: 20px; cursor: pointer;" onclick="openConfirmDeleteGeophysicLoggingModal(${data.id})">
-                            </td>
+                        ${permissions.can_geophysic ? `<td><img src="/static/img/pen-solid.svg" alt="Edit" style="width: 20px; height: 20px; cursor: pointer;" onclick="openGeophysicLoggingModal(true, ${data.id})"></td>` : ''}
+                            
+                        ${permissions.can_geophysic ? `<td><img src="/static/img/trash-solid.svg" alt="Delete" style="width: 20px; height: 20px; cursor: pointer;" onclick="openConfirmDeleteGeophysicLoggingModal(${data.id})"></td>` : ''}
                         </tr>
                     `;
                     geophysicLoggingTable.innerHTML += row;

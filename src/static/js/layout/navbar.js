@@ -37,8 +37,8 @@ document.addEventListener("DOMContentLoaded", function() {
         logoutItem.className = 'd-flex justify-content-center';
 
         // Retrieve the user's email from localStorage
-        const userEmail = localStorage.getItem('user_email');
-        if (userEmail) {
+        const access_token = localStorage.getItem('access_token');
+        if (access_token) {
             const emailSpan = document.createElement('span');
             emailSpan.className = 'nav-link me-4'; // Margin end for spacing
 

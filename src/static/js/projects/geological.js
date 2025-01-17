@@ -3,6 +3,17 @@ document.addEventListener("DOMContentLoaded", function() {
     const projectId = projectIdElement.getAttribute("data-project-id");
     const geologicalTableContainer = document.getElementById('geologicalTableContainer');
 
+    let permissions = getPermissions()
+
+    let thEditGeologic = document.getElementById('thEditGeologic')
+    let thDeleteGeologic = document.getElementById('thDeleteGeologic')
+
+    if (!permissions.can_geophysic){
+        thEditGeologic.remove()
+        thDeleteGeologic.remove()
+    }
+
+
     // Fetch data from API endpoint
     fetch(`/api/geological/${projectId}`)
         .then(response => response.json())
@@ -23,16 +34,11 @@ document.addEventListener("DOMContentLoaded", function() {
                             <td>${geological.points_number}</td>
                             <td>${geological.archival_material}</td>
                             <td>
-                                <a class="btn btn-sm btn-primary" href="#">View</a>
+                            <a class="btn btn-sm btn-primary" href="/view_geophysical/${geological.id}">ნახვა</a>
                             </td>
-                            <td>
-                                <a class="btn btn-sm btn-info" href="#">Edit</a>
-                            </td>
-                            <td>
-                                <form action="#" method="POST" style="display:inline;">
-                                    <button type="submit" class="btn btn-sm btn-danger btn-block" onclick="return confirm('Are you sure you want to delete this station?');">Delete</button>
-                                </form>
-                            </td>
+                             ${permissions.can_geologic ? `<td><img src="/static/img/pen-solid.svg" alt="Edit" style="width: 20px; height: 20px; cursor: pointer;" onclick="openGeophysicalModal(true, ${geological.id})"></td>` : ''}
+
+                             ${permissions.can_geologic ? `<td><img src="/static/img/trash-solid.svg" alt="Delete" style="width: 20px; height: 20px; cursor: pointer;" onclick="openConfirmDeleteGeophysicalModal(${projectId}, ${geological.id})"></td>` : ''}
                         </tr>
                     `;
                     geologicalTableBody.innerHTML += row;

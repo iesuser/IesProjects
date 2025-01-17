@@ -3,6 +3,16 @@ document.addEventListener("DOMContentLoaded", function() {
     const projectId = projectIdElement.getAttribute("data-project-id");
     const geophysicalTableContainer = document.getElementById('geophysicalTableContainer');
 
+    let permissions = getPermissions()
+
+    let thEditGeophysical = document.getElementById('thEditGeophysical')
+    let thDeleteGeophysical = document.getElementById('thDeleteGeophysical')
+
+    if (!permissions.can_geophysic){
+        thEditGeophysical.remove()
+        thDeleteGeophysical.remove()
+    }
+
     fetch(`/api/geophysical/${projectId}`)
     .then(response => response.json())
     .then(data => {
@@ -36,12 +46,10 @@ document.addEventListener("DOMContentLoaded", function() {
                         <td>
                             <a class="btn btn-sm btn-primary" href="/view_geophysical/${geophysical.id}">ნახვა</a>
                         </td>
-                        <td>
-                            <img src="/static/img/pen-solid.svg" alt="Edit" style="width: 20px; height: 20px; cursor: pointer;" onclick="openGeophysicalModal(true, ${geophysical.id})">
-                        </td>
-                        <td>
-                            <img src="/static/img/trash-solid.svg" alt="Delete" style="width: 20px; height: 20px; cursor: pointer;" onclick="openConfirmDeleteGeophysicalModal(${projectId}, ${geophysical.id})">
-                        </td>
+                        ${permissions.can_geophysic ? `<td><img src="/static/img/pen-solid.svg" alt="Edit" style="width: 20px; height: 20px; cursor: pointer;" onclick="openGeophysicalModal(true, ${geophysical.id})"></td>` : ''}
+                            
+                        ${permissions.can_geophysic ? `<td><img src="/static/img/trash-solid.svg" alt="Delete" style="width: 20px; height: 20px; cursor: pointer;" onclick="openConfirmDeleteGeophysicalModal(${projectId}, ${geophysical.id})"></td>` : ''}
+                            
                     </tr>
                 `;
                 geophysicalTableBody.innerHTML += row;

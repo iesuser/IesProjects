@@ -56,5 +56,23 @@ class Role(db.Model, BaseModel):
     # One-to-Many relationship with User
     users = db.relationship('User', back_populates='role')
 
+    def get_permissions(self):
+
+        permissions = {
+            
+            "id": self.id,
+            "name": self.name,
+            "is_admin": self.is_admin,
+            "can_users": self.can_users,
+            "can_project": self.can_project,
+            "can_geophysic": self.can_geophysic,
+            "can_geologic": self.can_geologic,
+            "can_hazard": self.can_hazard,
+            "can_geodetic": self.can_geodetic
+        }
+
+        return permissions
+    
+
     def __repr__(self):
         return f"{self.name}"

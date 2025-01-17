@@ -2,7 +2,7 @@ function clearSessionData(redirect = true) {
     // Remove all session-related data
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
-    localStorage.removeItem('user_email');
+    localStorage.removeItem('permissions_token');
     
     // Optionally redirect the user to the login page or another page
     if (redirect) {
@@ -143,12 +143,23 @@ function closeModal(modalName) {
     }
 }
 
+function getPermissions(){
+    // Getting permissions token from local storage, decoding it and then returning them
+    
+    const encodedPermissions = localStorage.getItem('permissions_token');
+    const decodedPermissions = jwt_decode(encodedPermissions).sub;
+
+    return decodedPermissions;
+}
+
+
 // The DOMContentLoaded event listener
 document.addEventListener("DOMContentLoaded", function() {
     const loginPage = '/login';
     const homePage = '/';
     const currentPage = window.location.pathname;
     const token = localStorage.getItem('access_token');
+
 
     if (!token && currentPage !== loginPage) {
         window.location.href = loginPage;
