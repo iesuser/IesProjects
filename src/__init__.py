@@ -14,10 +14,10 @@ BLUEPRINTS = [projects_blueprint, geophysical_blueprint, auth_blueprint, account
 COMMANDS = [init_db, populate_db, insert_db]
 
 
-def create_app():
+def create_app(config=Config):
     app = Flask(__name__)
     CORS(app)
-    app.config.from_object(Config)
+    app.config.from_object(config)
 
     @app.route('/')
     def home():

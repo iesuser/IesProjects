@@ -4,6 +4,7 @@ function registration(event) {
     // Gather form data
     const password = document.getElementById('password').value;
     const passwordRepeat = document.getElementById('passwordRepeat').value;
+    const token = localStorage.getItem('access_token');
 
     // Check if passwords match
     if (password !== passwordRepeat) {
@@ -24,7 +25,8 @@ function registration(event) {
     fetch('/api/registration', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(formData)
     })
@@ -40,7 +42,7 @@ function registration(event) {
         if (status === 200) {
             showAlert('success', data.message);
             setTimeout(() => {
-                window.location.href = '/login';  // Redirect after success
+                window.location.href = '/accounts';  // Redirect after success
             }, 2000);
         } else {
             showAlert('danger', data.error || 'რეგისტრაციისას მოხდა შეცდომა.');
