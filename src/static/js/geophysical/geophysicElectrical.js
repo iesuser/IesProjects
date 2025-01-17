@@ -5,6 +5,18 @@ document.addEventListener("DOMContentLoaded", function() {
     const projectIdElement = document.getElementById("projectId");
     const projectId = projectIdElement.getAttribute("data-project-id");
 
+    let permissions = getPermissions()
+
+    let thEditElectrical = document.getElementById('thEditElectrical')
+    let thDeleteElectrical = document.getElementById('thDeleteElectrical')
+
+    if (!permissions.can_geophysic){
+
+        thEditElectrical.remove()
+        thDeleteElectrical.remove()
+    }
+
+
     // Fetch data from API endpoint geophysic_electrical
     fetch(`/api/geophysic_electrical/${geophysicalId}`)
         .then(response => response.json())
@@ -35,12 +47,8 @@ document.addEventListener("DOMContentLoaded", function() {
                             <td>${archivalImgLink}</td>
                             <td>${archivalExcelLink}</td>
                             <td>${archivalPdfLink}</td>
-                            <td>
-                                <img src="/static/img/pen-solid.svg" alt="Edit" style="width: 20px; height: 20px; cursor: pointer;" onclick="openGeophysicElectricalModal(true, ${data.id})">
-                            </td>
-                            <td>
-                                <img src="/static/img/trash-solid.svg" alt="Delete" style="width: 20px; height: 20px; cursor: pointer;" class="delete-icon" onclick="openConfirmDeleteGeophysicElectricalModal(${data.id})">
-                            </td>
+                        ${permissions.can_geophysic ? `<td><img src="/static/img/pen-solid.svg" alt="Edit" style="width: 20px; height: 20px; cursor: pointer;" onclick="openGeophysicElectricalModal(true, ${data.id})"></td>` : ''}
+                        ${permissions.can_geophysic ? `<td><img src="/static/img/trash-solid.svg" alt="Delete" style="width: 20px; height: 20px; cursor: pointer;" class="delete-icon" onclick="openConfirmDeleteGeophysicElectricalModal(${data.id})"></td>` : ''}
                         </tr>
                     `;
                     geophysicElectricTable.innerHTML += row;

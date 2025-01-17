@@ -1,4 +1,14 @@
 function loadProjectData() {
+    let permissions = getPermissions()
+
+    let thEdit = document.getElementById('thEdit')
+    let thDelete = document.getElementById('thDelete')
+
+    if (!permissions.can_project){
+        thEdit.remove()
+        thDelete.remove()
+    }
+    
 fetch('/api/projects')
     .then(response => response.json())
     .then(data => {
@@ -23,14 +33,10 @@ fetch('/api/projects')
                         <td>
                             <a class="btn btn-sm btn-primary" href="/view_project/${project.id}">ნახვა</a>
                         </td>
-                        <td>
-                            <img src="/static/img/pen-solid.svg" alt="Edit" style="width: 20px; height: 20px; cursor: pointer;" onclick="openEditProjectModal(${project.id})">
-                        </td>
-                        <td>
-                            <img src="/static/img/trash-solid.svg" alt="Delete" style="width: 20px; height: 20px; cursor: pointer;" onclick="openConfirmDeleteProjectModal(${project.id})">
-                        </td>
-                    </tr>
-                `;
+                        ${permissions.can_project ? `<td><img src="/static/img/pen-solid.svg" alt="Edit" style="width: 20px; height: 20px; cursor: pointer;" onclick="openEditProjectModal(${project.id})"></td>` : ''}
+                        ${permissions.can_project ? `<td><img src="/static/img/trash-solid.svg" alt="Delete" style="width: 20px; height: 20px; cursor: pointer;" onclick="openConfirmDeleteProjectModal(${project.id})"></td>` : ''}
+                        </tr>
+                    `;
                 projectTableBody.innerHTML += row;
             });
             // Update map markers with the filtered data

@@ -6,6 +6,7 @@ from src.api.nsmodels import auth_ns, registration_parser, auth_parser
 
 
 
+
 @auth_ns.route('/registration')
 @auth_ns.doc(responses={200: 'OK', 400: 'Invalid Argument', 401: 'JWT Token Expires', 403: 'Forbidden', 404: 'Not Found'})
 class RegistrationApi(Resource):
@@ -61,13 +62,23 @@ class AuthorizationApi(Resource):
 
         # Check if the password matches
         if user.check_password(args["password"]):
+
             # Create tokens with the user's UUID as the identity
             access_token = create_access_token(identity=user.uuid)
             refresh_token = create_refresh_token(identity=user.uuid)
+
+            # Getting permissions and creating token with permissions
+            permissions = user.role.get_permissions()
+
+            permissions_token = create_access_token(identity={
+                **permissions
+            })
+
             return {
                 "message": "წარმატებით გაიარეთ ავტორიზაცია.",
                 "access_token": access_token,
-                "refresh_token": refresh_token
+                "refresh_token": refresh_token,
+                "permissions_token": permissions_token
             }, 200
         
         # If the password is incorrect
