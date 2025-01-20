@@ -3,6 +3,13 @@ document.addEventListener("DOMContentLoaded", function() {
     const carouselInner = document.getElementById('carouselInner');
     const carouselIndicators = document.getElementById('carouselIndicators');
 
+    let permissions = getPermissions();
+
+    if (!permissions.can_project) {
+        const btnCreateProject = document.getElementById('btnImagesProjects');
+        if (btnCreateProject) btnCreateProject.style.visibility = 'hidden';
+    }
+
     // Fetch and display images when the DOM is fully loaded
     fetchImages();
 

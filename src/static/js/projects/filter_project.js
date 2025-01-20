@@ -1,6 +1,15 @@
 // Send POST request for filter project
 function filterProjectForm(event) {
     event.preventDefault(); // Prevent default form submission
+    let permissions = getPermissions()
+
+    let thEdit = document.getElementById('thEdit')
+    let thDelete = document.getElementById('thDelete')
+
+    if (!permissions.can_project) {
+        if (thEdit) thEdit.remove();
+        if (thDelete) thDelete.remove();
+    }
 
     const form = document.getElementById('filterProjectForm');
     const formData = new FormData(form);
@@ -42,12 +51,8 @@ function filterProjectForm(event) {
                         <td>
                             <a class="btn btn-sm btn-primary" href="/view_project/${project.id}">ნახვა</a>
                         </td>
-                        <td>
-                            <img src="/static/img/pen-solid.svg" alt="Edit" style="width: 20px; height: 20px; cursor: pointer;" onclick="openEditProjectModal(${project.id})">
-                        </td>
-                        <td>
-                            <img src="/static/img/trash-solid.svg" alt="Delete" style="width: 20px; height: 20px; cursor: pointer;" onclick="openConfirmDeleteProjectModal(${project.id})">
-                        </td>
+                        ${permissions.can_project ? `<td><img src="/static/img/pen-solid.svg" alt="Edit" style="width: 20px; height: 20px; cursor: pointer;" onclick="openEditProjectModal(${project.id})"></td>` : ''}
+                        ${permissions.can_project ? `<td><img src="/static/img/trash-solid.svg" alt="Delete" style="width: 20px; height: 20px; cursor: pointer;" onclick="openConfirmDeleteProjectModal(${project.id})"></td>` : ''}
                     </tr>
                 `;
                 projectTableBody.innerHTML += row;
