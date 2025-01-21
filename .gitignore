@@ -7,3 +7,4 @@ __pycache__/
 /database/
 /uploads/
 *.sqlite
+/logs/
