@@ -36,16 +36,16 @@
 
     <div class="table-responsive-xxl table-bordered text-center mt-2" style="font-size: small;">
         <table class="table align-middle rounded-2 border-muted mb-0 bg-white">
-            <td>
+            <td id="addSeismic">
                 <a class="btn btn-sm btn-warning" style="font-size: x-small;" onclick="openGeophysicSeismicModal()">სეისმური პროფილის დამატება</a>
             </td>
-            <td>
+            <td id="addLogging">
                 <a class="btn btn-sm btn-success" style="font-size: x-small;" onclick="openGeophysicLoggingModal()">გეოფიზიკური კაროტაჟის დამატება</a>
             </td>
-            <td>
+            <td id="addElectric">
                 <a class="btn btn-sm btn-primary" style="font-size: x-small;" onclick="openGeophysicElectricalModal()">ელექტრული პროფილის დამატება</a>
             </td>
-            <td>
+            <td id="addGeoradar">
                 <a class="btn btn-sm btn-secondary" style="font-size: x-small;" onclick="openGeophysicGeoradarModal()">გეორადარის დამატება</a>
             </td>
         </table>
@@ -146,6 +146,19 @@
         document.addEventListener("DOMContentLoaded", () => {
             const projectIdElement = document.getElementById("projectId");
             const projectId = projectIdElement.getAttribute("data-project-id");
+            const addSeismic = document.getElementById("addSeismic");
+            const addLogging = document.getElementById("addLogging");
+            const addElectric = document.getElementById("addElectric");
+            const addGeoradar = document.getElementById("addGeoradar");
+
+            let permissions = getPermissions();
+
+            if (!permissions.can_geophysic) {
+                if (addSeismic) addSeismic.style.display = 'none';
+                if (addLogging) addLogging.style.display = 'none';
+                if (addElectric) addElectric.style.display = 'none';
+                if (addGeoradar) addGeoradar.style.display = 'none';
+            }
 
             fetch(`/api/project/${projectId}`)
                 .then(response => response.json())

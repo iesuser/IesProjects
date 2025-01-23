@@ -7,7 +7,7 @@
 {% block body %}
     <script type="text/javascript" src="{{ url_for('static', filename='js/projects/geological.js') }}" defer></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/projects/geophysical.js') }}" defer></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/projects/project_img.js') }}" defer></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/projects/view_project.js') }}" defer></script>
     <div id="projectId" data-project-id="{{ project_id }}"></div>
     <div class="projectImageDiv">
         <div class="card mt-2 projectDiv">
@@ -100,24 +100,24 @@
 
     <div class="table-responsive-xxl table-bordered text-center mt-2" style="font-size: small;">
         <table class="table align-middle rounded-2 border-muted mb-0 bg-white">
-            <td>
+            <td id="addGeologic">
                 <a class="btn btn-sm btn-warning" style="font-size: x-small;" href="#">გეოლოგიური კვლევის დამატება</a>
             </td>
 
             <!-- Button to trigger CreateGeophysicalModal -->
-            <td>
+            <td id="addGeophysic">
                 <a type="button" class="btn btn-sm btn-success" style="font-size: x-small;" onclick="openGeophysicalModal()">
                     გეოფიზიკური კვლევის დამატება
                 </a>
             </td>
 
-            <td>
+            <td id="addHazard">
                 <a class="btn btn-sm btn-primary" style="font-size: x-small;" href="#">სეისმური საშიშროების შეფასების დამატება</a>
             </td>
-            <td>
+            <td id="addGeodetic">
                 <a class="btn btn-sm btn-secondary" style="font-size: x-small;" href="#">გეოდეზიური კვლევის დამატება</a>
             </td>
-            <td>
+            <td id="addOther">
                 <a class="btn btn-sm btn-info" style="font-size: x-small;" href="#">სხვა ტიპის კვლევის დამატება</a>
             </td>
         </table>
