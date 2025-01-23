@@ -148,7 +148,6 @@ function getPermissions(){
     
     const encodedPermissions = localStorage.getItem('permissions_token');
     const decodedPermissions = jwt_decode(encodedPermissions).sub;
-
     return decodedPermissions;
 }
 
