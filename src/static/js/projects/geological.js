@@ -8,9 +8,10 @@ document.addEventListener("DOMContentLoaded", function() {
     let thEditGeologic = document.getElementById('thEditGeologic')
     let thDeleteGeologic = document.getElementById('thDeleteGeologic')
 
-    if (!permissions.can_geophysic){
-        thEditGeologic.remove()
-        thDeleteGeologic.remove()
+
+    if (!permissions.can_geologic) {
+        if (thEditGeologic) thEditGeologic.remove();
+        if (thDeleteGeologic) thDeleteGeologic.remove();
     }
 
 

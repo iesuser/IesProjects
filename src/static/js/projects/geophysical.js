@@ -8,9 +8,9 @@ document.addEventListener("DOMContentLoaded", function() {
     let thEditGeophysical = document.getElementById('thEditGeophysical')
     let thDeleteGeophysical = document.getElementById('thDeleteGeophysical')
 
-    if (!permissions.can_geophysic){
-        thEditGeophysical.remove()
-        thDeleteGeophysical.remove()
+    if (!permissions.can_geophysic) {
+        if (thEditGeophysical) thEditGeophysical.remove();
+        if (thDeleteGeophysical) thDeleteGeophysical.remove();
     }
 
     fetch(`/api/geophysical/${projectId}`)

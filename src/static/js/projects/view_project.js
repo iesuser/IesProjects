@@ -8,6 +8,28 @@ document.addEventListener("DOMContentLoaded", function() {
     if (!permissions.can_project) {
         const btnCreateProject = document.getElementById('btnImagesProjects');
         if (btnCreateProject) btnCreateProject.style.visibility = 'hidden';
+        const addOther = document.getElementById('addOther');
+        if (addOther) addOther.style.visibility = 'hidden';
+    }
+    if (!permissions.can_geophysic) {
+        const addGeophysic = document.getElementById('addGeophysic');
+        if (addGeophysic) addGeophysic.style.display = 'none';
+    }
+    if (!permissions.can_geologic) {
+        const addGeologic = document.getElementById('addGeologic');
+        if (addGeologic) addGeologic.style.display = 'none';
+    }
+    if (!permissions.can_geodetic) {
+        const addGeodetic = document.getElementById('addGeodetic');
+        if (addGeodetic) addGeodetic.style.display = 'none';
+    }
+    if (!permissions.can_hazard) {
+        const addHazard = document.getElementById('addHazard');
+        if (addHazard) addHazard.style.display = 'none';
+    }
+    if (!permissions.can_hazard) {
+        const addHazard = document.getElementById('addHazard');
+        if (addHazard) addHazard.style.display = 'none';
     }
 
     // Fetch and display images when the DOM is fully loaded
