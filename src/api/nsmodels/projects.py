@@ -45,8 +45,8 @@ projects_parser.add_argument("start_time", required=True, type=str, help="Start 
 projects_parser.add_argument("end_time", required=True, type=str, help="End time example: 2024-08-16")
 projects_parser.add_argument("contractor", required=False, type=empty_or_none, help="Contarctor name example: AKHN Contractor")
 projects_parser.add_argument("proj_location", required=True, type=str, help="Project location example: ახალქალაქი")
-projects_parser.add_argument("proj_latitude", required=True, type=float, help="Latitude example: 41.4256")
-projects_parser.add_argument("proj_longitude", required=True, type=float, help="Longitude example: 43.513")
+projects_parser.add_argument("proj_latitude", required=True, type=str, help="Latitude example: 41.4256")
+projects_parser.add_argument("proj_longitude", required=True, type=str, help="Longitude example: 43.513")
 projects_parser.add_argument("images", required=False, type=werkzeug.datastructures.FileStorage, location="files", action="append", help="Upload images (JPEG/PNG/JPG)")
 
 
