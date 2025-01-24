@@ -82,21 +82,11 @@ class GeophysicElectricalListAPI(Resource):
                 server_message += ' არ აიტვირთა საარქივო Image-ის ფაილი.'
         
 
-        has_dot_num1 = '.' in args['latitude']
-        has_dot_num2 = '.' in args['longitude']
 
-        if has_dot_num1 and not has_dot_num2:
-            print('if')
+        lat, long = utm_converter(args['latitude'], args['longitude'])
+        if lat == None or long == None:
             return {"error": "გთხოვთ შეიყვანეთ სწორი ფორმატით"}, 400
-        elif has_dot_num2 and not has_dot_num1:
-            print('elif 1')
-            return {"error": "გთხოვთ შეიყვანეთ სწორი ფორმატით"}, 400
-        elif not has_dot_num1 and not has_dot_num2:
-            print('elif 2')
-            lat, long = utm_converter(int(args['latitude']),int(args['longitude']))
-        else:
-            print('else')
-            lat, long = args['latitude'],args['longitude']
+
 
         # Create the GeophysicalSeismic record
         new_geophysical_electrical = GeophysicElectrical(
