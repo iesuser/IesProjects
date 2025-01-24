@@ -1,5 +1,6 @@
 import os
 import uuid
+import utm
 
 
 def save_uploaded_file(file, upload_dir, allowed_mimetypes, file_extension=None):
@@ -32,3 +33,19 @@ def save_uploaded_file(file, upload_dir, allowed_mimetypes, file_extension=None)
         return filename
     else:
         return None
+    
+def utm_converter(utm_y, utm_x):
+    zone_number = 38
+    zone_letter = 'N'
+    has_dot_utm_y = '.' in utm_y
+    has_dot_utm_x = '.' in utm_x
+    
+
+    if has_dot_utm_y and not has_dot_utm_x:
+        return None, None
+    elif has_dot_utm_x and not has_dot_utm_y:
+        return None, None
+    elif not has_dot_utm_y and not has_dot_utm_x:
+        return utm.to_latlon(int(utm_x), int(utm_y), zone_number, zone_letter)
+    else:
+        return float(utm_y), float(utm_x)

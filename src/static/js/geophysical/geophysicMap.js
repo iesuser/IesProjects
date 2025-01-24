@@ -178,7 +178,7 @@ function attachGeophyInfoWindow(marker, geophysic, pointType) {
                 VS30: ${geophysic.vs30 ? geophysic.vs30 : '----'}<br>
                 განედი (y): ${pointType === "Start" ? geophysic.first_latitude : geophysic.second_latitude}<br>
                 გრძედი (x): ${pointType === "Start" ? geophysic.first_longitude : geophysic.second_longitude}<br>
-                <a style="display:block; margin-top:20px" href="/view_geophysical/${geophysic.id}">დეტალურად</a>
+                <a style="display:block; margin-top:20px" href="/view_geophysical/${geophysic.geophysical_id}">დეტალურად</a>
             </div>`
     });
     marker.addListener('click', function () {
