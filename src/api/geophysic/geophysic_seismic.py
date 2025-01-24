@@ -5,7 +5,7 @@ from flask_jwt_extended import jwt_required, current_user
 from src.api.nsmodels import geophysic_seismic_ns, geophysic_seismic_model, geophysical_seismic__parser
 from src.models import GeophysicSeismic, Geophysical
 from src.config import Config
-from src.utils.utils import save_uploaded_file
+from src.utils.utils import save_uploaded_file, utm_converter
 
 
 @geophysic_seismic_ns.route('/geophysic_seismic/<int:geophy_id>')
@@ -80,13 +80,21 @@ class GeophysicSeismicListAPI(Resource):
             if not img_filename:
                 server_message += ' არ აიტვირთა საარქივო Image-ის ფაილი.'
 
+        first_lat, first_long = utm_converter(args['first_latitude'], args['first_longitude'])
+        if first_lat == None or first_long == None:
+            return {"error": "გთხოვთ შეიყვანეთ პირველი განედი/გრძედი სწორი ფორმატით"}, 400
+        
+        second_lat, second_long = utm_converter(args['second_latitude'], args['second_longitude'])
+        if second_lat == None or second_long == None:
+            return {"error": "გთხოვთ შეიყვანეთ მეორე განედი/გრძედი სწორი ფორმატით"}, 400
+        
         # Create the Geophysical record
         new_geophysical_seismic = GeophysicSeismic(
             geophysical_id=geophy_id,
-            first_latitude=args['first_latitude'],
-            first_longitude=args['first_longitude'],
-            second_latitude=args['second_latitude'],
-            second_longitude=args['second_longitude'],
+            first_latitude=first_lat,
+            first_longitude=first_long,
+            second_latitude=second_lat,
+            second_longitude=second_long,
             profile_length=args['profile_length'],
             vs30=args['vs30'],
             ground_category_geo=args['ground_category_geo'],
@@ -204,11 +212,19 @@ class GeophysicSeismicAPI(Resource):
             else:    
                 server_message += ' არ აიტვირთა საარქივო Image-ის ფაილი.'
 
+        first_lat, first_long = utm_converter(args['first_latitude'], args['first_longitude'])
+        if first_lat == None or first_long == None:
+            return {"error": "გთხოვთ შეიყვანეთ პირველი განედი/გრძედი სწორი ფორმატით"}, 400
+        
+        second_lat, second_long = utm_converter(args['second_latitude'], args['second_longitude'])
+        if second_lat == None or second_long == None:
+            return {"error": "გთხოვთ შეიყვანეთ მეორე განედი/გრძედი სწორი ფორმატით"}, 400
+
         # Update the record fields
-        geophysic_seismic.first_latitude = args['first_latitude']
-        geophysic_seismic.first_longitude = args['first_longitude']
-        geophysic_seismic.second_latitude = args['second_latitude']
-        geophysic_seismic.second_longitude = args['second_longitude']
+        geophysic_seismic.first_latitude = first_lat
+        geophysic_seismic.first_longitude = first_long
+        geophysic_seismic.second_latitude = second_lat
+        geophysic_seismic.second_longitude = second_long
         geophysic_seismic.profile_length = args['profile_length']
         geophysic_seismic.vs30 = args['vs30']
         geophysic_seismic.ground_category_geo = args['ground_category_geo']

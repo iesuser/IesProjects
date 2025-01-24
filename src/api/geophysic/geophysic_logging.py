@@ -4,7 +4,7 @@ from flask_jwt_extended import jwt_required, current_user
 
 from src.api.nsmodels import geophysic_logging_ns, geophysic_logging_model, geophysic_logging_parser
 from src.models import GeophysicLogging, Geophysical
-from src.utils.utils import save_uploaded_file
+from src.utils.utils import save_uploaded_file, utm_converter
 from src.config import Config
 
 
@@ -80,12 +80,15 @@ class GeophysicLoggingListAPI(Resource):
             if not img_filename:
                 server_message += ' არ აიტვირთა საარქივო Image-ის ფაილი.'
 
-
+        lat, long = utm_converter(args['latitude'], args['longitude'])
+        if lat == None or long == None:
+            return {"error": "გთხოვთ შეიყვანეთ განედი/გრძედი სწორი ფორმატით"}, 400
+        
         # Create the GeophysicalSeismic record
         new_geophysical_logging = GeophysicLogging(
             geophysical_id=geophy_id,
-            longitude=args['longitude'],
-            latitude=args['latitude'],
+            longitude=long,
+            latitude=lat,
             profile_length=args['profile_length'],
             archival_pdf=pdf_filename,
             archival_excel=excel_filename,
@@ -200,10 +203,13 @@ class GeophysicLoggingAPI(Resource):
             else:    
                 server_message += ' არ აიტვირთა საარქივო Image-ის ფაილი.'
 
+        lat, long = utm_converter(args['latitude'], args['longitude'])
+        if lat == None or long == None:
+            return {"error": "გთხოვთ შეიყვანეთ განედი/გრძედი სწორი ფორმატით"}, 400
         
         # Update the record fields
-        geophysic_logging.longitude = args['longitude']
-        geophysic_logging.latitude = args['latitude']
+        geophysic_logging.longitude = long
+        geophysic_logging.latitude = lat
         geophysic_logging.profile_length = args['profile_length']
         # Save the updates
         geophysic_logging.save()

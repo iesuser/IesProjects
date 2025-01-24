@@ -206,10 +206,13 @@ class GeophysicElectricalAPI(Resource):
             else:    
                 server_message += ' არ აიტვირთა საარქივო Image-ის ფაილი.'
 
+        lat, long = utm_converter(args['latitude'], args['longitude'])
+        if lat == None or long == None:
+            return {"error": "გთხოვთ შეიყვანეთ განედი/გრძედი სწორი ფორმატით"}, 400
         
         # Update the record fields
-        geophysic_electrical.longitude = args['longitude']
-        geophysic_electrical.latitude = args['latitude']
+        geophysic_electrical.longitude = long
+        geophysic_electrical.latitude = lat
         geophysic_electrical.profile_length = args['profile_length']
         # Save the updates
         geophysic_electrical.save()
