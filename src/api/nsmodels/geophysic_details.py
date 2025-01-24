@@ -69,8 +69,8 @@ geophysic_electrical_ns = api.namespace('GeophysicElectrical', description='API 
 geophysic_electrical_model = geophysic_electrical_ns.model('GeophysicElectrical', {
     'id': fields.Integer(readOnly=True, description='The unique identifier of a electrical profile'),
     'geophysical_id': fields.Integer(required=True, description='The ID of the related geophysical record'),
-    'longitude': fields.Float(required=True, description='The longitude of the electrical profile'),
-    'latitude': fields.Float(required=True, description='The latitude of the electrical profile'),
+    'longitude': fields.String(required=True, description='The longitude of the electrical profile'),
+    'latitude': fields.String(required=True, description='The latitude of the electrical profile'),
     'profile_length': fields.Float(required=True, description='The profile length'),
     'archival_img': fields.String(description='The URL of the archival image'),
     'archival_excel': fields.String(description='The URL of the archival Excel file'),
@@ -79,8 +79,8 @@ geophysic_electrical_model = geophysic_electrical_ns.model('GeophysicElectrical'
 
 geophysic_electrical_parser = reqparse.RequestParser()
 
-geophysic_electrical_parser.add_argument('longitude', type=float, required=True,  help="The longitude of the seismic profile: 41.4256")
-geophysic_electrical_parser.add_argument('latitude', type=float, required=True,  help="The latitude of the seismic profile: 43.513")
+geophysic_electrical_parser.add_argument('longitude', type=str, required=True,  help="The longitude of the seismic profile: 41.4256")
+geophysic_electrical_parser.add_argument('latitude', type=str, required=True,  help="The latitude of the seismic profile: 43.513")
 geophysic_electrical_parser.add_argument('profile_length', type=float, required=True,  help="The profile length: 100")
 geophysic_electrical_parser.add_argument("archival_img", required=False, type=FileStorage, location="files", action="append", help="Upload Images (JPEG/PNG/JPG)")
 geophysic_electrical_parser.add_argument("archival_excel", required=False, type=FileStorage, location="files", action="append", help="Upload archival EXCEL (XLS/XLSX)")
@@ -104,8 +104,8 @@ geophysic_georadar_model = geophysic_electrical_ns.model('GeophysicGeoradar', {
 
 geophysic_georadar_parser = reqparse.RequestParser()
 
-geophysic_georadar_parser.add_argument('longitude', type=float, required=True,  help="The longitude of the seismic profile: 41.4256")
-geophysic_georadar_parser.add_argument('latitude', type=float, required=True,  help="The latitude of the seismic profile: 43.513")
+geophysic_georadar_parser.add_argument('longitude', type=str, required=True,  help="The longitude of the seismic profile: 41.4256")
+geophysic_georadar_parser.add_argument('latitude', type=str, required=True,  help="The latitude of the seismic profile: 43.513")
 geophysic_georadar_parser.add_argument('profile_length', type=float, required=True,  help="The profile length: 100")
 geophysic_georadar_parser.add_argument("archival_img", required=False, type=FileStorage, location="files", action="append", help="Upload Images (JPEG/PNG/JPG)")
 geophysic_georadar_parser.add_argument("archival_excel", required=False, type=FileStorage, location="files", action="append", help="Upload archival EXCEL (XLS/XLSX)")

@@ -4,8 +4,10 @@ from flask_jwt_extended import jwt_required, current_user
 
 from src.api.nsmodels import geophysic_electrical_ns, geophysic_electrical_model, geophysic_electrical_parser
 from src.models import GeophysicElectrical, Geophysical
-from src.utils.utils import save_uploaded_file
+from src.utils.utils import save_uploaded_file, utm_converter
 from src.config import Config
+
+
 
 
 @geophysic_electrical_ns.route('/geophysic_electrical/<int:geophy_id>')
@@ -16,7 +18,6 @@ class GeophysicElectricalListAPI(Resource):
         geophysic_electrical = GeophysicElectrical.query.filter_by(geophysical_id=geophy_id).all()
         if not geophysic_electrical:
             return {"error": "ელექტრული პროფილი არ მოიძებნა."}, 404
-        
         return geophysic_electrical, 200
     
     @jwt_required()
@@ -79,13 +80,29 @@ class GeophysicElectricalListAPI(Resource):
             )
             if not img_filename:
                 server_message += ' არ აიტვირთა საარქივო Image-ის ფაილი.'
+        
 
+        has_dot_num1 = '.' in args['latitude']
+        has_dot_num2 = '.' in args['longitude']
+
+        if has_dot_num1 and not has_dot_num2:
+            print('if')
+            return {"error": "გთხოვთ შეიყვანეთ სწორი ფორმატით"}, 400
+        elif has_dot_num2 and not has_dot_num1:
+            print('elif 1')
+            return {"error": "გთხოვთ შეიყვანეთ სწორი ფორმატით"}, 400
+        elif not has_dot_num1 and not has_dot_num2:
+            print('elif 2')
+            lat, long = utm_converter(int(args['latitude']),int(args['longitude']))
+        else:
+            print('else')
+            lat, long = args['latitude'],args['longitude']
 
         # Create the GeophysicalSeismic record
         new_geophysical_electrical = GeophysicElectrical(
             geophysical_id=geophy_id,
-            longitude=args['longitude'],
-            latitude=args['latitude'],
+            longitude=long,
+            latitude=lat,
             profile_length=args['profile_length'],
             archival_pdf=pdf_filename,
             archival_excel=excel_filename,
@@ -103,7 +120,7 @@ class GeophysicElectricalAPI(Resource):
         geophysic_electical = GeophysicElectrical.query.filter_by(geophysical_id=geophy_id, id=id).first()
         if not geophysic_electical:
             return {"error": "ელექტრული პროფილი არ მოიძებნა."}, 404
-        
+
         return geophysic_electical, 200
     
     @jwt_required()
