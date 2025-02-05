@@ -32,6 +32,14 @@
             <div class="modal-body">
                 <form class="row mt-2" id="GeophysicSeismicForm" enctype="multipart/form-data">
                     <input type="hidden" id="geophysicSeismicId" name="id">
+                    <div class="mb-3">
+                        <label for="seismic_profile_type" class="form-label">პროფილის არჩევა</label>
+                        <select class="form-select" id="seismic_profile_type" name="profile_type">
+                            <option value="0">გარდატეხილი</option>
+                            <option value="1">ზედაპირული</option>
+                            <option value="2">არეკლილი</option>
+                        </select>
+                    </div>
                     <div class="col">
                         <label for="first_seismic_latitude" class="form-label"><span class="text-danger me-1">*</span>პირველი განედი (y):</label>
                         <input type="number" step="any" class="form-control" id="first_seismic_latitude" name="first_latitude" required>
@@ -65,6 +73,7 @@
                         <label for="seismic_ground_category_euro" class="form-label"><span class="text-danger me-1">*</span>გრუნტის კატეგორია (Euro):</label>
                         <input type="text" class="form-control" id="seismic_ground_category_euro" name="ground_category_euro" required>
                     </div>
+                    
                     <div class="mb-3">
                         <label for="seismic_archival_img" class="form-label">საარქივო Image:</label>
                         <input type="file" class="form-control" id="seismic_archival_img" name="archival_img" accept="image/jpeg, image/png, image/jpg">

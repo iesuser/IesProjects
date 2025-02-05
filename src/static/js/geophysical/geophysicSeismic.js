@@ -5,6 +5,11 @@ document.addEventListener("DOMContentLoaded", function() {
     const projectIdElement = document.getElementById("projectId");
     const projectId = projectIdElement.getAttribute("data-project-id");
     
+    const seismicProfileTypes = {
+        0: "გარდატეხილი",
+        1: "ზედაპირული",
+        2: "არეკლილი"
+    }
 
     let permissions = getPermissions()
 
@@ -40,9 +45,12 @@ document.addEventListener("DOMContentLoaded", function() {
                     const archivalPdfLink = data.archival_pdf ? 
                         `<a href="/${projectId}/geophysical/${data.geophysical_id}/seismic/archival_pdf/${data.archival_pdf}" target="_blank">${data.archival_pdf}</a>` : 
                         '---';
+                    
+                    let profileType = seismicProfileTypes[data.profile_type]
 
                     const row = `
                         <tr data-geophysicSeismic-id="${data.id}">
+                            <td>${profileType}</td>
                             <td>${data.first_latitude}</td>
                             <td>${data.first_longitude}</td>
                             <td>${data.second_latitude}</td>
@@ -117,6 +125,7 @@ function fetchGeophysicSeismicData(geophysicalId, geophysicSeismicId) {
         .then(data => {
             if (data) {
                 document.getElementById('geophysicSeismicId').value = data.id;
+                document.getElementById('seismic_profile_type').value = data.profile_type;
                 document.getElementById('first_seismic_latitude').value = data.first_latitude;
                 document.getElementById('first_seismic_longitude').value = data.first_longitude;
                 document.getElementById('second_seismic_latitude').value = data.second_latitude;
@@ -140,7 +149,6 @@ function submitGeophysicSeismicForm(event) {
     const formData = new FormData(document.getElementById('GeophysicSeismicForm'));
     const url = isEditMode ? `/api/geophysic_seismic/${currentGeophysicalId}/${geophysicSeismicId}` : `/api/geophysic_seismic/${currentGeophysicalId}`;
     const method = isEditMode ? 'PUT' : 'POST';
-
     const token = localStorage.getItem('access_token');
 
     // makeApiRequest is in the globalAccessControl.js
