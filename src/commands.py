@@ -96,6 +96,7 @@ def populate_db():
         second_longitude=41.6533,
         second_latitude=41.6306,
         profile_length=0,
+        profile_type=0,
         vs30=650,
         ground_category_geo="II",
         ground_category_euro="B",

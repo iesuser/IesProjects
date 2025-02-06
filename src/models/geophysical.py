@@ -28,7 +28,8 @@ class GeophysicSeismic(db.Model, BaseModel):
     id = db.Column(db.Integer, primary_key=True)
 
     geophysical_id = db.Column(db.Integer, db.ForeignKey('geophysical.id', ondelete="CASCADE"), nullable=False)
-    
+
+    profile_type = db.Column(db.Integer, nullable=False)
     first_latitude = db.Column(db.Float, nullable=False)
     first_longitude = db.Column(db.Float, nullable=False)
     second_latitude = db.Column(db.Float, nullable=False)
