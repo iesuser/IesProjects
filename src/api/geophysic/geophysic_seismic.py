@@ -99,6 +99,7 @@ class GeophysicSeismicListAPI(Resource):
             vs30=args['vs30'],
             ground_category_geo=args['ground_category_geo'],
             ground_category_euro=args['ground_category_euro'],
+            profile_type=args['profile_type'],
             archival_pdf=pdf_filename,
             archival_excel=excel_filename,
             archival_img=img_filename
@@ -227,6 +228,7 @@ class GeophysicSeismicAPI(Resource):
         geophysic_seismic.second_longitude = second_long
         geophysic_seismic.profile_length = args['profile_length']
         geophysic_seismic.vs30 = args['vs30']
+        geophysic_seismic.profile_type = args['profile_type']
         geophysic_seismic.ground_category_geo = args['ground_category_geo']
         geophysic_seismic.ground_category_euro = args['ground_category_euro']
 
