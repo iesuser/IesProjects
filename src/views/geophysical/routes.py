@@ -4,15 +4,15 @@ from os import path
 from src.config import Config
 from src.models import Geophysical
 
-# Define the folder path for the templates
+# განსაზღვრავს ფორმატს და დირექტორიას შაბლონებისთვის
 TEMPLATES_FOLDER = path.join(Config.BASE_DIR, "src/templates", "geophysical")
 UPLOAD_DIR = path.join(Config.BASE_DIR, Config.UPLOAD_FOLDER)
 
-# Create a Blueprint for the geophysical routes
+# ქმნის Blueprint-ს geophysical routes-ისთვის
 geophysical_blueprint = Blueprint("geophysical", __name__, template_folder=TEMPLATES_FOLDER)
 
 
-# Route to view a specific Geophysical record by its ID
+# აბრუნებს კონკრეტული Geophysical ჩანაწერი მისი ID-ით
 @geophysical_blueprint.route("/view_geophysical/<int:id>")
 def view_geophysical(id):
     geophysical_record = Geophysical.query.get(id)
@@ -20,11 +20,11 @@ def view_geophysical(id):
         abort(404, description="Geophysical record not found")
     proj_id = geophysical_record.project_id
 
-    # Render the template for viewing the Geophysical record
+    # აბრუნებს geophysical ჩანაწერის შაბლონს
     return render_template("view_geophysical.html", geophysical_id=id, project_id=proj_id)
 
 
-# Route to serve archival material (like PDFs) for a specific project ID
+# არქივის ფაილების ჩატვირთვა (PDF, Excel, სურათები) კონკრეტული პროექტის ID-ით
 @geophysical_blueprint.route('/<int:proj_id>/geophysical/archival_excel/<filename>')
 def archival_excel(proj_id, filename):
     directory = path.join(Config.UPLOAD_FOLDER, str(proj_id), 'geophysical/archival_excel/')
