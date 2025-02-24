@@ -41,3 +41,21 @@ function login(event) {
 
 // Attach the login function to the form's submit event
 document.getElementById('loginForm').onsubmit = login;
+const togglePassword = document.getElementById('togglePassword');
+const password = document.getElementById('password');
+const togglePasswordImg = document.getElementById('togglePasswordImg');
+
+const eyeViewPath = "static/img/eye-view.svg";
+const eyehidePath = "static/img/eye-hide.svg";
+
+togglePassword.addEventListener('click', (e) => {
+    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+    password.setAttribute('type', type);
+
+    if (togglePasswordImg.src.includes(eyeViewPath)) {
+        togglePasswordImg.src = eyehidePath;
+    } else{
+        togglePasswordImg.src = eyeViewPath;
+    }
+
+});
