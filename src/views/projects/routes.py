@@ -15,7 +15,3 @@ def view_projects(id):
 def project_image(proj_id, filename):
     directory = path.join(Config.UPLOAD_FOLDER, str(proj_id), 'images') 
     return send_from_directory(directory, filename)
-
-@projects_blueprint.route("/view_index")
-def view_index():
-    return render_template("index.html")
