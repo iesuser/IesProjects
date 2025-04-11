@@ -1,63 +1,66 @@
-var markers = [];
-var map;
+let graphicsLayer;
 
-function initMap() {
-    var latlng = new google.maps.LatLng(42.264, 43.322);
-    var myOptions = {
-        zoom: 7,
-        center: latlng,
-        panControl: false,
-        streetViewControl: false,
-        mapTypeControl: true,
-        mapTypeControlOptions: {style: google.maps.MapTypeControlStyle.DROPDOWN_MENU},
-        mapTypeId: google.maps.MapTypeId.HYBRID,
-        zoomControl: true,
-        zoomControlOptions: {style: google.maps.ZoomControlStyle.SMALL}
-    };
-    map = new google.maps.Map(document.getElementById("map"), myOptions);
-}
+require([
+  "esri/Map",
+  "esri/views/MapView",
+  "esri/Graphic",
+  "esri/layers/GraphicsLayer"
+], (Map, MapView, Graphic, GraphicsLayer) => {
 
-function updateMapMarkers(projects) {
-    // Remove existing markers from the map
-    markers.forEach(marker => marker.setMap(null));
-    markers = []; // Clear the markers array
+  const map = new Map({
+    basemap: "hybrid"
+  });
 
+  const view = new MapView({
+    container: "map",
+    map: map,
+    zoom: 7,
+    center: [42.0, 41.8]
+  });
+
+  graphicsLayer = new GraphicsLayer();
+  map.add(graphicsLayer);
+
+  // Make the update function globally available
+  window.updateArcgisMarkers = function (projects) {
+    graphicsLayer.removeAll(); // Clear existing markers
     projects.forEach(project => {
-        var marker = new google.maps.Marker({
-            position: {lat: parseFloat(project.proj_latitude), lng: parseFloat(project.proj_longitude)},
-            map: map,
-            title: project.projects_name,
-            icon: {
-                url: '/static/img/proj_location.svg',
-                scaledSize: new google.maps.Size(30, 30)
-            }
-        });
-        attachInfoWindow(marker, project);
-        markers.push(marker); // Add marker to the array
-    });
-}
+      const pointGraphic = new Graphic({
+        geometry: {
+          type: "point",
+          latitude: project.proj_latitude,
+          longitude: project.proj_longitude
+        },
+        symbol: {
+          type: "picture-marker",
+          url: "static/img/proj_location.svg", // Change to your image URL
+          width: "24px",
+          height: "24px"
+        },
+        attributes: {
+          id: project.id,  // ✅ Explicitly set it first
+          ...project,
+          vs30: project.geophysical?.[0]?.vs30 || "N/A"
+        },
+        popupTemplate: {
+          title: "{projects_name}",
+          content: function (graphic) {
+            const attr = graphic.graphic.attributes;
+            const id = attr.id || attr._id || "unknown"; // fallback in case of data issues
+            return `
+              <b>დაწყების დღე:</b> ${attr.start_time}<br>
+              <b>დასრულების დღე:</b> ${attr.end_time}<br>
+              <b>დამკვეთი:</b> ${attr.contractor}<br>
+              <b>განედი:</b> ${attr.proj_latitude}<br>
+              <b>გრძედი:</b> ${attr.proj_longitude}<br>
+              <b>Vs30:</b> ${attr.vs30}<br>
+              <a href="${window.location.href}/view_project/${attr.id}">დეტალურად</a>
+            `;
+          }
+        }
+      });
 
-function attachInfoWindow(marker, project) {
-    var infoWindow = new google.maps.InfoWindow({
-        content: `
-            <div class="text-center">
-                <strong>პროექტის სახელი: ${project.projects_name}</strong><br>
-                დაწყების დღე: ${project.start_time}<br>
-                დასრულების დღე: ${project.end_time}<br>
-                დამკვეთი: ${project.contractor || '----'}<br>
-                განედი: ${project.proj_latitude}<br>
-                გრძედი: ${project.proj_longitude}<br>
-                VS30: ${project.geophysical.length > 0 ? project.geophysical[0].vs30 : '----'}<br>
-                PGA 10%: ----<br>
-                <a style="display:block; margin-top:20px" href="/view_project/${project.id}">დეტალურად</a>
-            </div>`
+      graphicsLayer.add(pointGraphic);
     });
-    marker.addListener('click', function() {
-        infoWindow.open(map, marker);
-    });
-}
-
-// Initialize the map when the page loads
-document.addEventListener("DOMContentLoaded", function() {
-    initMap();
+  };
 });

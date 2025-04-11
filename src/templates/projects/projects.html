@@ -5,9 +5,13 @@
 {% endblock %}
 
 {% block body %}
+    <link rel="stylesheet" href="https://js.arcgis.com/4.32/esri/themes/light/main.css" />
+    <script src="https://js.arcgis.com/4.32/"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/projects/map.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/projects/projects.js') }}" defer></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/projects/map.js') }}" defer></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/projects/filter_project.js') }}" defer></script>
+    <!-- ArcGIS SDK -->
+
 
     <!-- Confirmation Modal -->
     <div class="modal fade" id="confirmDeleteProjectModal" tabindex="-1" aria-labelledby="confirmDeleteProjectModalLabel" aria-hidden="true">
@@ -33,7 +37,7 @@
 
         <div id="mapDiv" class="card mt-1">
             <div id="map" 
-                style="width: 100%; height:100%; border: 1px solid #CCC; border-radius: 5px; margin-top:0px;">
+            style="width: 100%; height:100%; border: 1px solid #CCC; border-radius: 5px; margin-top:0px;">
             </div>
         </div>
     </div>
