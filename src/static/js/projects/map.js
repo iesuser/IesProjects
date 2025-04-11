@@ -1,96 +1,66 @@
-let view, graphicsLayer;
+let graphicsLayer;
 
 require([
   "esri/Map",
   "esri/views/MapView",
   "esri/Graphic",
-  "esri/layers/GraphicsLayer",
-  "esri/widgets/Popup"
-], function(Map, MapView, Graphic, GraphicsLayer) {
+  "esri/layers/GraphicsLayer"
+], (Map, MapView, Graphic, GraphicsLayer) => {
 
-  // Initialize the map
-  const map = new Map({ basemap: "hybrid" });
-
-  // Create the view
-  view = new MapView({
-    container: "viewDiv",
-    map: map,
-    center: [43.322, 42.264], // Longitude, Latitude
-    zoom: 7
+  const map = new Map({
+    basemap: "hybrid"
   });
 
-  // Layer for markers
+  const view = new MapView({
+    container: "map",
+    map: map,
+    zoom: 7,
+    center: [42.0, 41.8]
+  });
+
   graphicsLayer = new GraphicsLayer();
   map.add(graphicsLayer);
 
-  // Initialize with an empty array
-  let markers = [];
-
-  // Sample projects data (replace with actual data)
-  const projects = [
-    {
-      id: 1,
-      projects_name: "პროექტი 1",
-      proj_latitude: 42.5,
-      proj_longitude: 43.5,
-      start_time: "2024-03-01",
-      end_time: "2024-06-01",
-      contractor: "კომპანია A",
-      geophysical: [{ vs30: 300 }]
-    },
-    {
-      id: 2,
-      projects_name: "პროექტი 2",
-      proj_latitude: 42.8,
-      proj_longitude: 43.2,
-      start_time: "2024-01-15",
-      end_time: "2024-04-20",
-      contractor: null,
-      geophysical: []
-    }
-  ];
-
-  // Load markers on map
-  updateMapMarkers(projects);
-
-  // Function to update markers
-  function updateMapMarkers(projects) {
-    graphicsLayer.removeAll(); // Clear previous markers
-
+  // Make the update function globally available
+  window.updateArcgisMarkers = function (projects) {
+    graphicsLayer.removeAll(); // Clear existing markers
     projects.forEach(project => {
-      const point = {
-        type: "point",
-        longitude: parseFloat(project.proj_longitude),
-        latitude: parseFloat(project.proj_latitude)
-      };
-
-      const markerSymbol = {
-        type: "picture-marker",
-        url: "/static/img/proj_location.svg", // Custom marker icon
-        width: "30px",
-        height: "30px"
-      };
-
       const pointGraphic = new Graphic({
-        geometry: point,
-        symbol: markerSymbol,
-        attributes: project,
+        geometry: {
+          type: "point",
+          latitude: project.proj_latitude,
+          longitude: project.proj_longitude
+        },
+        symbol: {
+          type: "picture-marker",
+          url: "static/img/proj_location.svg", // Change to your image URL
+          width: "24px",
+          height: "24px"
+        },
+        attributes: {
+          id: project.id,  // ✅ Explicitly set it first
+          ...project,
+          vs30: project.geophysical?.[0]?.vs30 || "N/A"
+        },
         popupTemplate: {
-          title: `📍 პროექტი: {projects_name}`,
-          content: `
-            <strong>დაწყების დღე:</strong> {start_time} <br>
-            <strong>დასრულების დღე:</strong> {end_time} <br>
-            <strong>დამკვეთი:</strong> {contractor} <br>
-            <strong>განედი:</strong> {proj_latitude} <br>
-            <strong>გრძედი:</strong> {proj_longitude} <br>
-            <strong>VS30:</strong> ${project.geophysical.length > 0 ? project.geophysical[0].vs30 : '----'} <br>
-            <a href="/view_project/${project.id}" target="_blank">➡ დეტალურად</a>
-          `
+          title: "{projects_name}",
+          content: function (graphic) {
+            const attr = graphic.graphic.attributes;
+            const id = attr.id || attr._id || "unknown"; // fallback in case of data issues
+            return `
+              <b>დაწყების დღე:</b> ${attr.start_time}<br>
+              <b>დასრულების დღე:</b> ${attr.end_time}<br>
+              <b>დამკვეთი:</b> ${attr.contractor}<br>
+              <b>განედი:</b> ${attr.proj_latitude}<br>
+              <b>გრძედი:</b> ${attr.proj_longitude}<br>
+              <b>Vs30:</b> ${attr.vs30}<br>
+              <a href="${window.location.href}/view_project/${attr.id}">დეტალურად</a>
+            `;
+          }
         }
       });
 
       graphicsLayer.add(pointGraphic);
-      markers.push(pointGraphic);
     });
-  }
+  };
 });
