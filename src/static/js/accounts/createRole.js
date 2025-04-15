@@ -22,10 +22,10 @@ function createRole() {
         })
         .then(data => {
             if (data.message) {
-                showAlert('success', data.message);
+                showAlert('alertPlaceholder', 'success', data.message);
                 window.location.reload(); // Reload page after success
             }else if (data.error) {
-                showAlert('danger', data.error || 'როლის შექმნა ვერ მოხერხდა.');
+                showAlert('alertPlaceholder', 'danger', data.error || 'როლის შექმნა ვერ მოხერხდა.');
                 closeModal('createRoleModal');
             }
         })

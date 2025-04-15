@@ -34,8 +34,8 @@ require([
         symbol: {
           type: "picture-marker",
           url: "static/img/proj_location.svg", // Change to your image URL
-          width: "24px",
-          height: "24px"
+          width: "35px",
+          height: "35px"
         },
         attributes: {
           id: project.id,  // ✅ Explicitly set it first

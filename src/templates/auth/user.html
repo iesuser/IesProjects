@@ -35,20 +35,7 @@
 
                     <!-- Change Password Checkbox -->
                     <div class="m-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="changePasswordCheck">
-                        <label class="form-check-label" for="changePasswordCheck">პაროლის შეცვლა</label>
-                    </div>
-
-                    <!-- Password Fields -->
-                    <div class="mb-3" id="passwordFields" style="display: none;">
-                        <label for="user_old_password" class="form-label"><span class="text-danger me-1">*</span>არსებული პაროლი:</label>
-                        <input type="password" class="form-control" id="user_old_password" name="old_password" autocomplete="current-password">
-                    </div>
-                    <div class="mb-3" id="newPasswordFields" style="display: none;">
-                        <label for="user_new_password" class="form-label"><span class="text-danger me-1">*</span>ახალი პაროლი:</label>
-                        <input type="password" class="form-control" id="user_new_password" name="new_password" autocomplete="new-password">
-                        <label for="user_repeat_new_password" class="form-label"><span class="text-danger me-1">*</span>გაიმეორეთ ახალი პაროლი:</label>
-                        <input type="password" class="form-control" id="user_repeat_new_password" name="repeat_new_password" autocomplete="new-password">
+                        <a id="changePasswordLink" onclick="changePassword()" class="text-decoration-none" style="cursor: pointer;">პაროლის შეცვლა</a>
                     </div>
 
                     <div class="d-flex justify-content-center align-items-center m-2">

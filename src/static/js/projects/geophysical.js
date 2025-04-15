@@ -123,7 +123,7 @@ function fetchGeophysicalData(projectId, geophysicalId) {
                 // console.log(document.getElementById('vs30').value, data.vs30)
     
             } else {
-                showAlert('danger', 'გეოფიზიკური კვლევა არ მოიძებნა.');
+                showAlert('alertPlaceholder', 'danger', 'გეოფიზიკური კვლევა არ მოიძებნა.');
             }
         })
         .catch(error => {
@@ -150,7 +150,7 @@ function submitGeophysicalForm(event) {
     })
     .then(data => {
         if (data.error) {
-            showAlert('danger', data.error || 'Error: გაუმართავი პროექტის რედაქტირება/დამატება.');
+            showAlert('alertPlaceholder', 'danger', data.error || 'Error: გაუმართავი პროექტის რედაქტირება/დამატება.');
             closeModal('GeophysicalModal');
         } else if(data.message){
             window.location.reload(); // Reload the page to reflect changes
@@ -176,14 +176,14 @@ document.getElementById('confirmDeleteGeophysicalButton').addEventListener('clic
         })
         .then(data => {
             if (data.message) {
-                showAlert('success', data.message);
+                showAlert('alertPlaceholder', 'success', data.message);
                 // Optionally, remove the row from the table
                 const row = document.querySelector(`tr[data-geophysical-id="${geophysicalIdDelete}"]`);
                 if (row) {
                     row.remove();
                 }
             } else if (data.error) {
-                showAlert('danger', data.error || 'Error: გაუმართავი გეოფიზიკის წაშლა.');
+                showAlert('alertPlaceholder', 'danger', data.error || 'Error: გაუმართავი გეოფიზიკის წაშლა.');
             }
         })
         .catch(error => {

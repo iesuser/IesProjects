@@ -76,10 +76,10 @@ function createProjectForm(event) {
     })
     .then(data => {
         if (data.message) {
-            showAlert('success', data.message);
+            showAlert('alertPlaceholder', 'success', data.message);
             window.location.reload(); // Reload page after success
         }else if (data.error) {
-            showAlert('danger', data.error || 'Error: გაუმართავი პროექტის შექმნა.');
+            showAlert('alertPlaceholder', 'danger', data.error || 'Error: გაუმართავი პროექტის შექმნა.');
             closeModal('createProjectModal');
         }
     })
@@ -130,7 +130,7 @@ function submitProjectForm(event) {
     })
     .then(data => {
         if (data.error) {
-            showAlert('danger', data.error);
+            showAlert('alertPlaceholder', 'danger', data.error);
             closeModal('editProjectModal');
         } else if(data.message){
             window.location.reload();
@@ -162,13 +162,13 @@ document.getElementById('confirmDeleteProjectButton').addEventListener('click', 
         })
         .then(data => {
             if (data.message) {
-                showAlert('success', data.message);
+                showAlert('alertPlaceholder', 'success', data.message);
                 const row = document.querySelector(`tr[data-project-id="${projectIdToDelete}"]`);
                 if (row) {
                     row.remove();
                 }
             } else if (data.error) {
-                showAlert('danger', data.error || 'Error: გაუმართავი პროექტის წაშლა.');
+                showAlert('alertPlaceholder', 'danger', data.error || 'Error: გაუმართავი პროექტის წაშლა.');
             }
         })
         .catch(error => {

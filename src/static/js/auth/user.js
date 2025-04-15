@@ -1,31 +1,3 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const changePasswordCheck = document.getElementById('changePasswordCheck');
-    const passwordFields = document.getElementById('passwordFields');
-    const newPasswordFields = document.getElementById('newPasswordFields');
-
-    // Toggle password fields based on checkbox state
-    changePasswordCheck.addEventListener('change', () => {
-        if (changePasswordCheck.checked) {
-            passwordFields.style.display = 'block';
-            newPasswordFields.style.display = 'block';
-
-            // Make password fields required
-            document.getElementById('user_old_password').setAttribute('required', true);
-            document.getElementById('user_new_password').setAttribute('required', true);
-            document.getElementById('user_repeat_new_password').setAttribute('required', true);
-
-        } else {
-            passwordFields.style.display = 'none';
-            newPasswordFields.style.display = 'none';
-
-            // Remove required attribute
-            document.getElementById('user_old_password').removeAttribute('required');
-            document.getElementById('user_new_password').removeAttribute('required');
-            document.getElementById('user_repeat_new_password').removeAttribute('required');
-        }
-    });
-});
-
 // Open the modal for editing a User record
 function openUserModal() {
     const token = localStorage.getItem('access_token');
@@ -41,12 +13,12 @@ function openUserModal() {
     .then(response => {
         if (!response.ok) {
             if (response.status === 401) {
-                showAlert('danger', 'სესიის ვადა ამოიწურა. გთხოვთ, თავიდან შეხვიდეთ სისტემაში.');
+                showAlert('alertPlaceholder', 'danger', 'სესიის ვადა ამოიწურა. გთხოვთ, თავიდან შეხვიდეთ სისტემაში.');
                 clearSessionData();
             } else if (response.status === 403) {
-                showAlert('danger', 'არ გაქვთ უფლებები ამ მონაცემების ნახვისთვის.');
+                showAlert('alertPlaceholder', 'danger', 'არ გაქვთ უფლებები ამ მონაცემების ნახვისთვის.');
             } else {
-                showAlert('danger', 'მოხდა შეცდომა მონაცემების გამოთხოვისას.');
+                showAlert('alertPlaceholder', 'danger', 'მოხდა შეცდომა მონაცემების გამოთხოვისას.');
             }
             throw new Error('Network response was not ok.');
         }
@@ -65,7 +37,7 @@ function openUserModal() {
                 accountsButton.style.display = 'block';
             }
         } else {
-            showAlert('danger', 'მომხმარებელი არ მოიძებნა.');
+            showAlert('alertPlaceholder', 'danger', 'მომხმარებელი არ მოიძებნა.');
         }
     })
     .catch(error => console.error('Error fetching data:', error));
@@ -85,9 +57,6 @@ function submitUserForm(event) {
 
     const formData = new FormData(document.getElementById('UserForm'));
     const UUIDField = document.getElementById('userUUID').value;
-    const changePasswordCheck = document.getElementById('changePasswordCheck').checked;
-
-    formData.append('change_password', changePasswordCheck);
 
     const token = localStorage.getItem('access_token');
 
@@ -102,7 +71,7 @@ function submitUserForm(event) {
     .then(data => {
         if (data.error) {
             closeModal('UserModal')
-            showAlert('danger', data.error || ' გაუმართავი პროფილის რედაქტირება.');
+            showAlert('alertPlaceholder', 'danger', data.error || ' მონაცემტა ცვლილებისას დაფიქსირდა შეცდომა');
         } else {
             window.location.reload(); // Reload the page to reflect changes
         }
@@ -110,4 +79,46 @@ function submitUserForm(event) {
     .catch(error => {
         console.error('Error:', error);
     });
+}
+
+function changePassword(){
+
+    const user_email = document.getElementById('user_email').innerHTML;
+    const changePasswordLink = document.getElementById('changePasswordLink');
+    const formData = {
+        modalEmail: user_email
+    };
+
+    changePasswordLink.style.pointerEvents = 'none';
+    changePasswordLink.style.opacity = '0.6'; // optional visual cue
+    changePasswordLink.style.cursor = 'not-allowed';
+
+    makeApiRequest('/api/request_reset_password', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+
+    }).then(data => {
+        changePasswordLink.style.pointerEvents = 'auto';
+        changePasswordLink.style.opacity = '1';
+        changePasswordLink.style.cursor = 'pointer';
+        if (data.message) {
+            
+            showAlert('alertPlaceholder', 'success', data.message || ' გთხოვთ შეამოწმოთ ელ.ფოსტა, ვერიფიკაციის ლინკი გამოგზავნილია.');
+            
+            // Close the modal 
+                closeModal('UserModal');
+        } else {
+
+            showAlert('alertPlaceholder', 'danger', data.error || ' გაუმართავი ელ.ფოსტა.');
+            closeModal('UserModal');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+
+
 }

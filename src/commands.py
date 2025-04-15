@@ -171,16 +171,11 @@ def populate_db():
 @with_appcontext
 def insert_db():
 
-    click.echo("Update Password")
-    user = User.query.filter_by(email="roma.grigalashvili@iliauni.edu.ge").first()
-    if user:
-        user.password="Grigalash1"
-
+    click.echo("Update last_sent_email")
+    users = User.query.all()
+    for user in users:
+        user.last_sent_email = datetime.now()
         user.save()
-        click.echo("Password updated successfully.")
-
-    else:
-        click.echo("This User Not Found.")
 
     # click.echo("Update Role")
     # role = Role.query.filter_by(name="User").first()
