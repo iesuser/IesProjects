@@ -1,8 +1,12 @@
 from flask_restx import Resource
 from flask_jwt_extended import jwt_required, current_user, get_jwt_identity
+from flask import request
 
 from src.models import User, Role
-from src.api.nsmodels import accounts_ns, user_model, user_parser, accounts_model, accounts_parser, roles_model, roles_parser
+from src.api.nsmodels import accounts_ns, user_model, user_parser, accounts_model, accounts_parser, roles_model, roles_parser, password_reset_parser, request_password_reset_parser
+from src.utils import mail, url_serializer
+
+from datetime import datetime, timedelta
 
 
 @accounts_ns.route('/user')
@@ -43,32 +47,7 @@ class UserUpdateAPI(Resource):
                 return {'error': 'მომხმარებელი ვერ მოიძებნა.'}, 404
 
             args = user_parser.parse_args()
-
-            # Change password logic
-            if args.get('change_password'):
-                # Verify old password
-                if not user.check_password(args.get("old_password")):
-                    return {'error': 'ძველი პაროლი არასწორად არის შეყვანილი.'}, 400
-                
-                # Check if new password is provided and valid
-                new_password = args.get("new_password")
-                repeat_new_password = args.get("repeat_new_password")
-
-                if not new_password or not repeat_new_password:
-                    return {"error": "გთხოვთ შეიყვანოთ ახალი პაროლი და მისი გაწვდილი."}, 400
-
-                if new_password != repeat_new_password:
-                    return {"error": "ახალი პაროლები არ ემთხვევა ერთმანეთს."}, 400
-
-                if new_password == args.get("old_password"):
-                    return {"error": "ახალი პაროლი უნდა განსხვავდება ძველისგან."}, 400
-
-                if len(new_password) < 8:
-                    return {"error": "პაროლი უნდა იყოს მინიმუმ 8 სიმბოლო."}, 400
-
-                # Update the password
-                user.password = new_password
-                
+               
             # Update user fields
             user.name = args["name"]
             user.lastname = args["lastname"]
@@ -251,3 +230,79 @@ class RolesAPI(Resource):
 
         role.save()
         return {"message": f"როლი წარმატებით განახლდა."}, 200
+    
+@accounts_ns.route('/request_reset_password')
+@accounts_ns.doc(responses={200: 'OK', 400: 'Invalid Argument', 401: 'JWT Token Expires', 403: 'Forbidden', 404: 'Not Found'})
+class RequestResetPassword(Resource):
+    @accounts_ns.doc(parser=request_password_reset_parser)
+    def post(self):
+        ''' პაროლის შეცვლის მოთხოვნის გაგზავნა '''
+        args = request_password_reset_parser.parse_args()
+        email = args.get('modalEmail')
+
+        user = User.query.filter_by(email=email).first()
+
+        if not user:
+            return {'error' : 'მითითებული ელ.ფოსტით მომხმარებელი არ არსებობს'}, 400
+        
+        token = url_serializer.generate_token(data=user.uuid, salt='reset_password')
+        reset_url = f'{request.url_root}reset_password/{token}'
+
+        subject = 'პაროლის შეცვლა'
+        message = f'მოგესალმებით,\nპაროლის შესაცვლელად გთხოვთ გადახვიდეთ ლინკზე: {reset_url}'
+        
+        last_sent = user.last_sent_email
+        current_time = datetime.now()
+        difference = current_time - last_sent
+        if difference < timedelta(seconds=60):
+            return {'error': f'გთხოვთ თავიდან სცადოთ {int(60 - difference.total_seconds())} წამში'}, 400
+
+        try:
+            status = mail.send_mail(emails=[email], subject=subject, message=message)
+
+            if not status:
+                return{'error': 'ელ.ფოსტის გაგზავნის დროს დაფიქსირდა შეცდომა'}, 400
+            
+            current_time = datetime.now()
+
+            user.last_sent_email = current_time
+            user.save()
+
+            return {'message': 'გთხოვთ შეამოწმოთ ელ.ფოსტა, ვერიფიკაციის ლინკი გამოგზავნილია'}, 200
+        except Exception as err:
+            return {'error': f'ელ.ფოსტის გაგზავნის დროს დაფიქსირდა შეცდომა: {err}'}, 400
+        
+@accounts_ns.route('/reset_password')
+@accounts_ns.doc(responses={200: 'OK', 400: 'Invalid Argument', 401: 'JWT Token Expires', 403: 'Forbidden', 404: 'Not Found'})
+class ResetPassword(Resource):
+    @accounts_ns.doc(parser=password_reset_parser)
+    def put(self):
+        ''' პაროლის შეცვლა '''
+        args = password_reset_parser.parse_args()
+
+        token = args.get('token')
+        uuid = url_serializer.unload_token(token=token,salt='reset_password', max_age_seconds=300)
+
+        if uuid == 'invalid':
+            return {'error': 'არასწორი ტოკენი'}, 400
+        elif uuid == 'expired':
+            return {'error': 'არსებულ ტოკენს გაუვიდა ვადა'}, 400
+        
+        user = User.query.filter_by(uuid=uuid).first()
+        if not user:
+            return {'error': 'მომხმარებელი ვერ მოიძებნა'}, 404
+        
+        if args.get('password') != args.get("retype_password"):
+            return {"error": "პაროლები არ ემთხვევა."}, 400
+        
+        if len(args.get("password")) < 8:
+            return {"error": "პაროლი უნდა იყოს მინიმუმ 8 სიმბოლო."}, 400
+        
+
+        password = args.get('password')
+        try:
+            user.password = password
+            user.save()
+            return {'message': 'პაროლი წარმატებით დარედაქტირდა'}, 200
+        except:
+            return {'error': 'პაროლის შეცვლის დროს დაფიქსირდა შეცდომა'}, 400

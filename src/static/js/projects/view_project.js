@@ -160,11 +160,11 @@ document.addEventListener("DOMContentLoaded", function() {
             })
             .then(data => {
                 if (data.message) {
-                    showAlert('success', data.message);
+                    showAlert('alertPlaceholder', 'success', data.message);
                     // Optionally, remove the row from the table
                     fetchImages();
                 } else if (data.error) {
-                    showAlert('danger', data.error || 'Error: გაუმართავი სურათის წაშლა.');
+                    showAlert('alertPlaceholder', 'danger', data.error || 'Error: გაუმართავი სურათის წაშლა.');
                 }
             })
             .catch(error => {
@@ -186,7 +186,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const files = inputElement.files;
 
         if (files.length === 0) {
-            showAlert('danger', 'გთხოვთ აირჩიოთ სურათები.');
+            showAlert('alertPlaceholder', 'danger', 'გთხოვთ აირჩიოთ სურათები.');
             return;
         }
 
@@ -210,11 +210,11 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(data => {
             if (data.message) {
                 inputElement.value = '';
-                showAlert('success', data.message);
+                showAlert('alertPlaceholder', 'success', data.message);
                 // Optionally, remove the row from the table
                 fetchImages(); // Refresh carousel dynamically
             } else if (data.error) {
-                showAlert('danger', data.error || 'Error: გაუმართავი სურათის დამატება.');
+                showAlert('alertPlaceholder', 'danger', data.error || 'Error: გაუმართავი სურათის დამატება.');
             }
         })
         .catch(error => {

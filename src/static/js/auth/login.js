@@ -31,7 +31,7 @@ function login(event) {
             // Redirect to /projects page
             window.location.href = '/';
         } else {
-            showAlert('danger', data.error || ' გაუმართავი ავტორიზაცია.');
+            showAlert('alertPlaceholder', 'danger', data.error || ' გაუმართავი ავტორიზაცია.');
         }
     })
     .catch(error => {

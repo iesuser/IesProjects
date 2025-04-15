@@ -6,6 +6,13 @@
 
 {% block body %}
 <script type="text/javascript" src="{{ url_for('static', filename='js/auth/login.js') }}" defer></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/auth/forgetPassword.js') }}" defer></script>
+
+<script>
+    const message = "{{ message }}";
+</script>
+
+
 <div class="row d-flex justify-content-center align-items-center h-100">
     <div class="col-md-9 col-lg-6 col-xl-5">
         <img src="static/img/login_draw.webp"
@@ -39,6 +46,7 @@
                         დამახსოვრება
                     </label>
                 </div>
+                <a onclick="openResetPasswordModal()" class="text-decoration-none" style="cursor: pointer;">პაროლის აღდგენა</a>
             </div>
 
             <!-- Submit button -->
@@ -47,6 +55,7 @@
                         style="padding-left: 2.5rem; padding-right: 2.5rem;">შესვლა</button>
             </div>
         </form>
+        {% include "forgetPassword.html" %}
     </div>
 </div>
 

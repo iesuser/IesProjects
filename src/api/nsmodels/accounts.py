@@ -17,10 +17,6 @@ user_parser = reqparse.RequestParser()
 
 user_parser.add_argument('name', required=True, type=str, help='Name example: Roma (1-20 characters)')
 user_parser.add_argument('lastname', required=True, type=str, help='LastName example: Grigalashvili (1-20 characters)')
-user_parser.add_argument("old_password", required=False, type=str, help="Old password example: Grigalash1")
-user_parser.add_argument("new_password", required=False, type=str, help="New Password example: Grigalash27")
-user_parser.add_argument("repeat_new_password", required=False, type=str, help="Repeat new Password example: Grigalash27")
-user_parser.add_argument("change_password", required=True, type=inputs.boolean, help="Password example: true")
 
 
 # Role model for documentation in Swagger UI
@@ -58,3 +54,10 @@ accounts_model = api.model('Accounts', {
 accounts_parser = reqparse.RequestParser()
 accounts_parser.add_argument('role_id', required=True, type=int, help='The unique identifier of a roles record')
 
+request_password_reset_parser = reqparse.RequestParser()
+request_password_reset_parser.add_argument("modalEmail", required=True, type=str, help="გთხოვთ შეიყვანეთ ახალი ელ.ფოსტა", default='satesto@example.com')
+
+password_reset_parser = reqparse.RequestParser()
+password_reset_parser.add_argument("token", required=True, type=str, help="გთხოვთ შეიყვანოთ ტოკენი", default='RmYTkyNTQxZjljMSI.Z8bhDw.1YCel4ik_BUzPqPpMZDvP8TaPMM.....')
+password_reset_parser.add_argument("password", required=True, type=str, help="გთხოვთ შეიყვანეთ ახალი პაროლი", default='PAROLIparoli123')
+password_reset_parser.add_argument("retype_password", required=True, type=str, help="გთხოვთ გაიმეოროთ პაროლი", default='PAROLIparoli123')

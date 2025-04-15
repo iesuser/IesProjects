@@ -139,7 +139,7 @@ function submitGeophysicElectricalForm(event) {
     })
     .then(data => {
         if (data.error) {
-            showAlert('danger', data.error || 'Error: გაუმართავი ელექტრული პროფილის რედაქტირება/დამატება.');
+            showAlert('alertPlaceholder', 'danger', data.error || 'Error: გაუმართავი ელექტრული პროფილის რედაქტირება/დამატება.');
             closeModal('GeophysicElectricalModal');
         } else if(data.message){
             window.location.reload(); // Reload the page to reflect changes
@@ -169,14 +169,14 @@ document.getElementById('confirmDeleteGeophysicElectricalButton').addEventListen
         })
         .then(data => {
             if (data.message) {
-                showAlert('success', data.message);
+                showAlert('alertPlaceholder', 'success', data.message);
                 // Optionally, remove the row from the table
                 const row = document.querySelector(`tr[data-geophysicElectrical-id="${electricalIdDelete}"]`);
                 if (row) {
                     row.remove();
                 }
             } else if (data.error) {
-                showAlert('danger', data.error || 'Error: გაუმართავი ელექტრული პროფილის წაშლა.');
+                showAlert('alertPlaceholder', 'danger', data.error || 'Error: გაუმართავი ელექტრული პროფილის წაშლა.');
             }
         })
         .catch(error => {

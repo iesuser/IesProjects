@@ -33,7 +33,7 @@
 </head>
 
 <body>
-    {% if request.path != url_for('auth.auth') %}
+    {% if request.path != url_for('auth.auth') and not request.path.startswith('/reset_password/') %}
     {% include "navbar.html" %}
     <section style="background-color: #eee; overflow-y: auto; font-size: small; height: 94vh;">
     {% else %}

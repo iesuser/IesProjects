@@ -137,7 +137,7 @@ function fetchGeophysicSeismicData(geophysicalId, geophysicSeismicId) {
 
                 // console.log(data);
             } else {
-                showAlert('danger', 'სეისმური პროფილი არ მოიძებნა.');
+                showAlert('alertPlaceholder', 'danger', 'სეისმური პროფილი არ მოიძებნა.');
             }
         })
         .catch(error => console.error('Error fetching data:', error));
@@ -161,7 +161,7 @@ function submitGeophysicSeismicForm(event) {
     })
     .then(data => {
         if (data.error) {
-            showAlert('danger', data.error || 'Error: გაუმართავი სეისმური პროფილის რედაქტირება/დამატება.');
+            showAlert('alertPlaceholder', 'danger', data.error || 'Error: გაუმართავი სეისმური პროფილის რედაქტირება/დამატება.');
             closeModal('GeophysicSeismicModal');
         } else if(data.message){
             window.location.reload(); // Reload the page to reflect changes
@@ -190,13 +190,13 @@ document.getElementById('confirmDeleteGeophysicSeismicButton').addEventListener(
         })
         .then(data => {
             if (data.message) {
-                showAlert('success', data.message);
+                showAlert('alertPlaceholder', 'success', data.message);
                 const row = document.querySelector(`tr[data-geophysicSeismic-id="${seismicIdDelete}"]`);
                 if (row) {
                     row.remove();
                 }
             } else if (data.error) {
-                showAlert('danger', data.error || 'Error: გაუმართავი სეისმური პროფილის წაშლა.');
+                showAlert('alertPlaceholder', 'danger', data.error || 'Error: გაუმართავი სეისმური პროფილის წაშლა.');
             }
         })
         .catch(error => {

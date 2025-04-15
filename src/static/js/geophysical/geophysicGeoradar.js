@@ -141,7 +141,7 @@ function submitGeophysicGeoradarForm(event) {
     })
     .then(data => {
         if (data.error) {
-            showAlert('danger', data.error || 'Error: გაუმართავი გეორადარის რედაქტირება/დამატება.');
+            showAlert('alertPlaceholder', 'danger', data.error || 'Error: გაუმართავი გეორადარის რედაქტირება/დამატება.');
             closeModal('GeophysicGeoradarModal');
         } else if(data.message){
             window.location.reload(); // Reload the page to reflect changes
@@ -170,14 +170,14 @@ document.getElementById('confirmDeleteGeophysicGeoradarButton').addEventListener
         })
         .then(data => {
             if (data.message) {
-                showAlert('success', data.message);
+                showAlert('alertPlaceholder', 'success', data.message);
                 // Optionally, remove the row from the table
                 const row = document.querySelector(`tr[data-geophysicGeoradar-id="${georadarIdDelete}"]`);
                 if (row) {
                     row.remove();
                 }
             } else if (data.error) {
-                showAlert('danger', data.error || 'Error: გაუმართავი გეორადარის წაშლა.');
+                showAlert('alertPlaceholder', 'danger', data.error || 'Error: გაუმართავი გეორადარის წაშლა.');
             }
         })
         .catch(error => {

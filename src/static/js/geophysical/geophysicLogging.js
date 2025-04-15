@@ -114,7 +114,7 @@ function fetchGeophysicLoggingData(geophysicalId, geophysicLoggingId) {
                 document.getElementById('logging_profile_length').value = data.profile_length;
 
             } else {
-                showAlert('danger', 'გეოფიზიკური კაროტაჟი არ მოიძებნა.');
+                showAlert('alertPlaceholder', 'danger', 'გეოფიზიკური კაროტაჟი არ მოიძებნა.');
             }
         })
         .catch(error => console.error('Error fetching data:', error));
@@ -140,7 +140,7 @@ function submitGeophysicLoggingForm(event) {
     })
     .then(data => {
         if (data.error) {
-            showAlert('danger', data.error || 'Error: გაუმართავი გეოფიზიკური კაროტაჟის რედაქტირება/დამატება.');
+            showAlert('alertPlaceholder', 'danger', data.error || 'Error: გაუმართავი გეოფიზიკური კაროტაჟის რედაქტირება/დამატება.');
             closeModal('GeophysicLoggingModal');
         } else if(data.message){
             window.location.reload(); // Reload the page to reflect changes
@@ -169,14 +169,14 @@ document.getElementById('confirmDeleteGeophysicLoggingButton').addEventListener(
         })
         .then(data => {
             if (data.message) {
-                showAlert('success', data.message);
+                showAlert('alertPlaceholder', 'success', data.message);
                 // Optionally, remove the row from the table
                 const row = document.querySelector(`tr[data-geophysicLogging-id="${loggingIdDelete}"]`);
                 if (row) {
                     row.remove();
                 }
             } else if (data.error) {
-                showAlert('danger', data.error || 'Error: გაუმართავი გეოფიზიკური კაროტაჟის წაშლა.');
+                showAlert('alertPlaceholder', 'danger', data.error || 'Error: გაუმართავი გეოფიზიკური კაროტაჟის წაშლა.');
             }
         })
         .catch(error => {
