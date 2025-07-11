@@ -1,14 +1,10 @@
 # სკრიპტის შესრულების უფლებების მიცემა
-chmod +x /home/iesflask/Iesprojects/mysql_backup.sh
-# გახსენით cron-ის მენიუ:
-crontab -e
+chmod +x /home/iesflask/IesProjects/iesprojects_backup.sh
+# გახსენით cron-ის მენიუ sudo უფლებებით:
+sudo crontab -e
 # დაამატეთ შემდეგი ხაზი, რათა სკრიპტი 2 საათზე ყოველ ღამე გაწვდოს:
-0 2 * * * /home/iesflask/Iesprojects/mysql_backup.sh
+0 2 * * * /home/iesflask/IesProjects/iesprojects_backup.sh
 
 
 # ან გაუშვით შემდეგი ხაზი, რომელიც ავტომატურად ჩაამატებს cron-ში განრიგს:
-echo "0 2 * * * /home/iesflask/Iesprojects/mysql_backup.sh" | crontab -
-
-
-sudo mkdir -p /flask_app/backups/databases
-sudo chown -R iesflask:iesflask /flask_app/backups
+(sudo crontab -l 2>/dev/null; echo "0 2 * * * /home/iesflask/IesProjects/iesprojects_backup.sh") | sudo crontab -

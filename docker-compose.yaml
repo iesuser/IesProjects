@@ -26,8 +26,8 @@ services:
   nginx:
     image: nginx:1.27  # ოფიციალური NGINX იმიჯის ვერსია Docker Hub-დან
     ports:
-      - "80:80"  # HTTP პორტი
-      - "443:443"  # HTTPS პორტი
+      - "2021:80" # HTTP Port
+      - "2022:443"  # HTTPS პორტი
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro  # NGINX კონფიგურაციის ფაილი
       - ./nginx/certs:/etc/nginx/certs:ro            # SSL სერთიფიკატები
