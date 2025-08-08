@@ -42,7 +42,7 @@ function loadProjectData() {
                     projectTableBody.innerHTML += row;
                 });
                 // Update map markers with the filtered data
-                updateArcgisMarkers(data);
+                updateMapMarkers(data);
             } else {
                 console.error('Error fetching project data from server');
             }
