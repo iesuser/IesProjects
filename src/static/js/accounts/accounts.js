@@ -19,6 +19,32 @@ async function fetchAccounts() {
     }
 }
 
+function deleteUser(userUUID,username) {
+
+    if(!confirm(`Are you sure you want to delete user: ${username}? This action cannot be undone.`)) {
+        return;
+    }
+
+    const token = localStorage.getItem('access_token');
+    makeApiRequest(`/api/accounts/${userUUID}`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${token}`  // Include the JWT token
+        }
+    })
+    .then(data => {
+        if (data.message) {
+            showAlert('alertPlaceholder', 'success', data.message || 'მომხმარებელი წარმატებით წაიშლა');
+            window.location.reload(); // Reload the page to reflect changes
+        } else if (data.error) {
+            showAlert('alertPlaceholder', 'danger', data.error || ' გაუმართავი მომხმარებლის წაშლა.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
 function populateTable(accounts) {
     const tbody = document.getElementById('accountsTableBody');
     tbody.innerHTML = ''; // Clear existing data
@@ -50,6 +76,7 @@ function populateTable(accounts) {
             <td>${role.can_hazard ? 'Yes' : 'No'}</td>
             <td>${role.can_geodetic ? 'Yes' : 'No'}</td>
             <td><button class="btn btn-info btn-sm" onclick="populateEditRoleModal(${role.id})">Edit Role</button></td>
+            <td><button class="btn btn-danger btn-sm" onclick="deleteUser('${uuid}','${username}')">Delete User</button></td>
         `;
         tbody.appendChild(row);
     });
