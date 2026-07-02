@@ -122,6 +122,24 @@ class AccountsApi(Resource):
         user.save()
         return {"message": "მომხმარებლის როლი წარმატებით განახლდა"}, 200
 
+    @jwt_required()
+    @accounts_ns.doc(security='JsonWebToken')
+    def delete(self, uuid):
+        """მომხმარებლის წაშლა, წვდომა აქვს მხოლოდ role-ით (can_users)"""
+        # Check if the user has permission
+        if not current_user.check_permission('can_users'):
+            return {"error": "არ გაქვს მომხმარებლის წაშლის ნებართვა."}, 403
+        
+        if current_user.uuid == uuid:
+            return {"error": "საკუთარი ანგარიშის წაშლა შეუძლებელია"}, 403
+
+        user = User.query.filter_by(uuid=uuid).first()
+        if not user:
+            return {"error": "მომხმარებელი არ მოიძებნა"}, 404
+
+        user.delete()
+        return {"message": "მომხმარებელი წარმატებით წაიშლა"}, 200
+
 @accounts_ns.route('/roles')
 @accounts_ns.doc(responses={200: 'OK', 400: 'Invalid Argument', 401: 'JWT Token Expires', 403: 'Forbidden', 404: 'Not Found'})
 class RolesListApi(Resource):
