@@ -4,9 +4,9 @@
 ENV_FILE="/home/iesflask/IesProjects/.env"
 
 if [ -f "$ENV_FILE" ]; then
-    set -o allexport
-    source "$ENV_FILE"
-    set +o allexport
+    set -a 
+    . "$ENV_FILE"
+    set +a
 else
     echo "❌ .env ფაილი არ მოიძებნა: $ENV_FILE"
     exit 1
